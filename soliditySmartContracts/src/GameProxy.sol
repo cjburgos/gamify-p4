@@ -3,7 +3,6 @@ pragma solidity ^0.8.10;
 
 contract GameProxy {
     address public implementation;  // storage slot for implementation address
-    uint256 public number;         // storage slot for number
 
     constructor(address _implementation) {
         implementation = _implementation;
