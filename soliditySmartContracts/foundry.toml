@@ -11,5 +11,5 @@ sepolia = "${SEPOLIA_RPC_URL}"
 flow_testnet = "${FLOW_TESTNET_RPC}"
 flow = "${FLOW_RPC}"
 
-[wallet]
+[profile.wallet]
 private_key = "${PRIVATE_KEY}"
