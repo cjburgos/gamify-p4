@@ -49,6 +49,7 @@ app.use((req, res, next) => {
 
   // Set up Vite middleware in development
   if (process.env.NODE_ENV === "development") {
+    // setupVite(app, server);
     serveStatic(app);
   }
 

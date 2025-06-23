@@ -125,14 +125,14 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
 
 ## Recent Changes
 
-- June 23, 2025: Complete application rebuild for PlayOnchain marketplace
-  - Transformed from live gaming platform to smart contract deployment marketplace
-  - Implemented retro gaming aesthetic with pixel fonts and Nintendo-inspired design
-  - Created new navigation: Arena, Marketplace, Profile, GameMaster
-  - Built game template cards with deployment configuration modals
-  - Added GameMaster dashboard for tracking deployments and earnings
-  - Maintained Flow EVM wallet integration with USDC/PYUSD support
-  - Redesigned all pages with purple/blue gradients and yellow accent colors
+- June 23, 2025: Complete Flow blockchain integration and game deployment
+  - Integrated @onflow/fcl for native Flow wallet authentication with QR code support
+  - Built Flow transaction system for deploying games to testnet using GuessTheDiceV2 contract
+  - Added game deployment functionality with Flow transaction submission and finalization
+  - Created Arena page to display deployed games with Game ID, Game Master, and entry fees
+  - Simplified deployment modal to only include Entry Cost field
+  - Implemented local storage for tracking deployed games and their metadata
+  - Added real-time transaction status and game ID generation after successful deployment
 
 ## Changelog
 
