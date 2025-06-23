@@ -150,16 +150,17 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     gameType: string,
     entryCost: number,
   ): Promise<string | null> => {
-    if (!user?.loggedIn) {
+    if (!user?.loggedIn || !user.addr) {
       throw new Error("User must be authenticated to deploy games");
     }
+
+    setIsLoading(true);
 
     const transaction = `
       import GuessTheDiceV2 from 0x0dd7dc583201e8b1
 
       transaction {
           prepare(signer: &Account) {
-              // Optional: You could store the game ID or admin reference here
               let gameId = GuessTheDiceV2.createGame()
               log("New game created with ID: ".concat(gameId.toString()))
           }
@@ -167,6 +168,8 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     `;
 
     try {
+      console.log("Submitting transaction to Flow testnet...");
+      
       const transactionId = await fcl.mutate({
         cadence: transaction,
         proposer: fcl.authz,
@@ -175,15 +178,64 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         limit: 1000,
       });
 
-      console.log("Transaction submitted:", transactionId);
+      console.log("Transaction submitted with ID:", transactionId);
 
-      // Wait for transaction to be finalized
-      const result = await fcl.tx(transactionId).onceFinalized();
-      console.log("Transaction finalized:", result);
+      // Wait for transaction to be sealed
+      const result = await fcl.tx(transactionId).onceSealed();
+      console.log("Transaction sealed:", result);
 
-      // Extract game ID from transaction events or logs
-      // For now, we'll generate a mock game ID until we can parse the actual events
-      const gameId = `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      if (result.status === 4) {
+        console.log("Transaction failed:", result.errorMessage);
+        throw new Error(result.errorMessage || "Transaction failed");
+      }
+
+      // Extract game ID from transaction logs
+      let gameId = null;
+      
+      if (result.events && result.events.length > 0) {
+        console.log("Transaction events:", result.events);
+        
+        // Look for events that might contain the game ID
+        for (const event of result.events) {
+          console.log("Event type:", event.type);
+          console.log("Event data:", event.data);
+          
+          // Check if this is a game creation event
+          if (event.type && event.type.includes("GuessTheDiceV2")) {
+            if (event.data && event.data.gameId) {
+              gameId = event.data.gameId.toString();
+              console.log("Found game ID in event:", gameId);
+              break;
+            }
+          }
+        }
+      }
+
+      // Also check transaction logs for the game ID
+      if (!gameId && result.logs && result.logs.length > 0) {
+        console.log("Transaction logs:", result.logs);
+        
+        for (const log of result.logs) {
+          // Look for the log message that contains the game ID
+          if (typeof log === 'string' && log.includes("New game created with ID:")) {
+            const match = log.match(/New game created with ID:\s*(\d+)/);
+            if (match) {
+              gameId = match[1];
+              console.log("Found game ID in log:", gameId);
+              break;
+            }
+          }
+        }
+      }
+
+      // If we still don't have a game ID, try to parse it from the transaction result
+      if (!gameId) {
+        console.log("Could not extract game ID from events or logs");
+        console.log("Full transaction result:", JSON.stringify(result, null, 2));
+        
+        // Generate a fallback game ID with transaction info
+        gameId = `tx_${transactionId.slice(-8)}_${Date.now()}`;
+      }
 
       // Store deployed game locally
       const deployedGame = {
@@ -194,6 +246,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         transactionId,
         deployedAt: new Date().toISOString(),
         isActive: true,
+        blockHeight: result.blockId,
       };
 
       const existingGames = JSON.parse(
@@ -202,10 +255,17 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       existingGames.push(deployedGame);
       localStorage.setItem("deployed_games", JSON.stringify(existingGames));
 
+      console.log("Game deployed successfully:", deployedGame);
+      
+      // Trigger storage event for arena page to update
+      window.dispatchEvent(new Event('storage'));
+      
       return gameId;
     } catch (error) {
       console.error("Failed to deploy game:", error);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
