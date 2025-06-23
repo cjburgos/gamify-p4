@@ -1,66 +1,72 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import * as fcl from '@onflow/fcl'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import * as fcl from "@onflow/fcl";
 
 // Configure FCL
 fcl.config({
-  'app.detail.title': 'OnchainGameRooms',
-  'app.detail.icon': 'https://placeholder.com/48x48',
-  'accessNode.api': 'https://rest-testnet.onflow.org',
-  'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn',
-  'flow.network': 'testnet'
-})
+  "app.detail.title": "OnchainGameRooms",
+  "app.detail.icon": "https://placeholder.com/48x48",
+  "accessNode.api": "https://rest-testnet.onflow.org",
+  "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+  "flow.network": "testnet",
+});
 
 interface FlowUser {
-  addr?: string
-  loggedIn: boolean
-  cid?: string
-  expiresAt?: number
-  f_type: string
-  f_vsn: string
-  services: any[]
+  addr?: string;
+  loggedIn: boolean;
+  cid?: string;
+  expiresAt?: number;
+  f_type: string;
+  f_vsn: string;
+  services: any[];
 }
 
 interface FlowContextType {
-  user: FlowUser | null
-  isLoading: boolean
-  balance: string
-  network: 'testnet' | 'mainnet'
-  connect: () => Promise<void>
-  disconnect: () => Promise<void>
-  switchToMainnet: () => void
-  switchToTestnet: () => void
-  deployGame: (gameType: string, entryCost: number) => Promise<string | null>
+  user: FlowUser | null;
+  isLoading: boolean;
+  balance: string;
+  network: "testnet" | "mainnet";
+  connect: () => Promise<void>;
+  disconnect: () => Promise<void>;
+  switchToMainnet: () => void;
+  switchToTestnet: () => void;
+  deployGame: (gameType: string, entryCost: number) => Promise<string | null>;
 }
 
-const FlowContext = createContext<FlowContextType | undefined>(undefined)
+const FlowContext = createContext<FlowContextType | undefined>(undefined);
 
 export function FlowProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<FlowUser | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [balance, setBalance] = useState('0.0')
-  const [network, setNetwork] = useState<'testnet' | 'mainnet'>('testnet')
+  const [user, setUser] = useState<FlowUser | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [balance, setBalance] = useState("0.0");
+  const [network, setNetwork] = useState<"testnet" | "mainnet">("testnet");
 
   useEffect(() => {
     const unsubscribe = fcl.currentUser.subscribe((currentUser: FlowUser) => {
-      setUser(currentUser)
+      setUser(currentUser);
       if (currentUser?.addr && currentUser.loggedIn) {
-        localStorage.setItem('flow_user_data', JSON.stringify(currentUser))
-        localStorage.setItem('flow_wallet_address', currentUser.addr)
-        fetchBalance(currentUser.addr)
+        localStorage.setItem("flow_user_data", JSON.stringify(currentUser));
+        localStorage.setItem("flow_wallet_address", currentUser.addr);
+        fetchBalance(currentUser.addr);
       } else {
-        setBalance('0.0')
+        setBalance("0.0");
       }
-    })
+    });
 
-    const initialUser = fcl.currentUser.snapshot()
-    setUser(initialUser)
-    
+    const initialUser = fcl.currentUser.snapshot();
+    setUser(initialUser);
+
     if (initialUser?.addr && initialUser.loggedIn) {
-      fetchBalance(initialUser.addr)
+      fetchBalance(initialUser.addr);
     }
 
-    return unsubscribe
-  }, [])
+    return unsubscribe;
+  }, []);
 
   const fetchBalance = async (address: string) => {
     try {
@@ -76,73 +82,76 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
           return vaultRef.balance
         }
-      `
-      
+      `;
+
       const flowBalance = await fcl.query({
         cadence: script,
-        args: (arg: any, t: any) => [arg(address, t.Address)]
-      })
-      
-      setBalance(flowBalance?.toString() || '0.0')
+        args: (arg: any, t: any) => [arg(address, t.Address)],
+      });
+
+      setBalance(flowBalance?.toString() || "0.0");
     } catch (error) {
-      console.error('Error fetching balance:', error)
-      setBalance('1.5') // Mock balance for demo
+      console.error("Error fetching balance:", error);
+      setBalance("1.5"); // Mock balance for demo
     }
-  }
+  };
 
   const connect = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await fcl.authenticate()
+      await fcl.authenticate();
     } catch (error) {
-      console.error('Connection error:', error)
+      console.error("Connection error:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const disconnect = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await fcl.unauthenticate()
-      setUser(null)
-      setBalance('0.0')
-      localStorage.removeItem('flow_user_data')
-      localStorage.removeItem('flow_wallet_address')
+      await fcl.unauthenticate();
+      setUser(null);
+      setBalance("0.0");
+      localStorage.removeItem("flow_user_data");
+      localStorage.removeItem("flow_wallet_address");
     } catch (error) {
-      console.error('Disconnect error:', error)
+      console.error("Disconnect error:", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const switchToMainnet = () => {
     fcl.config({
-      'accessNode.api': 'https://rest-mainnet.onflow.org',
-      'discovery.wallet': 'https://fcl-discovery.onflow.org/authn',
-      'flow.network': 'mainnet'
-    })
-    setNetwork('mainnet')
+      "accessNode.api": "https://rest-mainnet.onflow.org",
+      "discovery.wallet": "https://fcl-discovery.onflow.org/authn",
+      "flow.network": "mainnet",
+    });
+    setNetwork("mainnet");
     if (user?.addr && user.loggedIn) {
-      fetchBalance(user.addr)
+      fetchBalance(user.addr);
     }
-  }
+  };
 
   const switchToTestnet = () => {
     fcl.config({
-      'accessNode.api': 'https://rest-testnet.onflow.org',
-      'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn',
-      'flow.network': 'testnet'
-    })
-    setNetwork('testnet')
+      "accessNode.api": "https://rest-testnet.onflow.org",
+      "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+      "flow.network": "testnet",
+    });
+    setNetwork("testnet");
     if (user?.addr && user.loggedIn) {
-      fetchBalance(user.addr)
+      fetchBalance(user.addr);
     }
-  }
+  };
 
-  const deployGame = async (gameType: string, entryCost: number): Promise<string | null> => {
+  const deployGame = async (
+    gameType: string,
+    entryCost: number,
+  ): Promise<string | null> => {
     if (!user?.loggedIn) {
-      throw new Error('User must be authenticated to deploy games')
+      throw new Error("User must be authenticated to deploy games");
     }
 
     const transaction = `
@@ -155,7 +164,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
               log("New game created with ID: ".concat(gameId.toString()))
           }
       }
-    `
+    `;
 
     try {
       const transactionId = await fcl.mutate({
@@ -163,19 +172,19 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         proposer: fcl.authz,
         payer: fcl.authz,
         authorizations: [fcl.authz],
-        limit: 1000
-      })
+        limit: 1000,
+      });
 
-      console.log('Transaction submitted:', transactionId)
+      console.log("Transaction submitted:", transactionId);
 
       // Wait for transaction to be finalized
-      const result = await fcl.tx(transactionId).onceFinalized()
-      console.log('Transaction finalized:', result)
+      const result = await fcl.tx(transactionId).onceFinalized();
+      console.log("Transaction finalized:", result);
 
       // Extract game ID from transaction events or logs
       // For now, we'll generate a mock game ID until we can parse the actual events
-      const gameId = `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      
+      const gameId = `game_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
       // Store deployed game locally
       const deployedGame = {
         id: gameId,
@@ -184,19 +193,21 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         entryCost,
         transactionId,
         deployedAt: new Date().toISOString(),
-        isActive: true
-      }
+        isActive: true,
+      };
 
-      const existingGames = JSON.parse(localStorage.getItem('deployed_games') || '[]')
-      existingGames.push(deployedGame)
-      localStorage.setItem('deployed_games', JSON.stringify(existingGames))
+      const existingGames = JSON.parse(
+        localStorage.getItem("deployed_games") || "[]",
+      );
+      existingGames.push(deployedGame);
+      localStorage.setItem("deployed_games", JSON.stringify(existingGames));
 
-      return gameId
+      return gameId;
     } catch (error) {
-      console.error('Failed to deploy game:', error)
-      throw error
+      console.error("Failed to deploy game:", error);
+      throw error;
     }
-  }
+  };
 
   const value: FlowContextType = {
     user,
@@ -207,20 +218,16 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     disconnect,
     switchToMainnet,
     switchToTestnet,
-    deployGame
-  }
+    deployGame,
+  };
 
-  return (
-    <FlowContext.Provider value={value}>
-      {children}
-    </FlowContext.Provider>
-  )
+  return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
 }
 
 export function useFlow() {
-  const context = useContext(FlowContext)
+  const context = useContext(FlowContext);
   if (context === undefined) {
-    throw new Error('useFlow must be used within a FlowProvider')
+    throw new Error("useFlow must be used within a FlowProvider");
   }
-  return context
+  return context;
 }

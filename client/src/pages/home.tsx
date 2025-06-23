@@ -66,21 +66,36 @@ const gameTemplates: GameTemplate[] = [
 export default function Home() {
   const { user, deployGame, isLoading } = useFlow();
   const isConnected = user?.loggedIn || false;
-  const [selectedTemplate, setSelectedTemplate] = useState<GameTemplate | null>(
-    null,
-  );
+  const [selectedTemplate, setSelectedTemplate] = useState<GameTemplate | null>(null);
   const [deployConfig, setDeployConfig] = useState({
-    entryCost: "",
-    period: "",
-    maxEntries: "",
-    numberOfGames: "",
+    entryCost: ""
   });
 
-  const handleDeploy = () => {
-    console.log("Deploying game:", selectedTemplate, deployConfig);
-    alert(
-      `Deploying ${selectedTemplate?.title} with ${deployConfig.entryCost} USDC entry cost`,
-    );
+  const handleDeploy = async () => {
+    if (selectedTemplate && deployConfig.entryCost && user?.loggedIn) {
+      try {
+        const entryCost = parseFloat(deployConfig.entryCost);
+        if (isNaN(entryCost) || entryCost <= 0) {
+          alert('Please enter a valid entry cost');
+          return;
+        }
+
+        console.log("Deploying game:", selectedTemplate, { entryCost });
+        const gameId = await deployGame(selectedTemplate.gameType, entryCost);
+        if (gameId) {
+          alert(`Game deployed successfully! Game ID: ${gameId}`);
+          setSelectedTemplate(null);
+          setDeployConfig({ entryCost: "" });
+        }
+      } catch (error) {
+        console.error('Deployment failed:', error);
+        alert(`Failed to deploy game: ${error.message || 'Unknown error'}`);
+      }
+    } else if (!user?.loggedIn) {
+      alert('Please connect your wallet first');
+    } else {
+      alert('Please enter an entry cost');
+    }
   };
 
   return (
