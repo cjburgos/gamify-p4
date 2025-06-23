@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Wallet, LogOut, Network, Copy } from 'lucide-react'
-import { useFlow } from '@/contexts/FlowContext'
+import { useFlow } from '../../contexts/MinimalFlowContext'
 import { useToast } from '@/hooks/use-toast'
 
 export function WalletInfo() {
