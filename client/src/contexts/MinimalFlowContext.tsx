@@ -260,7 +260,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         throw new Error("Game deployment successful but could not retrieve game ID");
       }
 
-      // Store deployed game locally
+      // Store deployed game via API
       const deployedGame = {
         id: gameId,
         gameType,
@@ -272,16 +272,25 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         blockHeight: result.blockId,
       };
 
-      const existingGames = JSON.parse(
-        localStorage.getItem("deployed_games") || "[]",
-      );
-      existingGames.push(deployedGame);
-      localStorage.setItem("deployed_games", JSON.stringify(existingGames));
+      // Save to backend instead of localStorage
+      try {
+        const response = await fetch('/api/deployed-games', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(deployedGame),
+        });
 
-      console.log("Game deployed successfully:", deployedGame);
-      
-      // Trigger storage event for arena page to update
-      window.dispatchEvent(new Event('storage'));
+        if (!response.ok) {
+          const error = await response.json();
+          console.warn('Failed to save game to backend:', error.message);
+        } else {
+          console.log("Game saved to backend successfully:", deployedGame);
+        }
+      } catch (error) {
+        console.warn('Error saving game to backend:', error);
+      }
       
       return gameId;
     } catch (error) {
