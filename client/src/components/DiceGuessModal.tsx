@@ -113,8 +113,8 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
         </DialogHeader>
         
         <div className="space-y-4 text-center">
-          <div className="text-lg font-mono text-yellow-400">
-            Time Left: {timeLeft}s
+          <div className="text-xl font-mono text-yellow-400 bg-yellow-900/20 p-3 rounded-lg border border-yellow-400">
+            ⏰ Time Left: {timeLeft}s
           </div>
           
           {!hasSubmitted ? (
@@ -145,8 +145,15 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
               </Button>
             </>
           ) : (
-            <div className="text-yellow-400 text-lg">
-              {isSubmitting ? 'Rolling dice...' : 'Guess submitted!'}
+            <div className="space-y-3">
+              <div className="text-yellow-400 text-lg font-bold">
+                {isSubmitting ? '🎲 Rolling dice...' : '✅ Guess submitted!'}
+              </div>
+              {isSubmitting && (
+                <div className="text-gray-300 text-sm">
+                  Please wait while the dice is rolled...
+                </div>
+              )}
             </div>
           )}
         </div>
