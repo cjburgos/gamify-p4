@@ -12,6 +12,8 @@ interface DeployedGame {
   deployedAt: string;
   isActive: boolean;
   players?: string[];
+  gameStartTime?: string;
+  status?: 'waiting' | 'started' | 'finished';
 }
 
 export default function Arena() {
@@ -19,6 +21,15 @@ export default function Arena() {
   const isConnected = user?.loggedIn || false;
   const [deployedGames, setDeployedGames] = useState<DeployedGame[]>([]);
   const [joiningGameId, setJoiningGameId] = useState<string | null>(null);
+  const [activeGameId, setActiveGameId] = useState<string | null>(null);
+  const [showGuessModal, setShowGuessModal] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [gameResult, setGameResult] = useState<{
+    survived: boolean;
+    diceRoll: number;
+    playerGuess: number;
+  } | null>(null);
+  const [eliminatedGames, setEliminatedGames] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -114,6 +125,41 @@ export default function Arena() {
     
     return () => clearInterval(playersInterval);
   }, [getActivePlayers, deployedGames]);
+
+  const handleGameStart = (gameId: string) => {
+    console.log(`Game ${gameId} has started!`);
+    
+    // Check if current user joined this game
+    const game = deployedGames.find(g => g.id === gameId);
+    const userAddress = user?.addr;
+    
+    if (game && userAddress && game.players?.includes(userAddress)) {
+      console.log('User joined this game - showing guess modal');
+      setActiveGameId(gameId);
+      setShowGuessModal(true);
+    }
+  };
+
+  const handleGuessResult = (survived: boolean, diceRoll: number, playerGuess: number) => {
+    setShowGuessModal(false);
+    setGameResult({ survived, diceRoll, playerGuess });
+    setShowResultModal(true);
+    
+    // If eliminated, add to eliminated games set
+    if (!survived && activeGameId) {
+      setEliminatedGames(prev => new Set([...prev, activeGameId]));
+    }
+  };
+
+  const handleResultClose = () => {
+    setShowResultModal(false);
+    setGameResult(null);
+    setActiveGameId(null);
+  };
+
+  const isUserEliminated = (gameId: string) => {
+    return eliminatedGames.has(gameId);
+  };
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
