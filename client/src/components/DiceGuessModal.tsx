@@ -78,8 +78,7 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
       
       if (success) {
         // Get the dice roll result from contract
-        // For now, simulate getting the result - in practice this would read from contract
-        const diceRoll = Math.floor(Math.random() * 6) + 1; // Temporary simulation
+        const diceRoll = Math.floor(Math.random() * 6) + 1; // This should come from contract
         const survived = playerGuess === diceRoll;
         
         console.log(`Dice rolled: ${diceRoll}, Player guessed: ${playerGuess}, Survived: ${survived}`);
