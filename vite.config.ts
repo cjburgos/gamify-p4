@@ -28,13 +28,9 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+
   server: {
-    allowedHosts: [
-      "https://4ac1d04f-6476-4035-8d69-0b35b032e63b-00-1krb7gys0k8rz.picard.replit.dev",
-      "0.0.0.0",
-      "localhost",
-      "127.0.0.1",
-    ],
+    allowedHosts: ["0.0.0.0", "localhost", "127.0.0.1", ".picard.replit.dev"],
     fs: {
       strict: true,
       deny: ["**/.*"],
