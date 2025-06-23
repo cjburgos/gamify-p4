@@ -360,9 +360,29 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       const result = await fcl.tx(transactionId).onceSealed();
       console.log("Join game transaction sealed:", result);
 
-      if (result.status === 5) {
+      if (result.status === 4) {
         console.log("Join game transaction failed:", result.errorMessage);
         throw new Error(result.errorMessage || "Failed to join game");
+      }
+
+      // After successful transaction, read the updated activePlayers from contract
+      try {
+        const activePlayers = await getActivePlayers(gameId);
+        console.log("Active players from contract:", activePlayers);
+        
+        if (activePlayers && activePlayers.length > 0) {
+          // Update backend with the complete player list
+          await fetch(`/api/deployed-games/${gameId}/players`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ players: activePlayers }),
+          });
+          console.log("Updated game with all active players:", activePlayers);
+        }
+      } catch (error) {
+        console.warn("Failed to read active players from contract:", error);
       }
 
       console.log("Successfully joined game!");
