@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CountdownTimer } from "./countdown-timer";
 import { WalletGuard } from "./wallet/WalletGuard";
-import { cn, formatUSDC, formatUSD, formatBrandPrize, getStatusColor, getHostAvatarGradient } from "@/lib/utils";
+import { formatUSDC, formatUSD, formatBrandPrize, getStatusColor, getHostAvatarGradient } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
