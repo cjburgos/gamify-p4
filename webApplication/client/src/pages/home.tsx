@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GameCard } from "@/components/game-card";
 import { GameModal } from "@/components/game-modal";
+import { BlockchainGameCard } from "@/components/blockchain-game-card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Game } from "@shared/schema";
@@ -32,6 +33,11 @@ export default function Home() {
   const handleGameClick = (game: Game) => {
     setSelectedGame(game);
     setIsModalOpen(true);
+  };
+
+  const handleJoinBlockchainGame = (gameId: number, playerAddress: string, guess?: number) => {
+    console.log(`Player ${playerAddress} joined game ${gameId}${guess ? ` with guess ${guess}` : ''}`);
+    // Here you could update the local game state or refetch games
   };
 
   const currentGames = activeTab === "crypto" ? games : activeTab === "brands" ? brandGames : sportsGames;
@@ -77,7 +83,7 @@ export default function Home() {
           <nav className="hidden md:flex items-center space-x-6">
             <a href="/" className="text-electric-purple font-semibold">Browse Games</a>
             <a href="/marketplace" className="text-gray-300 hover:text-cyber-blue transition-colors">Game Templates</a>
-            <a href="#" className="text-gray-300 hover:text-cyber-blue transition-colors">Leaderboard</a>
+            <a href="/smart-contracts" className="text-gray-300 hover:text-cyber-blue transition-colors">Smart Contracts</a>
             <a href="#" className="text-gray-300 hover:text-neon-green transition-colors">How It Works</a>
           </nav>
 
@@ -188,7 +194,15 @@ export default function Home() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredAndSortedGames.map((game) => (
-                    <GameCard key={game.id} game={game} onClick={handleGameClick} />
+                    game.blockchainType ? (
+                      <BlockchainGameCard 
+                        key={game.id} 
+                        game={game} 
+                        onJoin={handleJoinBlockchainGame}
+                      />
+                    ) : (
+                      <GameCard key={game.id} game={game} onClick={handleGameClick} />
+                    )
                   ))}
                 </div>
               )}
