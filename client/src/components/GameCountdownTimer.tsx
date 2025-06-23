@@ -13,7 +13,8 @@ export function GameCountdownTimer({ deployedAt, onGameStart, className = "" }: 
   useEffect(() => {
     const calculateTimeLeft = () => {
       const deployTime = new Date(deployedAt).getTime();
-      const gameStartTime = deployTime + (90 * 1000); // 90 seconds after deployment
+      const activationSeconds = parseInt(import.meta.env.VITE_GAME_ACTIVATION_TIME_SECONDS || '90');
+      const gameStartTime = deployTime + (activationSeconds * 1000);
       const now = Date.now();
       const remaining = Math.max(0, gameStartTime - now);
       

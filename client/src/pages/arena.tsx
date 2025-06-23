@@ -170,7 +170,8 @@ export default function Arena() {
 
   const isGameOver = (deployedAt: string) => {
     const deployTime = new Date(deployedAt).getTime();
-    const gameStartTime = deployTime + (90 * 1000); // 90 seconds after deployment
+    const activationSeconds = parseInt(import.meta.env.VITE_GAME_ACTIVATION_TIME_SECONDS || '90');
+    const gameStartTime = deployTime + (activationSeconds * 1000);
     const now = Date.now();
     return now >= gameStartTime;
   };

@@ -144,10 +144,11 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added comprehensive Flow script debugging for activePlayers property reading
   - Updated to GuessTheDiceV3 contract with corrected activePlayers access syntax
   - Implemented real-time player tracking with 2-second polling intervals
-  - Added complete game timer and elimination system with 90-second countdown
+  - Added complete game timer and elimination system with configurable countdown
   - Integrated dice guess modal with 10-second input timer and auto-elimination
   - Added game result display showing survival status and dice roll outcomes
   - Updated UI to show "Game Over" for expired games and "Eliminated" for failed players
+  - Made game activation time configurable via VITE_GAME_ACTIVATION_TIME_SECONDS environment variable
 
 ## Changelog
 
