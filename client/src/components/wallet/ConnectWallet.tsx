@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Wallet, Zap, AlertCircle, Network } from 'lucide-react'
-import { useFlow } from '@/contexts/FlowContext'
+import { useFlow } from '../../contexts/MinimalFlowContext'
 
 // in the browser
 import * as fcl from "@onflow/fcl"

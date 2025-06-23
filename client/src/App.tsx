@@ -1,14 +1,16 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-// import { FlowProvider } from "./contexts/FlowContext";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import Home from "@/pages/home";
+import { FlowProvider, useFlow } from "./contexts/MinimalFlowContext";
+import { Toaster } from "./components/ui/toaster";
+import { TooltipProvider } from "./components/ui/tooltip";
+import Home from "./pages/home";
+import { TestFlow } from "./test-flow";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/test" component={TestFlow} />
       <Route path="/" component={Home} />
       <Route>
         <div
@@ -53,17 +55,7 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FlowProvider
-        config={{
-          accessNodeUrl: "https://access-mainnet.onflow.org",
-          flowNetwork: "mainnet",
-          appDetailTitle: "My On Chain App",
-          appDetailIcon: "https://example.com/icon.png",
-          appDetailDescription: "A decentralized app on Flow",
-          appDetailUrl: "https://myonchainapp.com",
-        }}
-        flowJson={flowJSON}
-      >
+      <FlowProvider>
         <TooltipProvider>
           <Toaster />
           <Router />
