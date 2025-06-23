@@ -287,13 +287,10 @@ export default function Arena() {
           
           <nav style={{ display: "flex", gap: "32px", alignItems: "center" }}>
             <a href="/" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
-              Home
+              Marketplace
             </a>
             <a href="/arena" style={{ color: "#fbbf24", textDecoration: "none", fontSize: "18px", fontWeight: "500", borderBottom: "2px solid #fbbf24" }}>
               Arena
-            </a>
-            <a href="/marketplace" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
-              Marketplace
             </a>
             <a href="/profile" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
               Profile
