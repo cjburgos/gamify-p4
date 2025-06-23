@@ -30,7 +30,13 @@ export default defineConfig({
   },
 
   server: {
-    allowedHosts: ["0.0.0.0", "localhost", "127.0.0.1", ".picard.replit.dev", repl.co"],
+    allowedHosts: [
+      "0.0.0.0",
+      "localhost",
+      "127.0.0.1",
+      ".picard.replit.dev",
+      "repl.co",
+    ],
     fs: {
       strict: true,
       deny: ["**/.*"],
