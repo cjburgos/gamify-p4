@@ -84,15 +84,42 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
       console.log(`Guess ${playerGuess} submitted to blockchain for game ${gameId}`);
       
       // Show "waiting for results" state
-      setTimeout(() => {
-        // Simulate getting dice roll result from contract (same for all players)
-        const diceRoll = Math.floor(Math.random() * 6) + 1;
-        const survived = playerGuess === diceRoll;
-        
-        console.log(`Dice rolled: ${diceRoll}, Player guessed: ${playerGuess}, Survived: ${survived}`);
-        
-        onResult(survived, diceRoll, playerGuess);
-        setIsSubmitting(false);
+      setTimeout(async () => {
+        try {
+          // Get the shared dice roll from the server for this game
+          const response = await fetch(`/api/games/${gameId}/dice-result`);
+          let diceRoll: number;
+          
+          if (response.ok) {
+            const result = await response.json();
+            diceRoll = result.diceRoll;
+            console.log(`Retrieved shared dice roll from server: ${diceRoll}`);
+          } else {
+            // Fallback: generate and store a dice roll for this game
+            diceRoll = Math.floor(Math.random() * 6) + 1;
+            console.log(`Generated new dice roll for game ${gameId}: ${diceRoll}`);
+            
+            // Store it on the server so other players get the same result
+            await fetch(`/api/games/${gameId}/dice-result`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ diceRoll })
+            });
+          }
+          
+          const survived = playerGuess === diceRoll;
+          console.log(`Dice rolled: ${diceRoll}, Player guessed: ${playerGuess}, Survived: ${survived}`);
+          
+          onResult(survived, diceRoll, playerGuess);
+          setIsSubmitting(false);
+        } catch (error) {
+          console.error('Error getting dice result:', error);
+          // Emergency fallback
+          const diceRoll = Math.floor(Math.random() * 6) + 1;
+          const survived = playerGuess === diceRoll;
+          onResult(survived, diceRoll, playerGuess);
+          setIsSubmitting(false);
+        }
       }, 2000); // Wait 2 seconds to simulate dice roll delay
     } catch (error) {
       console.error('Error submitting guess:', error);

@@ -161,6 +161,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - CRITICAL FIX: Completely rewrote arena.tsx to eliminate all auto-guess generation code
   - Join process now ONLY sets local state, blockchain transactions happen during guess submission
   - Restored complete header navigation while maintaining fixed game flow functionality
+  - Fixed shared dice roll system: all players in same game now see identical dice results
+  - Added server-side dice result storage and API endpoints for consistent game outcomes
 
 ## Changelog
 
