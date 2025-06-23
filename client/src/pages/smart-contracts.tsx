@@ -116,19 +116,20 @@ export default function SmartContracts() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-dark-secondary/95 backdrop-blur-sm border-b border-electric-purple/20">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="text-3xl">⛓️</div>
+            <div className="text-3xl animate-float">🎮</div>
             <div>
               <h1 className="text-2xl font-bold gradient-text">
-                Smart Contract Dashboard
+                Onchain Game Rooms
               </h1>
-              <p className="text-sm text-gray-400">Interact with Flow & Ethereum Contracts</p>
+              <p className="text-sm text-gray-400">The Onchain Playground</p>
             </div>
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="/" className="text-gray-300 hover:text-cyber-blue transition-colors">Browse Games</a>
-            <a href="/smart-contracts" className="text-electric-purple font-semibold">Smart Contracts</a>
+            <a href="/" className="text-gray-300 hover:text-electric-purple transition-colors">Browse Games</a>
             <a href="/marketplace" className="text-gray-300 hover:text-cyber-blue transition-colors">Game Templates</a>
+            <a href="/smart-contracts" className="text-electric-purple font-semibold">Smart Contracts</a>
+            <a href="#" className="text-gray-300 hover:text-neon-green transition-colors">How It Works</a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -137,6 +138,9 @@ export default function SmartContracts() {
             ) : (
               <ConnectWallet />
             )}
+            <Button className="bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25">
+              🏗️ Deploy Your Game
+            </Button>
           </div>
         </div>
       </header>

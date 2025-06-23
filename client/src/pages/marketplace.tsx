@@ -31,7 +31,7 @@ export default function Marketplace() {
           <nav className="hidden md:flex items-center space-x-6">
             <a href="/" className="text-gray-300 hover:text-electric-purple transition-colors">Browse Games</a>
             <a href="/marketplace" className="text-electric-purple font-semibold">Game Templates</a>
-            <a href="#" className="text-gray-300 hover:text-cyber-blue transition-colors">Leaderboard</a>
+            <a href="/smart-contracts" className="text-gray-300 hover:text-cyber-blue transition-colors">Smart Contracts</a>
             <a href="#" className="text-gray-300 hover:text-neon-green transition-colors">How It Works</a>
           </nav>
 
