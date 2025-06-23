@@ -134,6 +134,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Migrated from localStorage to server-side JSON file storage with polling updates
   - Enhanced transaction processing to extract actual game IDs from GameCreated events
   - Added RESTful API endpoints for deployed game management with real-time updates
+  - Implemented Join Game functionality with Flow transactions using real game IDs
+  - Added random guess generation and proper transaction parameter passing
 
 ## Changelog
 
