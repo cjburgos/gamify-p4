@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack gaming platform application built with React, Express, and PostgreSQL. The application features survivor pool style games where players are progressively eliminated until winners remain, differentiating it from prediction markets like Polymarket. The platform features a modern dark gaming-themed UI with real-time game status updates and countdown timers.
+This is a smart contract deployment marketplace for PlayOnchain - a gasless, smart contract-powered game arena platform. The application allows GameMasters to browse and deploy game templates to create elimination-style arenas where players compete for stablecoin prizes. Built with React, Express, and PostgreSQL with a retro gaming aesthetic inspired by classic Nintendo games.
 
 ## System Architecture
 
@@ -125,14 +125,14 @@ This is a full-stack gaming platform application built with React, Express, and 
 
 ## Recent Changes
 
-- June 23, 2025: Added EVM wallet integration for Flow blockchain
-  - Integrated Wagmi for Metamask wallet connectivity
-  - Created Tickets system (1:1 with stablecoins)
-  - Added wallet-gated game entry functionality
-  - Built deposit modal for PYUSD/USDC stablecoins
-  - Updated all page headers with wallet connect/info components
-  - Redesigned header layout to match specification with clean navigation
-  - Removed unused UI components to streamline codebase
+- June 23, 2025: Complete application rebuild for PlayOnchain marketplace
+  - Transformed from live gaming platform to smart contract deployment marketplace
+  - Implemented retro gaming aesthetic with pixel fonts and Nintendo-inspired design
+  - Created new navigation: Arena, Marketplace, Profile, GameMaster
+  - Built game template cards with deployment configuration modals
+  - Added GameMaster dashboard for tracking deployments and earnings
+  - Maintained Flow EVM wallet integration with USDC/PYUSD support
+  - Redesigned all pages with purple/blue gradients and yellow accent colors
 
 ## Changelog
 
