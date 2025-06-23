@@ -1,25 +1,25 @@
 import * as fcl from '@onflow/fcl'
 import * as t from '@onflow/types'
-import { init, authenticate, unauthenticate, currentUser } from '@onflow/kit'
+import * as kit from '@onflow/kit'
 
 // Flow Kit configuration
 export const initializeFlowKit = () => {
-  init({
-    network: 'testnet', // or 'mainnet'
-    appDetails: {
-      title: 'PlayOnchain',
-      icon: 'https://placeholder.com/48x48'
-    }
+  fcl.config({
+    'app.detail.title': 'PlayOnchain',
+    'app.detail.icon': 'https://placeholder.com/48x48',
+    'accessNode.api': 'https://rest-testnet.onflow.org',
+    'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn',
+    'flow.network': 'testnet'
   })
 }
 
-// Initialize Flow Kit
+// Initialize Flow configuration
 initializeFlowKit()
 
-// Flow account authentication using Kit
+// Flow account authentication using FCL with Kit UI
 export const authenticateUser = async () => {
   try {
-    const user = await authenticate()
+    const user = await fcl.authenticate()
     return user
   } catch (error) {
     console.error('Flow authentication error:', error)
@@ -27,15 +27,15 @@ export const authenticateUser = async () => {
   }
 }
 
-// Get current user using Kit
+// Get current user
 export const getCurrentUser = () => {
-  return currentUser.snapshot()
+  return fcl.currentUser.snapshot()
 }
 
-// Unauthenticate user using Kit
+// Unauthenticate user
 export const unauthenticateUser = async () => {
   try {
-    await unauthenticate()
+    await fcl.unauthenticate()
     // Clear any cached data
     localStorage.removeItem('flow_user_data')
     localStorage.removeItem('flow_wallet_address')
@@ -45,9 +45,9 @@ export const unauthenticateUser = async () => {
   }
 }
 
-// Subscribe to authentication changes using Kit
+// Subscribe to authentication changes
 export const subscribeToAuth = (callback: (user: any) => void) => {
-  return currentUser.subscribe(callback)
+  return fcl.currentUser.subscribe(callback)
 }
 
 // Get Flow account balance
@@ -79,15 +79,19 @@ export const getAccountBalance = async (address: string) => {
   }
 }
 
-// Switch between testnet and mainnet using Kit
+// Switch between testnet and mainnet
 export const switchNetwork = (network: 'testnet' | 'mainnet') => {
-  init({
-    network,
-    appDetails: {
-      title: 'PlayOnchain',
-      icon: 'https://placeholder.com/48x48'
-    }
-  })
+  const config = network === 'mainnet' ? {
+    'accessNode.api': 'https://rest-mainnet.onflow.org',
+    'discovery.wallet': 'https://fcl-discovery.onflow.org/authn',
+    'flow.network': 'mainnet'
+  } : {
+    'accessNode.api': 'https://rest-testnet.onflow.org',
+    'discovery.wallet': 'https://fcl-discovery.onflow.org/testnet/authn',
+    'flow.network': 'testnet'
+  }
+  
+  fcl.config(config)
 }
 
 export { fcl, t }
