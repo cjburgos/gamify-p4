@@ -431,8 +431,8 @@ export default function Arena() {
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
                     <span style={{ color: "#94a3b8" }}>Status:</span>
-                    <span style={{ color: game.isActive ? "#4ade80" : "#ef4444" }}>
-                      {game.isActive ? "Active" : "Inactive"}
+                    <span style={{ color: isGameOver(game.deployedAt) ? "#ef4444" : game.isActive ? "#4ade80" : "#ef4444" }}>
+                      {isGameOver(game.deployedAt) ? "Game Over" : game.isActive ? "Active" : "Inactive"}
                     </span>
                   </div>
 
