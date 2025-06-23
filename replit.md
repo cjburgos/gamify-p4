@@ -154,6 +154,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Modified join flow: players join blockchain with placeholder guess, submit actual guess when game starts
   - Added newest-first game ordering with shared dice rolls for all players in same game
   - Enhanced timer display with "GAME STARTING!" animation when countdown reaches zero
+  - Improved dice roll result display with prominent dice number and clear survival/elimination status
+  - Enhanced guess modal with better visual feedback and timing information
 
 ## Changelog
 
