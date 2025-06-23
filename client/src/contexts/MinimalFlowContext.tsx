@@ -164,6 +164,11 @@ export function FlowProvider({ children }: { children: ReactNode }) {
               let gameId = GuessTheDiceV2.createGame()
               log("New game created with ID: ".concat(gameId.toString()))
           }
+          
+          post {
+              // This ensures the transaction succeeded
+              log("Game deployment transaction completed successfully")
+          }
       }
     `;
 
@@ -189,52 +194,70 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         throw new Error(result.errorMessage || "Transaction failed");
       }
 
-      // Extract game ID from transaction logs
+      // Extract game ID from the GameCreated event
       let gameId = null;
       
       if (result.events && result.events.length > 0) {
         console.log("Transaction events:", result.events);
         
-        // Look for events that might contain the game ID
+        // Look for the GameCreated event specifically
         for (const event of result.events) {
           console.log("Event type:", event.type);
           console.log("Event data:", event.data);
           
-          // Check if this is a game creation event
-          if (event.type && event.type.includes("GuessTheDiceV2")) {
-            if (event.data && event.data.gameId) {
-              gameId = event.data.gameId.toString();
-              console.log("Found game ID in event:", gameId);
-              break;
+          // Check if this is the GameCreated event from GuessTheDiceV2
+          if (event.type && (
+            event.type.includes("GameCreated") || 
+            event.type.includes("A.0dd7dc583201e8b1.GuessTheDiceV2.GameCreated")
+          )) {
+            // Extract game ID from event data
+            if (event.data) {
+              // The event data might have different field names
+              if (event.data.gameId) {
+                gameId = event.data.gameId.toString();
+              } else if (event.data.id) {
+                gameId = event.data.id.toString();
+              } else if (event.data.gameNumber) {
+                gameId = event.data.gameNumber.toString();
+              } else {
+                // If the data is an array or different structure
+                console.log("GameCreated event data structure:", event.data);
+                const dataValues = Object.values(event.data);
+                if (dataValues.length > 0) {
+                  gameId = dataValues[0].toString();
+                }
+              }
+              
+              if (gameId) {
+                console.log("Found game ID in GameCreated event:", gameId);
+                break;
+              }
             }
           }
         }
       }
 
-      // Also check transaction logs for the game ID
+      // Also check transaction logs as fallback
       if (!gameId && result.logs && result.logs.length > 0) {
         console.log("Transaction logs:", result.logs);
         
         for (const log of result.logs) {
-          // Look for the log message that contains the game ID
           if (typeof log === 'string' && log.includes("New game created with ID:")) {
             const match = log.match(/New game created with ID:\s*(\d+)/);
             if (match) {
               gameId = match[1];
-              console.log("Found game ID in log:", gameId);
+              console.log("Found game ID in transaction log:", gameId);
               break;
             }
           }
         }
       }
 
-      // If we still don't have a game ID, try to parse it from the transaction result
+      // If we still don't have a game ID, something went wrong
       if (!gameId) {
-        console.log("Could not extract game ID from events or logs");
+        console.error("Could not extract game ID from GameCreated event or logs");
         console.log("Full transaction result:", JSON.stringify(result, null, 2));
-        
-        // Generate a fallback game ID with transaction info
-        gameId = `tx_${transactionId.slice(-8)}_${Date.now()}`;
+        throw new Error("Game deployment successful but could not retrieve game ID");
       }
 
       // Store deployed game locally
