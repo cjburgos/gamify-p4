@@ -65,6 +65,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 127,
         hostRating: 48, // 4.8
+        blockchainType: "flow",
+        contractAddress: "0x0dd7dc583201e8b1",
+        gameContractId: "GuessTheDice",
       },
       {
         title: "Pick the Card",
@@ -153,6 +156,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 78,
         hostRating: 45, // 4.5
+        blockchainType: null,
+        contractAddress: null,
+        gameContractId: null,
       },
       {
         title: "Lucky Seven",

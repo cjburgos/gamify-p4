@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertGameSchema } from "@shared/schema";
 import { z } from "zod";
+import { FlowGameService, EthereumGameService, CONTRACT_ADDRESSES } from "@shared/blockchain";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all games
@@ -121,6 +122,139 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch stats" });
+    }
+  });
+
+  // Smart contract interaction endpoints
+  
+  // Flow blockchain endpoints
+  app.post("/api/flow/create-game", async (req, res) => {
+    try {
+      const flowService = new FlowGameService(CONTRACT_ADDRESSES.flow.guessTheDice);
+      const gameId = await flowService.createGame();
+      res.json({ gameId, blockchain: "flow" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create Flow game" });
+    }
+  });
+
+  app.post("/api/flow/join-game", async (req, res) => {
+    try {
+      const { gameId, playerAddress, guess } = req.body;
+      
+      if (!gameId || !playerAddress || !guess) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const flowService = new FlowGameService(CONTRACT_ADDRESSES.flow.guessTheDice);
+      const success = await flowService.joinGame(gameId, playerAddress, guess);
+      
+      if (success) {
+        res.json({ success: true, message: "Successfully joined Flow game" });
+      } else {
+        res.status(400).json({ message: "Failed to join Flow game" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to join Flow game" });
+    }
+  });
+
+  app.get("/api/flow/game-state/:gameId", async (req, res) => {
+    try {
+      const { gameId } = req.params;
+      const flowService = new FlowGameService(CONTRACT_ADDRESSES.flow.guessTheDice);
+      const gameState = await flowService.getGameState(gameId);
+      
+      if (gameState) {
+        res.json(gameState);
+      } else {
+        res.status(404).json({ message: "Flow game not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch Flow game state" });
+    }
+  });
+
+  app.post("/api/flow/commit-random", async (req, res) => {
+    try {
+      const { gameId, commitHash } = req.body;
+      
+      if (!gameId || !commitHash) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const flowService = new FlowGameService(CONTRACT_ADDRESSES.flow.guessTheDice);
+      const success = await flowService.commitRandom(gameId, commitHash);
+      
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to commit random for Flow game" });
+    }
+  });
+
+  app.post("/api/flow/reveal-and-close", async (req, res) => {
+    try {
+      const { gameId, secret } = req.body;
+      
+      if (!gameId || !secret) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const flowService = new FlowGameService(CONTRACT_ADDRESSES.flow.guessTheDice);
+      const success = await flowService.revealAndClose(gameId, secret);
+      
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to reveal and close Flow game" });
+    }
+  });
+
+  // Ethereum blockchain endpoints
+  app.post("/api/ethereum/set-number", async (req, res) => {
+    try {
+      const { number } = req.body;
+      
+      if (typeof number !== 'number') {
+        return res.status(400).json({ message: "Invalid number" });
+      }
+
+      const ethService = new EthereumGameService(
+        CONTRACT_ADDRESSES.ethereum.game,
+        CONTRACT_ADDRESSES.ethereum.proxy
+      );
+      const success = await ethService.setNumber(number);
+      
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to set number on Ethereum contract" });
+    }
+  });
+
+  app.post("/api/ethereum/increment", async (req, res) => {
+    try {
+      const ethService = new EthereumGameService(
+        CONTRACT_ADDRESSES.ethereum.game,
+        CONTRACT_ADDRESSES.ethereum.proxy
+      );
+      const success = await ethService.increment();
+      
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to increment Ethereum contract" });
+    }
+  });
+
+  app.get("/api/ethereum/game-state", async (req, res) => {
+    try {
+      const ethService = new EthereumGameService(
+        CONTRACT_ADDRESSES.ethereum.game,
+        CONTRACT_ADDRESSES.ethereum.proxy
+      );
+      const gameState = await ethService.getGameState();
+      
+      res.json(gameState);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch Ethereum game state" });
     }
   });
 

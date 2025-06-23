@@ -19,6 +19,10 @@ export const games = pgTable("games", {
   rules: text("rules").array().notNull(),
   hostGamesHosted: integer("host_games_hosted").notNull().default(0),
   hostRating: integer("host_rating").notNull().default(50), // rating * 10 (e.g., 48 = 4.8)
+  // Smart contract integration fields
+  blockchainType: text("blockchain_type"), // 'flow' | 'ethereum' | null
+  contractAddress: text("contract_address"),
+  gameContractId: text("game_contract_id"),
 });
 
 export const users = pgTable("users", {
