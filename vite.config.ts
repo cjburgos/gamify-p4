@@ -30,16 +30,8 @@ export default defineConfig({
   },
 
   server: {
-    allowedHosts: [
-      "0.0.0.0",
-      "localhost",
-      "127.0.0.1",
-      ".picard.replit.dev",
-      "repl.co",
-    ],
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
+    port: process.env.PORT ? parseInt(process.env.PORT) : 5000,
+    strictPort: true,
+    allowedHosts: ["localhost", "127.0.0.1", "0.0.0.0", "replit.com"],
   },
 });

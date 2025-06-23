@@ -5,10 +5,12 @@ import { FlowProvider } from "./contexts/MinimalFlowContext";
 import { Toaster } from "./components/ui/toaster";
 import { TooltipProvider } from "./components/ui/tooltip";
 import Home from "./pages/home";
+import Arena from "./pages/arena";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/arena" component={Arena} />
       <Route path="/" component={Home} />
       <Route>
         <div

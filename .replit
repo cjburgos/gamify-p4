@@ -30,6 +30,12 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "npm run dev"
