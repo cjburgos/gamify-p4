@@ -440,7 +440,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       const result = await fcl.query({
         cadence: script,
         args: (arg, types) => [
-          arg(parseInt(gameId), t.UInt64)
+          arg(gameId, t.UInt64)
         ]
       });
       
