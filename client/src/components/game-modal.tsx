@@ -17,6 +17,7 @@ interface GameModalProps {
 export function GameModal({ game, open, onOpenChange }: GameModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { isConnected, ticketBalance } = useWallet();
 
   const joinGameMutation = useMutation({
     mutationFn: async (gameId: number) => {

@@ -7,6 +7,9 @@ import { GameModal } from "@/components/game-modal";
 import { BlockchainGameCard } from "@/components/blockchain-game-card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ConnectWallet } from "@/components/wallet/ConnectWallet";
+import { WalletInfo } from "@/components/wallet/WalletInfo";
+import { useWallet } from "@/contexts/WalletContext";
 import type { Game } from "@shared/schema";
 
 export default function Home() {
@@ -15,6 +18,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("prize");
   const [filterBy, setFilterBy] = useState("all");
   const [activeTab, setActiveTab] = useState("crypto");
+  const { isConnected } = useWallet();
 
   const { data: games = [], isLoading: gamesLoading } = useQuery<Game[]>({
     queryKey: ["/api/games"],
@@ -87,9 +91,16 @@ export default function Home() {
             <a href="#" className="text-gray-300 hover:text-neon-green transition-colors">How It Works</a>
           </nav>
 
-          <Button className="bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25">
-            🏗️ Deploy Your Game
-          </Button>
+          <div className="flex items-center gap-3">
+            {isConnected ? (
+              <WalletInfo />
+            ) : (
+              <ConnectWallet />
+            )}
+            <Button className="bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25">
+              🏗️ Deploy Your Game
+            </Button>
+          </div>
         </div>
       </header>
 
