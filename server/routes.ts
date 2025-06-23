@@ -121,6 +121,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/deployed-games/:id/players", async (req, res) => {
+    try {
+      const gameId = req.params.id;
+      const { players } = req.body;
+      
+      if (!Array.isArray(players)) {
+        return res.status(400).json({ message: "Players must be an array" });
+      }
+
+      const games = await readDeployedGames();
+      const gameIndex = games.findIndex(g => g.id === gameId);
+      
+      if (gameIndex === -1) {
+        return res.status(404).json({ message: "Game not found" });
+      }
+
+      // Update the entire players array
+      games[gameIndex].players = players;
+      await writeDeployedGames(games);
+      console.log(`Updated game ${gameId} with players:`, players);
+
+      res.json({ success: true, players: games[gameIndex].players });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   app.delete("/api/deployed-games/:id", async (req, res) => {
     try {
       const gameId = req.params.id;

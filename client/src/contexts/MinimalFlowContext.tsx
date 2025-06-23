@@ -38,6 +38,7 @@ interface FlowContextType {
   switchToTestnet: () => void;
   deployGame: (gameType: string, entryCost: number) => Promise<string | null>;
   joinGame: (gameId: string, guess: number) => Promise<boolean>;
+  getActivePlayers: (gameId: string) => Promise<string[]>;
 }
 
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
@@ -374,6 +375,32 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Function to get active players from contract
+  const getActivePlayers = async (gameId: string): Promise<string[]> => {
+    const script = `
+      import GuessTheDiceV2 from 0x0dd7dc583201e8b1
+
+      access(all) fun main(gameId: UInt64): [Address] {
+          let gameRef = GuessTheDiceV2.getGameRef(gameId: gameId)
+          return gameRef.activePlayers
+      }
+    `;
+
+    try {
+      const result = await fcl.query({
+        cadence: script,
+        args: (arg, types) => [
+          arg(parseInt(gameId), t.UInt64)
+        ]
+      });
+      
+      return result || [];
+    } catch (error) {
+      console.error("Failed to read active players:", error);
+      return [];
+    }
+  };
+
   const value: FlowContextType = {
     user,
     isLoading,
@@ -385,6 +412,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     switchToTestnet,
     deployGame,
     joinGame,
+    getActivePlayers,
   };
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;

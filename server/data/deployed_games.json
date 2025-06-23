@@ -7,6 +7,7 @@
     "transactionId": "a4d3638fa18a893dea2aba3c98fef86f0c10eebe5cd10f9d6190fdb82187cd8e",
     "deployedAt": "2025-06-23T20:33:40.037Z",
     "isActive": true,
-    "blockHeight": "f1e93bc4d213caa11a5cb292abb553486c7c3a69e9b3deafedd99d2e1613ed03"
+    "blockHeight": "f1e93bc4d213caa11a5cb292abb553486c7c3a69e9b3deafedd99d2e1613ed03",
+    "players": ["0x91959c359072d7a9", "0x87c1f9060976ddc8"]
   }
 ]
