@@ -1,0 +1,50 @@
+{
+	"contracts": {
+		"GuessTheDice": {
+			"source": "cadence/contracts/GuessTheDice.cdc",
+			"aliases": {
+				"testnet": "0000000000000008"
+			}
+		}
+	},
+	"dependencies": {
+		"RandomBeaconHistory": {
+			"source": "mainnet://e467b9dd11fa00df.RandomBeaconHistory",
+			"hash": "fe7f11c46dd54446bd60d88015ffe5057d7245c4b77374e11db2adf0a8156167",
+			"aliases": {
+				"emulator": "f8d6e0586b0a20c7",
+				"mainnet": "e467b9dd11fa00df",
+				"testnet": "8c5303eaa26202d6"
+			}
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"GamifyAdminTestnet": {
+			"address": "0x0dd7dc583201e8b1",
+			"key": {
+				"type": "file",
+				"location": "GamifyAdminTestnet.pkey"
+			}
+		}
+	},
+	"deployments": {
+		"testnet": {
+			"GamifyAdminTestnet": [
+				{
+					"name": "GuessTheDice",
+					"args": [
+						{
+							"value": "1.00000000",
+							"type": "UFix64"
+						}
+					]
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(262, 83%, 58%);
+  --radius: 0.75rem;
+
+  /* Custom gaming colors */
+  --dark-primary: hsl(240, 43%, 9%);
+  --dark-secondary: hsl(240, 30%, 11%);
+  --dark-tertiary: hsl(217, 59%, 16%);
+  --electric-purple: hsl(262, 83%, 58%);
+  --cyber-blue: hsl(188, 94%, 43%);
+  --neon-green: hsl(158, 64%, 52%);
+  --gold-accent: hsl(43, 96%, 56%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(262, 83%, 58%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(262, 83%, 58%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased text-foreground;
+    background: hsl(240, 43%, 9%) !important;
+    color: hsl(0, 0%, 98%) !important;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  html {
+    background: hsl(240, 43%, 9%) !important;
+  }
+  
+  #root {
+    background: hsl(240, 43%, 9%) !important;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .text-electric-purple {
+    color: hsl(var(--electric-purple));
+  }
+  
+  .text-cyber-blue {
+    color: hsl(var(--cyber-blue));
+  }
+  
+  .text-neon-green {
+    color: hsl(var(--neon-green));
+  }
+  
+  .text-gold-accent {
+    color: hsl(var(--gold-accent));
+  }
+
+  .bg-dark-primary {
+    background-color: hsl(var(--dark-primary));
+  }
+  
+  .bg-dark-secondary {
+    background-color: hsl(var(--dark-secondary));
+  }
+  
+  .bg-dark-tertiary {
+    background-color: hsl(var(--dark-tertiary));
+  }
+
+  .border-electric-purple {
+    border-color: hsl(var(--electric-purple));
+  }
+  
+  .border-cyber-blue {
+    border-color: hsl(var(--cyber-blue));
+  }
+  
+  .border-neon-green {
+    border-color: hsl(var(--neon-green));
+  }
+  
+  .border-gold-accent {
+    border-color: hsl(var(--gold-accent));
+  }
+
+  .hover\:border-electric-purple:hover {
+    border-color: hsl(var(--electric-purple));
+  }
+  
+  .hover\:border-cyber-blue:hover {
+    border-color: hsl(var(--cyber-blue));
+  }
+  
+  .hover\:border-neon-green:hover {
+    border-color: hsl(var(--neon-green));
+  }
+
+  .hover\:text-electric-purple:hover {
+    color: hsl(var(--electric-purple));
+  }
+  
+  .hover\:text-cyber-blue:hover {
+    color: hsl(var(--cyber-blue));
+  }
+  
+  .hover\:text-neon-green:hover {
+    color: hsl(var(--neon-green));
+  }
+
+  .game-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .game-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .gradient-text {
+    background: linear-gradient(45deg, hsl(var(--electric-purple)), hsl(var(--cyber-blue)), hsl(var(--neon-green)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-border {
+    background: linear-gradient(45deg, hsl(var(--electric-purple)), hsl(var(--cyber-blue)), hsl(var(--neon-green))) padding-box,
+                linear-gradient(45deg, hsl(var(--electric-purple)), hsl(var(--cyber-blue)), hsl(var(--neon-green))) border-box;
+    border: 2px solid transparent;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 5px hsl(var(--electric-purple)), 0 0 10px hsl(var(--electric-purple)), 0 0 15px hsl(var(--electric-purple)); }
+    to { box-shadow: 0 0 10px hsl(var(--electric-purple)), 0 0 20px hsl(var(--electric-purple)), 0 0 30px hsl(var(--electric-purple)); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
