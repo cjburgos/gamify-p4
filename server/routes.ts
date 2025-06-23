@@ -5,6 +5,47 @@ import { insertGameSchema } from "@shared/schema";
 import { z } from "zod";
 import { FlowGameService, EthereumGameService, CONTRACT_ADDRESSES } from "@shared/blockchain";
 
+import fs from 'fs/promises';
+import path from 'path';
+
+interface DeployedGame {
+  id: string;
+  gameType: string;
+  gameMaster: string;
+  entryCost: number;
+  transactionId: string;
+  deployedAt: string;
+  isActive: boolean;
+  blockHeight?: string;
+}
+
+const DEPLOYED_GAMES_FILE = path.join(process.cwd(), 'server/data/deployed_games.json');
+
+async function ensureDataDirectory() {
+  const dataDir = path.dirname(DEPLOYED_GAMES_FILE);
+  try {
+    await fs.access(dataDir);
+  } catch {
+    await fs.mkdir(dataDir, { recursive: true });
+  }
+}
+
+async function readDeployedGames(): Promise<DeployedGame[]> {
+  try {
+    await ensureDataDirectory();
+    const data = await fs.readFile(DEPLOYED_GAMES_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch (error) {
+    // If file doesn't exist or is invalid, return empty array
+    return [];
+  }
+}
+
+async function writeDeployedGames(games: DeployedGame[]): Promise<void> {
+  await ensureDataDirectory();
+  await fs.writeFile(DEPLOYED_GAMES_FILE, JSON.stringify(games, null, 2));
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all games
   app.get("/api/games", async (req, res) => {

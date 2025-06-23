@@ -19,34 +19,31 @@ export default function Arena() {
   const [deployedGames, setDeployedGames] = useState<DeployedGame[]>([]);
 
   useEffect(() => {
-    // Load deployed games from localStorage
-    const loadGames = () => {
+    // Load deployed games from API
+    const loadGames = async () => {
       try {
-        const games = JSON.parse(localStorage.getItem('deployed_games') || '[]');
-        console.log('Loaded games from localStorage:', games);
-        setDeployedGames(games);
+        const response = await fetch('/api/deployed-games');
+        if (response.ok) {
+          const games = await response.json();
+          console.log('Loaded games from API:', games);
+          setDeployedGames(games);
+        } else {
+          console.error('Failed to load games from API');
+          setDeployedGames([]);
+        }
       } catch (error) {
-        console.error('Error loading games:', error);
+        console.error('Error loading games from API:', error);
         setDeployedGames([]);
       }
     };
 
+    // Initial load
     loadGames();
-
-    // Listen for storage changes to update when new games are deployed
-    const handleStorageChange = (e) => {
-      if (e.key === 'deployed_games') {
-        loadGames();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
     
-    // Also check periodically for updates
-    const interval = setInterval(loadGames, 2000);
+    // Poll for updates every 3 seconds
+    const interval = setInterval(loadGames, 3000);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
       clearInterval(interval);
     };
   }, []);
