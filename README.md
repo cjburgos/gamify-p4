@@ -76,6 +76,31 @@ Orchestration Smart Contracts: A suite of shared modules that handle stablecoin 
 
 Player: An onchain wallet that enters Arenas, competes in games, and receives rewards like NFTs or stablecoin payouts.
 
+Core Technologies
+Flow Blockchain
+Fast, low-cost, and designed for consumer-scale apps. All gameplay logic and assets live on Flow.
+
+Cadence Smart Contracts
+Game logic is written in Cadence, Flow’s secure, resource-oriented smart contract language. Supports reusable and composable game modules with onchain elimination logic and reward distribution.
+
+Flow VRF (Verifiable Random Function)
+Each game uses Flow’s native randomness source to ensure tamper-proof and provably fair results.
+
+Stablecoin-Powered Gameplay
+Players enter games and receive payouts in Flow-native stablecoins like USDC, ensuring stable value and easy accounting.
+
+Gasless Transactions via Flow Wallets
+All player interactions are gasless and wallet-based, creating a low-friction experience ideal for mass adoption.
+
+QuickNode RPC Integration
+Our application communicates with the Flow blockchain via QuickNode, enabling fast, reliable reads and writes between the frontend and Cadence smart contracts.
+
+Arena Architecture
+Gamemasters deploy customizable Arenas that host recurring games on-chain. Each Arena manages its own game logic, timing, and prize structure.
+
+Future-Ready: EVM on Flow
+PlayOnchain is positioned to support Solidity-based contracts with Flow’s upcoming EVM compatibility, opening the door for cross-chain games and Ethereum-based tools.
+
 🗂️ Repo Structure
 
 playonchain/
