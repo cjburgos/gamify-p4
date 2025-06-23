@@ -4,13 +4,17 @@ A gasless, smart contract-powered game arena where players compete in simple eli
 
 ⏱️ Concept Overview
 
-Onchain Game Rooms is a protocol for hosting smart contract–driven games inside recurring, gasless, stablecoin-based arenas. A user becomes a Gamemaster by deploying a custom Game Smart Contract, selecting rules, prizes, and game timing. Players join Waitrooms with their wallet and stablecoins, and when the game begins, compete in interactive, rule-based games coded directly into the chain. Prizes are instantly paid out to winners; POAPs and NFTs are issued automatically.
+The Arena is where it all happens. Gamemasters launch games into their Arena by deploying Game Smart Contracts, choosing rules, game types, and reward mechanics. Players gather in the Waitroom, enter using stablecoins, and once the game begins, compete trustlessly for prizes and bragging rights. Rewards like NFTs and POAPs are distributed automatically, and all transactions are gasless for players.
+
+This setup empowers brands, artists, and teams to grow fan bases and run high-engagement events. Game creators earn fees via a marketplace of reusable game templates. Everyone wins: Gamemasters earn, players win, and fans return for more.
+
+PlayOnchain is a protocol for hosting smart contract–driven games inside recurring, gasless, stablecoin-based arenas. A user becomes a Gamemaster by deploying a custom Game Smart Contract, selecting rules, prizes, and game timing. Players join Waitrooms with their wallet and stablecoins, and when the game begins, compete in interactive, rule-based games coded directly into the chain. Prizes are instantly paid out to winners; POAPs and NFTs are issued automatically.
 
 The system is modular: anyone can spin up their own Arena, integrate simple games or oracle-driven outcomes, and onboard users into trustless, onchain competition—no tokens, no gas.
 
 🎯 Hackathon Goal
 
-Demonstrate a fully functional MVP of the Onchain Game Rooms platform featuring:
+Demonstrate a fully functional MVP of the PlayOnchain platform featuring:
 
 A complete working implementation of the "Guess the Dice Roll" game, including smart contract execution, gasless entry via orchestration contracts, and stablecoin-based prize payouts.
 
@@ -22,27 +26,29 @@ This MVP highlights how rule-based, trustless games can be played inside recurri
 
 Build a scalable, modular, onchain game platform where anyone can:
 
-Deploy their own Game Arena with recurring matches and customizable rule logic.
+Deploy and own an Arena, where games happen on a recurring schedule.
 
-Act as a Gamemaster, creating games powered by smart contracts that live onchain.
+Act as a Gamemaster, deploying Game Smart Contracts with flexible logic and timing.
 
-Let Players enter through a Waitroom, then participate in games using only stablecoins—no native tokens or gas fees required.
+Let Players join via a Waitroom and play gasless games with only stablecoins.
 
-Use composable Orchestration Smart Contracts to manage:
+Use a marketplace of plug-and-play game templates, enabling creators to monetize their contracts.
+
+Empower brands, artists, or teams to grow fan engagement through repeatable, reward-based experiences.
+
+Leverage Orchestration Smart Contracts to manage:
 
 Player Deposit Vaults
 
-Gas Vaults for sponsoring transaction fees
+Gas Vaults
 
-Distribution Modules to payout winners
+Distribution Modules
 
-Game Randomizers or future oracle feeds (e.g. Chainlink)
+Randomizers and oracle feeds
 
-Support for a wide range of game logic and verticals: corporate team building arenas, social competitions, trivia lobbies, or sports prediction leagues.
+Whether used for corporate training, fan engagement, sports prediction, or social games, PlayOnchain is the framework for onchain competition at scale.
 
-
-
-Onchain Game Rooms is a platform where anyone can become a Gamemaster—a host of recurring, onchain multiplayer games. Players enter rooms by paying a small stablecoin fee, and compete in randomized elimination-style games like "Guess the Dice" or "Pick the Card." The last person standing wins the pot (minus a fee to the Gamemaster). A POAP is issued to all players, and a winner’s NFT + prize is distributed onchain.
+PlayOnchain is a platform where anyone can become a Gamemaster—a host of recurring, onchain multiplayer games. Players enter rooms by paying a small stablecoin fee, and compete in randomized elimination-style games like "Guess the Dice" or "Pick the Card." The last person standing wins the pot (minus a fee to the Gamemaster). A POAP is issued to all players, and a winner’s NFT + prize is distributed onchain.
 
 Games are gasless to players—Gamemasters cover all execution costs.
 
@@ -54,19 +60,21 @@ Think Survivor meets Jackbox, with POAPs and stablecoin stakes.
 
 🧠 Key Concepts
 
-Gamemaster: A host who deploys game rooms, funds gas vaults, and collects fees.
+Gamemaster: A user who owns an Arena, deploys Game Smart Contracts, and controls timing, rules, and prize settings.
 
-Room: A waiting area where players can join for a fee until it locks. Games start at pre-defined intervals (e.g., every 8 hours).
+Arena: A gamified environment owned by a Gamemaster where Players compete in recurring games. Think of it like your own onchain arcade.
 
-Games: Predefined smart contract games (e.g., dice roll, card pick, word match). Future: AI trivia host, custom logic.
+Waitroom: The pre-game lobby where Players lock in their stablecoin entry before the game begins.
 
-Last Player Standing: Default win condition. Gamemasters can configure alternatives.
+Game Smart Contract: The contract that defines and executes a specific game’s logic (e.g., dice roll, trivia, prediction).
 
-Rewards: Gasless NFT to winner + POAP to all entrants. Stablecoin prize paid out instantly to winner.
+Orchestration Smart Contracts: A suite of shared modules that handle stablecoin deposits, gas sponsorship, winner payout distribution, and randomness.
+
+Player: An onchain wallet that enters Arenas, competes in games, and receives rewards like NFTs or stablecoin payouts.
 
 🗂️ Repo Structure
 
-onchain-game-rooms/
+playonchain/
 ├─ contracts/            # Cadence contracts for rooms, rewards, and games
 ├─ games/                # Templates for basic games (dice, card, word)
 ├─ frontend/             # Next.js or Unity-based client
@@ -183,7 +191,7 @@ v1.0: AI game host, public leaderboards, RWA prize support
 
 📜 License
 
-MIT © 2025 BlockMambas - Hackathon Contributors
+MIT © 2025 Block Mambas & Hackathon Contributors
 
 💬 Want to Build a Game?
 
