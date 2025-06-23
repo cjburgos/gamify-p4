@@ -20,8 +20,35 @@ export default function Arena() {
 
   useEffect(() => {
     // Load deployed games from localStorage
-    const games = JSON.parse(localStorage.getItem('deployed_games') || '[]');
-    setDeployedGames(games);
+    const loadGames = () => {
+      try {
+        const games = JSON.parse(localStorage.getItem('deployed_games') || '[]');
+        console.log('Loaded games from localStorage:', games);
+        setDeployedGames(games);
+      } catch (error) {
+        console.error('Error loading games:', error);
+        setDeployedGames([]);
+      }
+    };
+
+    loadGames();
+
+    // Listen for storage changes to update when new games are deployed
+    const handleStorageChange = (e) => {
+      if (e.key === 'deployed_games') {
+        loadGames();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically for updates
+    const interval = setInterval(loadGames, 2000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
   }, []);
 
   const formatAddress = (address: string) => {
