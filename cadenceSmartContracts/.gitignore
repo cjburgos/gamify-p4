@@ -4,4 +4,8 @@ emulator-account.pkey
 imports
 .env
 
-GamifyAdminTestnet.pkey
+# Private keys
+*.pkey
+*.key
+*.private
+*.secret

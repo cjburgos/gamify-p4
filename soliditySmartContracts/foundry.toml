@@ -10,3 +10,6 @@ dotenv = ".env"
 sepolia = "${SEPOLIA_RPC_URL}"
 flow_testnet = "${FLOW_TESTNET_RPC}"
 flow = "${FLOW_RPC}"
+
+[profile.wallet]
+private_key = "${PRIVATE_KEY}"
