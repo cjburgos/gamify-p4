@@ -380,6 +380,12 @@ export default function Arena() {
                     {isGameOver(game.deployedAt) ? "Game Over" : game.isActive ? "Active" : "Inactive"}
                   </span>
                 </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
+                  <span style={{ color: "#94a3b8" }}>Players:</span>
+                  <span style={{ color: "#60a5fa", fontWeight: "bold" }}>
+                    {(game.players?.length || 0) + (joinedGames.has(game.id) ? 1 : 0)} joined
+                  </span>
+                </div>
               </div>
 
               {renderButton(game)}
