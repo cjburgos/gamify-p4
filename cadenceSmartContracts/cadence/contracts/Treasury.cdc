@@ -2,7 +2,7 @@ access(all) contract Treasury {
     // Struct for storing game state
     access(all) struct GameState {
         access(all) let winners: [Address]
-        access(all) let completed: Bool 
+        access(all) let completed: Bool
         access(all) let value: UInt256
         access(all) let mathContract: Address?
 
@@ -23,6 +23,7 @@ access(all) contract Treasury {
 
     // Initialize the contract
     init() {
+
         self.gameStates = {}
     }
 
@@ -32,6 +33,8 @@ access(all) contract Treasury {
             !self.gameStates.containsKey(gameId): "Game ID already exists"
         }
 
+
+
         // Create a new GameState with empty winners array, completed set to false, and value set to 0
         let emptyWinners: [Address] = []
         let isCompleted: Bool = false
@@ -40,6 +43,7 @@ access(all) contract Treasury {
 
         let state = GameState(winners: emptyWinners, completed: isCompleted, value: zeroValue, mathContract: noMathContract)
         self.gameStates[gameId] = state
+
 
         emit GameStateUpdated(gameId: gameId, winners: emptyWinners, completed: isCompleted, value: zeroValue, mathContract: noMathContract)
     }
