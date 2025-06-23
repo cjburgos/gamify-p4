@@ -15,7 +15,7 @@ interface DeployedGame {
 }
 
 export default function Arena() {
-  const { user, joinGame, isLoading } = useFlow();
+  const { user, joinGame, isLoading, getActivePlayers } = useFlow();
   const isConnected = user?.loggedIn || false;
   const [deployedGames, setDeployedGames] = useState<DeployedGame[]>([]);
   const [joiningGameId, setJoiningGameId] = useState<string | null>(null);
@@ -73,10 +73,14 @@ export default function Arena() {
       const success = await joinGame(game.id, guess);
       if (success) {
         alert(`Successfully joined game ${game.id} with guess ${guess}!`);
-        // Refresh the games list to show updated player data
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        // Force a refresh of the games list
+        setTimeout(async () => {
+          const response = await fetch('/api/deployed-games');
+          if (response.ok) {
+            const games = await response.json();
+            setDeployedGames(games);
+          }
+        }, 3000);
       }
     } catch (error) {
       console.error('Failed to join game:', error);
