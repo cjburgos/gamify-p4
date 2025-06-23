@@ -243,5 +243,16 @@
     "players": [
       "0x87c1f9060976ddc8"
     ]
+  },
+  {
+    "id": "21",
+    "gameType": "Elimination",
+    "gameMaster": "0x87c1f9060976ddc8",
+    "entryCost": 1,
+    "transactionId": "66579ec75dce27e147cc5126ae9d21db1b036eec3952582c017a43d0b7611de2",
+    "deployedAt": "2025-06-23T23:33:27.074Z",
+    "isActive": true,
+    "blockHeight": "c6636f4480ec9d0114d32db8192b339317a241d967dec1ed9a09413988b27567",
+    "players": []
   }
 ]
