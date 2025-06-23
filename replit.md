@@ -158,6 +158,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Enhanced guess modal with better visual feedback and timing information
   - Fixed game flow: no auto-guessing, players input their own guesses when game starts
   - Proper separation: join reserves spot, actual gameplay happens after timer expires
+  - CRITICAL FIX: Completely rewrote arena.tsx to eliminate all auto-guess generation code
+  - Join process now ONLY sets local state, blockchain transactions happen during guess submission
 
 ## Changelog
 
