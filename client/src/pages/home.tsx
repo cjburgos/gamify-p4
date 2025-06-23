@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useWallet } from "@/contexts/WalletContext";
+import { useFlow } from "@/contexts/FlowContext";
 import { ConnectWallet } from "@/components/wallet/ConnectWallet";
 import { WalletInfo } from "@/components/wallet/WalletInfo";
 import { Button } from "@/components/ui/button";
