@@ -272,16 +272,40 @@ export default function Arena() {
       <header style={{
         borderBottom: "4px solid #fbbf24",
         background: "linear-gradient(90deg, #6b21a8 0%, #1e40af 100%)",
-        padding: "16px 24px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center"
+        padding: "16px 24px"
       }}>
-        <div style={{ fontSize: "32px", fontWeight: "bold", color: "#fbbf24" }}>
-          🎮 PlayOnchain Arena
-        </div>
-        <div style={{ color: "#e5e7eb" }}>
-          {user?.loggedIn ? `Connected: ${formatAddress(user.addr || '')}` : 'Not Connected'}
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          maxWidth: "1200px",
+          margin: "0 auto"
+        }}>
+          <div style={{ fontSize: "32px", fontWeight: "bold", color: "#fbbf24" }}>
+            🎮 PlayOnchain
+          </div>
+          
+          <nav style={{ display: "flex", gap: "32px", alignItems: "center" }}>
+            <a href="/" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
+              Home
+            </a>
+            <a href="/arena" style={{ color: "#fbbf24", textDecoration: "none", fontSize: "18px", fontWeight: "500", borderBottom: "2px solid #fbbf24" }}>
+              Arena
+            </a>
+            <a href="/marketplace" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
+              Marketplace
+            </a>
+            <a href="/profile" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
+              Profile
+            </a>
+            <a href="/gamemaster" style={{ color: "#e5e7eb", textDecoration: "none", fontSize: "18px", fontWeight: "500" }}>
+              GameMaster
+            </a>
+          </nav>
+          
+          <div style={{ color: "#e5e7eb" }}>
+            {user?.loggedIn ? `Connected: ${formatAddress(user.addr || '')}` : 'Not Connected'}
+          </div>
         </div>
       </header>
 
