@@ -2,10 +2,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CountdownTimer } from "./countdown-timer";
+import { WalletGuard } from "./wallet/WalletGuard";
 import { cn, formatUSDC, formatUSD, formatBrandPrize, getStatusColor, getHostAvatarGradient } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/contexts/WalletContext";
 import type { Game } from "@shared/schema";
 
 interface GameModalProps {
@@ -147,20 +149,33 @@ export function GameModal({ game, open, onOpenChange }: GameModalProps) {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button 
-            className="flex-1 bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25"
-            onClick={handleJoinGame}
-            disabled={joinGameMutation.isPending || game.currentPlayers >= game.maxPlayers || new Date(game.lockTime) <= new Date()}
+          <WalletGuard 
+            requiredTickets={Math.ceil(game.entryFee / 100)}
+            showTicketRequirement={isConnected}
           >
-            {joinGameMutation.isPending ? "Joining..." : 
-             isBrandGame ? "🎮 Join for FREE" : `🎮 Join Game (${formatUSDC(game.entryFee)})`}
-          </Button>
+            <Button 
+              className="flex-1 bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25"
+              onClick={handleJoinGame}
+              disabled={
+                joinGameMutation.isPending || 
+                game.currentPlayers >= game.maxPlayers || 
+                new Date(game.lockTime) <= new Date() ||
+                !isConnected ||
+                ticketBalance < Math.ceil(game.entryFee / 100)
+              }
+            >
+              {joinGameMutation.isPending ? "Joining..." : 
+               !isConnected ? "Connect Wallet to Join" :
+               ticketBalance < Math.ceil(game.entryFee / 100) ? `Need ${Math.ceil(game.entryFee / 100)} Tickets` :
+               isBrandGame ? "Join for FREE" : `Join Game (${Math.ceil(game.entryFee / 100)} Tickets)`}
+            </Button>
+          </WalletGuard>
           <Button 
             variant="outline"
             className="border-gray-600 text-gray-300 hover:border-electric-purple hover:text-electric-purple"
             onClick={handleShare}
           >
-            📤 Share
+            Share
           </Button>
         </div>
       </DialogContent>
