@@ -14,7 +14,7 @@ The system is modular: anyone can spin up their own Arena, integrate simple game
 
 🌍 Why We Built This
 
-Onchain doesn’t have to mean complex. PlayOnchain brings fun, fairness, and flexibility to the chain—without requiring tokens, technical know-how, or high stakes.Whether you're a creator, brand, or fan, PlayOnchain is the simplest way to launch and join games that reward participation, build loyalty, and make crypto feel like a game again.
+Onchain doesn’t have to mean complex. PlayOnchain brings fun, fairness, and flexibility to the chain—without requiring tokens, technical know-how, or high stakes. Whether you're a creator, brand, or fan, PlayOnchain is the simplest way to launch and join games that reward participation, build loyalty, and make crypto feel like a game again.
 
 🎯 Hackathon Goal
 
