@@ -6,6 +6,7 @@ import {
   ReactNode,
 } from "react";
 import * as fcl from "@onflow/fcl";
+import * as t from "@onflow/types";
 
 // Configure FCL
 fcl.config({
@@ -36,6 +37,7 @@ interface FlowContextType {
   switchToMainnet: () => void;
   switchToTestnet: () => void;
   deployGame: (gameType: string, entryCost: number) => Promise<string | null>;
+  joinGame: (gameId: string, guess: number) => Promise<boolean>;
 }
 
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
@@ -346,7 +348,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       const transactionId = await fcl.mutate({
         cadence: transaction,
-        args: (arg: any, t: any) => [
+        args: (arg, types) => [
           arg(parseInt(gameId), t.UInt64),
           arg(guess, t.Int),
         ],
@@ -387,6 +389,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     switchToMainnet,
     switchToTestnet,
     deployGame,
+    joinGame,
   };
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
