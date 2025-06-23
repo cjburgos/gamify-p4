@@ -7,22 +7,27 @@ import { WalletProvider } from './contexts/WalletContext';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
-import Arena from "@/pages/arena";
-import Profile from "@/pages/profile";
-import GameMaster from "@/pages/gamemaster";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/arena" component={Arena} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/gamemaster" component={GameMaster} />
       <Route>
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4 pixel-font">Page Not Found</h1>
-            <a href="/" className="text-yellow-400 hover:underline pixel-font">Return to Marketplace</a>
+        <div style={{
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #1e3a8a 50%, #312e81 100%)',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '16px', fontFamily: 'monospace' }}>
+              Page Not Found
+            </h1>
+            <a href="/" style={{ color: '#fbbf24', textDecoration: 'underline', fontFamily: 'monospace' }}>
+              Return to Marketplace
+            </a>
           </div>
         </div>
       </Route>
