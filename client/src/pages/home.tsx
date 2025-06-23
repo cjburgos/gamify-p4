@@ -57,7 +57,8 @@ const gameTemplates: GameTemplate[] = [
 ];
 
 export default function Home() {
-  const { isConnected } = useWallet();
+  const { user } = useFlow();
+  const isConnected = user?.loggedIn || false;
   const [selectedTemplate, setSelectedTemplate] = useState<GameTemplate | null>(null);
   const [deployConfig, setDeployConfig] = useState({
     entryCost: "",
