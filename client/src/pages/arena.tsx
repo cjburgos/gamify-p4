@@ -32,26 +32,37 @@ export default function Arena() {
           const updatedGames = await Promise.all(games.map(async (game: DeployedGame) => {
             try {
               if (getActivePlayers) {
+                console.log(`Checking active players for game ${game.id}...`);
                 const activePlayers = await getActivePlayers(game.id);
-                console.log(`Active players for game ${game.id}:`, activePlayers);
+                console.log(`Contract returned for game ${game.id}:`, activePlayers);
+                console.log(`Current stored players for game ${game.id}:`, game.players);
                 
-                // If contract has players and they differ from stored data, update backend
-                if (activePlayers.length > 0 && 
+                // Always sync if contract has different data than stored
+                if (activePlayers.length >= 0 && 
                     (!game.players || 
                      game.players.length !== activePlayers.length || 
-                     !activePlayers.every(player => game.players?.includes(player)))) {
+                     (activePlayers.length > 0 && !activePlayers.every(player => game.players?.includes(player))))) {
                   
-                  console.log(`Updating backend for game ${game.id} with players:`, activePlayers);
+                  console.log(`Syncing backend for game ${game.id} with contract players:`, activePlayers);
                   
-                  await fetch(`/api/deployed-games/${game.id}/players`, {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ players: activePlayers }),
-                  });
-                  
-                  return { ...game, players: activePlayers };
+                  try {
+                    const response = await fetch(`/api/deployed-games/${game.id}/players`, {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ players: activePlayers }),
+                    });
+                    
+                    if (response.ok) {
+                      console.log(`Successfully updated backend for game ${game.id}`);
+                      return { ...game, players: activePlayers };
+                    } else {
+                      console.error(`Failed to update backend for game ${game.id}:`, response.status);
+                    }
+                  } catch (updateError) {
+                    console.error(`Error updating backend for game ${game.id}:`, updateError);
+                  }
                 }
               }
               return game;
@@ -291,13 +302,13 @@ export default function Arena() {
                   {/* Pool Size */}
                   <div style={{
                     marginBottom: "8px",
-                    padding: "6px 8px",
-                    background: "rgba(147, 51, 234, 0.1)",
+                    padding: "8px 10px",
+                    background: "rgba(147, 51, 234, 0.2)",
                     borderRadius: "6px",
-                    border: "1px solid rgba(147, 51, 234, 0.3)"
+                    border: "1px solid rgba(147, 51, 234, 0.5)"
                   }}>
                     <span style={{
-                      color: "#7c3aed",
+                      color: "#c084fc",
                       fontSize: "13px",
                       fontWeight: "bold",
                       fontFamily: "monospace"
@@ -305,7 +316,7 @@ export default function Arena() {
                       Pool Size: {((game.players?.length || 0) * game.entryCost).toFixed(2)} FLOW
                     </span>
                     <span style={{
-                      color: "#6b7280",
+                      color: "#e2e8f0",
                       fontSize: "11px",
                       fontFamily: "monospace",
                       marginLeft: "8px"
@@ -318,16 +329,16 @@ export default function Arena() {
                   {game.players && game.players.length > 0 && (
                     <div style={{
                       marginBottom: "12px",
-                      padding: "8px",
-                      background: "rgba(34, 197, 94, 0.1)",
+                      padding: "10px",
+                      background: "rgba(34, 197, 94, 0.15)",
                       borderRadius: "6px",
-                      border: "1px solid rgba(34, 197, 94, 0.3)"
+                      border: "1px solid rgba(34, 197, 94, 0.4)"
                     }}>
                       <div style={{
                         fontSize: "12px",
-                        color: "#22c55e",
+                        color: "#4ade80",
                         fontWeight: "bold",
-                        marginBottom: "4px",
+                        marginBottom: "6px",
                         fontFamily: "monospace"
                       }}>
                         Players Joined ({game.players.length}):
@@ -335,19 +346,20 @@ export default function Arena() {
                       <div style={{
                         display: "flex",
                         flexWrap: "wrap",
-                        gap: "4px"
+                        gap: "6px"
                       }}>
                         {game.players.map((player, index) => (
                           <span
                             key={index}
                             style={{
                               fontSize: "10px",
-                              color: "#065f46",
-                              background: "rgba(34, 197, 94, 0.2)",
-                              padding: "2px 6px",
+                              color: "#ffffff",
+                              background: "rgba(34, 197, 94, 0.6)",
+                              padding: "3px 8px",
                               borderRadius: "4px",
                               fontFamily: "monospace",
-                              border: "1px solid rgba(34, 197, 94, 0.4)"
+                              border: "1px solid rgba(34, 197, 94, 0.8)",
+                              fontWeight: "500"
                             }}
                           >
                             {formatAddress(player)}

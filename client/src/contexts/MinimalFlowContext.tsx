@@ -367,22 +367,29 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // After successful transaction, read the updated activePlayers from contract
       try {
+        console.log(`Join transaction successful, now reading contract for game ${gameId}...`);
         const activePlayers = await getActivePlayers(gameId);
-        console.log("Active players from contract:", activePlayers);
+        console.log("Active players from contract after join:", activePlayers);
         
-        if (activePlayers && activePlayers.length > 0) {
+        if (activePlayers && activePlayers.length >= 0) {
           // Update backend with the complete player list
-          await fetch(`/api/deployed-games/${gameId}/players`, {
+          console.log(`Updating backend with ${activePlayers.length} players for game ${gameId}`);
+          const response = await fetch(`/api/deployed-games/${gameId}/players`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ players: activePlayers }),
           });
-          console.log("Updated game with all active players:", activePlayers);
+          
+          if (response.ok) {
+            console.log("Successfully updated backend with active players:", activePlayers);
+          } else {
+            console.error("Failed to update backend:", response.status, await response.text());
+          }
         }
       } catch (error) {
-        console.warn("Failed to read active players from contract:", error);
+        console.error("Failed to read active players from contract after join:", error);
       }
 
       console.log("Successfully joined game!");
@@ -407,6 +414,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     `;
 
     try {
+      console.log(`Reading active players for game ${gameId}...`);
       const result = await fcl.query({
         cadence: script,
         args: (arg, types) => [
@@ -414,9 +422,15 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         ]
       });
       
-      return result || [];
+      console.log(`Active players result for game ${gameId}:`, result);
+      
+      // Convert addresses to strings if they aren't already
+      const players = result ? result.map((addr: any) => addr.toString()) : [];
+      console.log(`Processed players for game ${gameId}:`, players);
+      
+      return players;
     } catch (error) {
-      console.error("Failed to read active players:", error);
+      console.error(`Failed to read active players for game ${gameId}:`, error);
       return [];
     }
   };
