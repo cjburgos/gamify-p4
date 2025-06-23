@@ -7,20 +7,22 @@ import { WalletProvider } from './contexts/WalletContext';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
-import Marketplace from "@/pages/marketplace";
-import SmartContracts from "@/pages/smart-contracts";
+import Arena from "@/pages/arena";
+import Profile from "@/pages/profile";
+import GameMaster from "@/pages/gamemaster";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/marketplace" component={Marketplace} />
-      <Route path="/smart-contracts" component={SmartContracts} />
+      <Route path="/arena" component={Arena} />
+      <Route path="/profile" component={Profile} />
+      <Route path="/gamemaster" component={GameMaster} />
       <Route>
-        <div className="min-h-screen bg-dark-primary text-white flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Page Not Found</h1>
-            <a href="/" className="text-electric-purple hover:underline">Return to Browse Games</a>
+            <h1 className="text-2xl font-bold mb-4 pixel-font">Page Not Found</h1>
+            <a href="/" className="text-yellow-400 hover:underline pixel-font">Return to Marketplace</a>
           </div>
         </div>
       </Route>
