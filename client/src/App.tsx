@@ -1,12 +1,10 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { FlowProvider } from "./contexts/FlowContext";
+// import { FlowProvider } from "./contexts/FlowContext";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
-
-
 
 function Router() {
   return (
@@ -55,7 +53,17 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FlowProvider>
+      <FlowProvider
+        config={{
+          accessNodeUrl: "https://access-mainnet.onflow.org",
+          flowNetwork: "mainnet",
+          appDetailTitle: "My On Chain App",
+          appDetailIcon: "https://example.com/icon.png",
+          appDetailDescription: "A decentralized app on Flow",
+          appDetailUrl: "https://myonchainapp.com",
+        }}
+        flowJson={flowJSON}
+      >
         <TooltipProvider>
           <Toaster />
           <Router />

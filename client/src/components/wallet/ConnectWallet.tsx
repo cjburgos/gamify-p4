@@ -70,14 +70,21 @@ export function ConnectWallet() {
                   <Wallet className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-white text-lg">Flow Wallet</CardTitle>
+                  <CardTitle className="text-white text-lg">Connect Flow Wallet</CardTitle>
                   <CardDescription className="text-gray-400 text-sm">
-                    Connect with any Flow-compatible wallet (Blocto, Lilico, Flow Wallet, etc.)
+                    Scan QR code with your Flow wallet app or connect via browser extension
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
           </Card>
+          
+          <div className="p-3 bg-purple-900/20 rounded-lg border border-purple-500/30">
+            <p className="text-xs text-purple-200 flex items-center">
+              <Zap className="w-3 h-3 mr-1" />
+              Flow Kit will open an authentication modal with QR code for mobile wallets or direct connection for browser wallets.
+            </p>
+          </div>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
             <Button

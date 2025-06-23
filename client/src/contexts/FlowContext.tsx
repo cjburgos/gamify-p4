@@ -78,7 +78,12 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   const connect = async () => {
     setIsLoading(true)
     try {
-      await authenticateUser()
+      const user = await authenticateUser()
+      // Cache user data
+      if (user?.addr) {
+        localStorage.setItem('flow_user_data', JSON.stringify(user))
+        localStorage.setItem('flow_wallet_address', user.addr)
+      }
     } catch (error) {
       console.error('Connection error:', error)
     } finally {
@@ -90,6 +95,11 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     setIsLoading(true)
     try {
       await unauthenticateUser()
+      // Clear all cached user data
+      setUser(null)
+      setBalance('0.0')
+      localStorage.removeItem('flow_user_data')
+      localStorage.removeItem('flow_wallet_address')
     } catch (error) {
       console.error('Disconnect error:', error)
     } finally {
