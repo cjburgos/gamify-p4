@@ -9,7 +9,6 @@ import Home from "./pages/home";
 function Router() {
   return (
     <Switch>
-      <Route path="/test" component={TestFlow} />
       <Route path="/" component={Home} />
       <Route>
         <div
