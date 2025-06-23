@@ -24,22 +24,22 @@ const gameTemplates: GameTemplate[] = [
     gameType: "Elimination",
     maxPlayers: "Unlimited",
     fee: "1% of prize pool",
-    description: "Guess the Rice of the Dice Survivor Pool",
+    description: "Guess the Dice Roll Survivor Pool - Last player standing wins",
     icon: "🎲"
   },
   {
     id: "nfl-pick",
-    title: "NFL Possession Outcome",
+    title: "NFL Possession Outcome", 
     gameType: "Prediction",
     maxPlayers: "1K",
-    fee: "1% of prize pool", 
-    description: "Pick the Outcome of the NFL Possession Survivor Pool",
+    fee: "1% of prize pool",
+    description: "Pick the Outcome of NFL Possession Survivor Pool",
     icon: "🏈"
   },
   {
     id: "card-pick",
     title: "Pick the Card",
-    gameType: "Elimination",
+    gameType: "Elimination", 
     maxPlayers: "500",
     fee: "1% of prize pool",
     description: "Pick the Right Card Survivor Pool",
@@ -48,8 +48,8 @@ const gameTemplates: GameTemplate[] = [
   {
     id: "coin-flip",
     title: "Coin Flip Battle",
-    gameType: "Elimination", 
-    maxPlayers: "Unlimited",
+    gameType: "Elimination",
+    maxPlayers: "Unlimited", 
     fee: "1% of prize pool",
     description: "Call Heads or Tails Survivor Pool",
     icon: "🪙"
@@ -62,180 +62,404 @@ export default function Home() {
   const [deployConfig, setDeployConfig] = useState({
     entryCost: "",
     period: "",
-    maxEntries: "", 
+    maxEntries: "",
     numberOfGames: ""
   });
 
   const handleDeploy = () => {
     console.log("Deploying game:", selectedTemplate, deployConfig);
-    // Here would be the actual deployment logic
+    alert(`Deploying ${selectedTemplate?.title} with ${deployConfig.entryCost} USDC entry cost`);
   };
 
   return (
-    <div className="min-h-screen" style={{background: 'linear-gradient(to bottom right, #581c87, #1e3a8a, #312e81)'}}>
-      {/* Retro Header */}
-      <header style={{borderBottom: '4px solid #facc15', background: 'linear-gradient(to right, #6b21a8, #1e40af)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'}}>
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center border-2 border-white shadow-lg">
-              <div className="text-purple-900 text-2xl font-bold">🎮</div>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #4c1d95 0%, #1e3a8a 50%, #312e81 100%)',
+      color: 'white'
+    }}>
+      {/* Header */}
+      <header style={{
+        borderBottom: '4px solid #fbbf24',
+        background: 'linear-gradient(90deg, #6b21a8 0%, #1e40af 100%)',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '16px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '2px solid white',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+            }}>
+              <span style={{ fontSize: '24px', fontWeight: 'bold' }}>🎮</span>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white" style={{fontFamily: "'Press Start 2P', monospace"}}>
-                PlayOnchain
-              </h1>
-            </div>
+            <h1 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: 'white',
+              fontFamily: 'monospace',
+              margin: 0
+            }}>
+              PlayOnchain
+            </h1>
           </div>
-          
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="/arena" className="text-white pixel-font text-lg hover:text-yellow-400 transition-colors">Arena</a>
-            <a href="/" className="text-yellow-400 font-bold pixel-font text-lg hover:text-yellow-300 transition-colors">Marketplace</a>
-            <a href="/profile" className="text-white pixel-font text-lg hover:text-yellow-400 transition-colors">Profile</a>
-            <a href="/gamemaster" className="text-white pixel-font text-lg hover:text-yellow-400 transition-colors">GameMaster</a>
+
+          {/* Navigation */}
+          <nav style={{ display: 'flex', gap: '32px' }}>
+            <a href="/arena" style={{
+              color: 'white',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '16px',
+              padding: '8px 0'
+            }}>Arena</a>
+            <a href="/" style={{
+              color: '#fbbf24',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              padding: '8px 0'
+            }}>Marketplace</a>
+            <a href="/profile" style={{
+              color: 'white',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '16px',
+              padding: '8px 0'
+            }}>Profile</a>
+            <a href="/gamemaster" style={{
+              color: 'white',
+              textDecoration: 'none',
+              fontFamily: 'monospace',
+              fontSize: '16px',
+              padding: '8px 0'
+            }}>GameMaster</a>
           </nav>
 
-          <div className="flex items-center gap-4">
-            {isConnected ? (
-              <WalletInfo />
-            ) : (
-              <ConnectWallet />
-            )}
+          {/* Wallet */}
+          <div>
+            {isConnected ? <WalletInfo /> : <ConnectWallet />}
           </div>
         </div>
       </header>
 
-      {/* Marketplace Content */}
-      <main className="container mx-auto px-6 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4" style={{color: '#facc15', fontFamily: "'Press Start 2P', monospace"}}>
-            Game Smart Contract Marketplace
-          </h2>
-          <p className="text-lg max-w-3xl mx-auto" style={{color: '#bfdbfe', fontFamily: "'Press Start 2P', monospace"}}>
-            Deploy elimination-style games where players compete for stablecoin prizes. Choose your template and become a GameMaster.
-          </p>
-        </div>
+      {/* Main Content */}
+      <main style={{ padding: '48px 24px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Hero Section */}
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <h2 style={{
+              fontSize: '36px',
+              fontWeight: 'bold',
+              color: '#fbbf24',
+              fontFamily: 'monospace',
+              marginBottom: '16px',
+              lineHeight: '1.2'
+            }}>
+              Game Smart Contract Marketplace
+            </h2>
+            <p style={{
+              fontSize: '18px',
+              color: '#cbd5e1',
+              fontFamily: 'monospace',
+              maxWidth: '600px',
+              margin: '0 auto',
+              lineHeight: '1.6'
+            }}>
+              Deploy elimination-style games where players compete for stablecoin prizes. Choose your template and become a GameMaster.
+            </p>
+          </div>
 
-        {/* Game Templates Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
-          {gameTemplates.map((template) => (
-            <div 
-              key={template.id}
-              className="bg-gradient-to-br from-purple-800/70 to-blue-800/70 rounded-xl border-4 border-yellow-400/60 p-6 backdrop-blur-sm hover:border-yellow-400 transition-all duration-300 hover:scale-105 transform shadow-lg hover:shadow-yellow-400/25"
-            >
-              <div className="text-center mb-4">
-                <div className="text-6xl mb-3">{template.icon}</div>
-                <h3 className="text-xl font-bold text-white pixel-font mb-2">{template.title}</h3>
-                <p className="text-blue-200 pixel-font text-sm mb-4">{template.description}</p>
-              </div>
-
-              <div className="space-y-2 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-blue-300 pixel-font text-sm">Type:</span>
-                  <span className="text-white pixel-font text-sm">{template.gameType}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-blue-300 pixel-font text-sm">Max Players:</span>
-                  <span className="text-yellow-400 pixel-font text-sm font-bold">{template.maxPlayers}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-blue-300 pixel-font text-sm">Fee:</span>
-                  <span className="text-green-400 pixel-font text-sm">{template.fee}</span>
-                </div>
-              </div>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button 
-                    className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-purple-900 font-bold pixel-font border-2 border-white hover:scale-105 transform transition-all duration-200 shadow-lg"
-                    onClick={() => setSelectedTemplate(template)}
-                  >
-                    Deploy Arena
-                  </Button>
-                </DialogTrigger>
+          {/* Game Templates Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '32px',
+            marginBottom: '48px'
+          }}>
+            {gameTemplates.map((template) => (
+              <div key={template.id} style={{
+                background: 'linear-gradient(135deg, rgba(107, 33, 168, 0.8) 0%, rgba(30, 64, 175, 0.8) 100%)',
+                borderRadius: '12px',
+                border: '3px solid rgba(251, 191, 36, 0.6)',
+                padding: '24px',
+                backdropFilter: 'blur(8px)',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = '#fbbf24';
+                target.style.transform = 'translateY(-4px)';
+                target.style.boxShadow = '0 8px 25px rgba(251, 191, 36, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.borderColor = 'rgba(251, 191, 36, 0.6)';
+                target.style.transform = 'translateY(0)';
+                target.style.boxShadow = 'none';
+              }}>
                 
-                <DialogContent className="max-w-md bg-gradient-to-br from-purple-800 to-blue-800 border-4 border-yellow-400 text-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold pixel-font text-yellow-400 text-center">
-                      Deploy {selectedTemplate?.title}
-                    </DialogTitle>
-                  </DialogHeader>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="entryCost" className="text-blue-200 pixel-font">Entry Cost (USDC)</Label>
-                      <Input 
-                        id="entryCost"
-                        value={deployConfig.entryCost}
-                        onChange={(e) => setDeployConfig(prev => ({...prev, entryCost: e.target.value}))}
-                        placeholder="1.00"
-                        className="bg-purple-900/50 border-yellow-400/50 text-white pixel-font"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="period" className="text-blue-200 pixel-font">Period (hours)</Label>
-                      <Input 
-                        id="period"
-                        value={deployConfig.period}
-                        onChange={(e) => setDeployConfig(prev => ({...prev, period: e.target.value}))}
-                        placeholder="8"
-                        className="bg-purple-900/50 border-yellow-400/50 text-white pixel-font"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="maxEntries" className="text-blue-200 pixel-font">Max Entries</Label>
-                      <Input 
-                        id="maxEntries"
-                        value={deployConfig.maxEntries}
-                        onChange={(e) => setDeployConfig(prev => ({...prev, maxEntries: e.target.value}))}
-                        placeholder="100"
-                        className="bg-purple-900/50 border-yellow-400/50 text-white pixel-font"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="numberOfGames" className="text-blue-200 pixel-font">Number of Games</Label>
-                      <Input 
-                        id="numberOfGames"
-                        value={deployConfig.numberOfGames}
-                        onChange={(e) => setDeployConfig(prev => ({...prev, numberOfGames: e.target.value}))}
-                        placeholder="10"
-                        className="bg-purple-900/50 border-yellow-400/50 text-white pixel-font"
-                      />
-                    </div>
-                    
-                    <Button 
-                      onClick={handleDeploy}
-                      className="w-full bg-gradient-to-r from-green-400 to-green-600 text-white font-bold pixel-font border-2 border-white hover:scale-105 transform transition-all duration-200"
-                    >
-                      Deploy Smart Contract
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          ))}
-        </div>
+                {/* Template Header */}
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                  <div style={{ fontSize: '48px', marginBottom: '12px' }}>{template.icon}</div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    marginBottom: '8px'
+                  }}>
+                    {template.title}
+                  </h3>
+                  <p style={{
+                    fontSize: '13px',
+                    color: '#cbd5e1',
+                    fontFamily: 'monospace',
+                    lineHeight: '1.4'
+                  }}>
+                    {template.description}
+                  </p>
+                </div>
 
-        {/* Info Section */}
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-purple-800/50 to-blue-800/50 rounded-xl border-4 border-yellow-400 p-8 backdrop-blur-sm">
-          <h3 className="text-3xl font-bold text-yellow-400 pixel-font mb-6 text-center">How It Works</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-4xl mb-3">🚀</div>
-              <h4 className="text-xl font-bold text-white pixel-font mb-2">Deploy</h4>
-              <p className="text-blue-200 pixel-font text-sm">Choose a game template and configure your arena settings</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-3">👥</div>
-              <h4 className="text-xl font-bold text-white pixel-font mb-2">Players Join</h4>
-              <p className="text-blue-200 pixel-font text-sm">Players enter with stablecoins and compete in elimination rounds</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-3">💰</div>
-              <h4 className="text-xl font-bold text-white pixel-font mb-2">Earn Fees</h4>
-              <p className="text-blue-200 pixel-font text-sm">Collect 1% fees from every game while players win prizes</p>
+                {/* Template Details */}
+                <div style={{ marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>Type:</span>
+                    <span style={{ fontSize: '12px', color: 'white', fontFamily: 'monospace' }}>{template.gameType}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>Max Players:</span>
+                    <span style={{ fontSize: '12px', color: '#fbbf24', fontFamily: 'monospace', fontWeight: 'bold' }}>{template.maxPlayers}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '12px', color: '#94a3b8', fontFamily: 'monospace' }}>Fee:</span>
+                    <span style={{ fontSize: '12px', color: '#4ade80', fontFamily: 'monospace' }}>{template.fee}</span>
+                  </div>
+                </div>
+
+                {/* Deploy Button */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      onClick={() => setSelectedTemplate(template)}
+                      style={{
+                        width: '100%',
+                        background: 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)',
+                        color: '#581c87',
+                        fontWeight: 'bold',
+                        fontFamily: 'monospace',
+                        border: '2px solid white',
+                        borderRadius: '8px',
+                        padding: '12px 16px',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'scale(1.02)';
+                        target.style.boxShadow = '0 4px 12px rgba(251, 191, 36, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        const target = e.currentTarget as HTMLElement;
+                        target.style.transform = 'scale(1)';
+                        target.style.boxShadow = 'none';
+                      }}
+                    >
+                      Deploy Arena
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent style={{
+                    maxWidth: '400px',
+                    background: 'linear-gradient(135deg, #6b21a8 0%, #1e40af 100%)',
+                    border: '3px solid #fbbf24',
+                    borderRadius: '12px',
+                    color: 'white'
+                  }}>
+                    <DialogHeader>
+                      <DialogTitle style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        fontFamily: 'monospace',
+                        color: '#fbbf24',
+                        textAlign: 'center'
+                      }}>
+                        Deploy {selectedTemplate?.title}
+                      </DialogTitle>
+                    </DialogHeader>
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <div>
+                        <Label htmlFor="entryCost" style={{ color: '#cbd5e1', fontFamily: 'monospace', fontSize: '12px' }}>
+                          Entry Cost (USDC)
+                        </Label>
+                        <Input 
+                          id="entryCost"
+                          value={deployConfig.entryCost}
+                          onChange={(e) => setDeployConfig(prev => ({...prev, entryCost: e.target.value}))}
+                          placeholder="1.00"
+                          style={{
+                            background: 'rgba(88, 28, 135, 0.5)',
+                            border: '1px solid rgba(251, 191, 36, 0.5)',
+                            color: 'white',
+                            fontFamily: 'monospace',
+                            borderRadius: '6px',
+                            padding: '8px 12px'
+                          }}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="period" style={{ color: '#cbd5e1', fontFamily: 'monospace', fontSize: '12px' }}>
+                          Period (hours)
+                        </Label>
+                        <Input 
+                          id="period"
+                          value={deployConfig.period}
+                          onChange={(e) => setDeployConfig(prev => ({...prev, period: e.target.value}))}
+                          placeholder="8"
+                          style={{
+                            background: 'rgba(88, 28, 135, 0.5)',
+                            border: '1px solid rgba(251, 191, 36, 0.5)',
+                            color: 'white',
+                            fontFamily: 'monospace',
+                            borderRadius: '6px',
+                            padding: '8px 12px'
+                          }}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="maxEntries" style={{ color: '#cbd5e1', fontFamily: 'monospace', fontSize: '12px' }}>
+                          Max Entries
+                        </Label>
+                        <Input 
+                          id="maxEntries"
+                          value={deployConfig.maxEntries}
+                          onChange={(e) => setDeployConfig(prev => ({...prev, maxEntries: e.target.value}))}
+                          placeholder="100"
+                          style={{
+                            background: 'rgba(88, 28, 135, 0.5)',
+                            border: '1px solid rgba(251, 191, 36, 0.5)',
+                            color: 'white',
+                            fontFamily: 'monospace',
+                            borderRadius: '6px',
+                            padding: '8px 12px'
+                          }}
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="numberOfGames" style={{ color: '#cbd5e1', fontFamily: 'monospace', fontSize: '12px' }}>
+                          Number of Games
+                        </Label>
+                        <Input 
+                          id="numberOfGames"
+                          value={deployConfig.numberOfGames}
+                          onChange={(e) => setDeployConfig(prev => ({...prev, numberOfGames: e.target.value}))}
+                          placeholder="10"
+                          style={{
+                            background: 'rgba(88, 28, 135, 0.5)',
+                            border: '1px solid rgba(251, 191, 36, 0.5)',
+                            color: 'white',
+                            fontFamily: 'monospace',
+                            borderRadius: '6px',
+                            padding: '8px 12px'
+                          }}
+                        />
+                      </div>
+                      
+                      <Button 
+                        onClick={handleDeploy}
+                        style={{
+                          width: '100%',
+                          background: 'linear-gradient(90deg, #4ade80 0%, #16a34a 100%)',
+                          color: 'white',
+                          fontWeight: 'bold',
+                          fontFamily: 'monospace',
+                          border: '2px solid white',
+                          borderRadius: '8px',
+                          padding: '12px 16px',
+                          fontSize: '14px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        Deploy Smart Contract
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            ))}
+          </div>
+
+          {/* Info Section */}
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(107, 33, 168, 0.6) 0%, rgba(30, 64, 175, 0.6) 100%)',
+            borderRadius: '12px',
+            border: '3px solid #fbbf24',
+            padding: '32px',
+            backdropFilter: 'blur(8px)',
+            textAlign: 'center'
+          }}>
+            <h3 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: '#fbbf24',
+              fontFamily: 'monospace',
+              marginBottom: '24px'
+            }}>
+              How It Works
+            </h3>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '24px'
+            }}>
+              <div>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>🚀</div>
+                <h4 style={{ fontSize: '16px', fontWeight: 'bold', color: 'white', fontFamily: 'monospace', marginBottom: '8px' }}>
+                  Deploy
+                </h4>
+                <p style={{ fontSize: '12px', color: '#cbd5e1', fontFamily: 'monospace', lineHeight: '1.4' }}>
+                  Choose a game template and configure your arena settings
+                </p>
+              </div>
+              <div>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>👥</div>
+                <h4 style={{ fontSize: '16px', fontWeight: 'bold', color: 'white', fontFamily: 'monospace', marginBottom: '8px' }}>
+                  Players Join
+                </h4>
+                <p style={{ fontSize: '12px', color: '#cbd5e1', fontFamily: 'monospace', lineHeight: '1.4' }}>
+                  Players enter with stablecoins and compete in elimination rounds
+                </p>
+              </div>
+              <div>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>💰</div>
+                <h4 style={{ fontSize: '16px', fontWeight: 'bold', color: 'white', fontFamily: 'monospace', marginBottom: '8px' }}>
+                  Earn Fees
+                </h4>
+                <p style={{ fontSize: '12px', color: '#cbd5e1', fontFamily: 'monospace', lineHeight: '1.4' }}>
+                  Collect 1% fees from every game while players win prizes
+                </p>
+              </div>
             </div>
           </div>
         </div>
