@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "id": "7",
+    "gameType": "Elimination",
+    "gameMaster": "0x91959c359072d7a9",
+    "entryCost": 0.5,
+    "transactionId": "3ce11d65b6ec96235ed5358deb26543ec4eaf4fa87d007d8f03982bcceec8a6c",
+    "deployedAt": "2025-06-23T19:51:36.593Z",
+    "isActive": true,
+    "blockHeight": "43c0a0ac6d53facb48ccf8350a8e12ab196d8ef8e561ffa6997343b5611da764"
+  }
+]

@@ -14,9 +14,10 @@ interface DeployedGame {
 }
 
 export default function Arena() {
-  const { user } = useFlow();
+  const { user, joinGame, isLoading } = useFlow();
   const isConnected = user?.loggedIn || false;
   const [deployedGames, setDeployedGames] = useState<DeployedGame[]>([]);
+  const [joiningGameId, setJoiningGameId] = useState<string | null>(null);
 
   useEffect(() => {
     // Load deployed games from API
@@ -54,6 +55,30 @@ export default function Arena() {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
+  };
+
+  const handleJoinGame = async (game: DeployedGame) => {
+    if (!user?.loggedIn) {
+      alert('Please connect your wallet first');
+      return;
+    }
+
+    try {
+      setJoiningGameId(game.id);
+      
+      // Generate a random guess between 1 and 6 for dice game
+      const guess = Math.floor(Math.random() * 6) + 1;
+      
+      const success = await joinGame(game.id, guess);
+      if (success) {
+        alert(`Successfully joined game ${game.id} with guess ${guess}!`);
+      }
+    } catch (error) {
+      console.error('Failed to join game:', error);
+      alert(`Failed to join game: ${error.message || 'Unknown error'}`);
+    } finally {
+      setJoiningGameId(null);
+    }
   };
 
   return (
@@ -232,19 +257,26 @@ export default function Arena() {
                   </div>
                 </div>
 
-                <button style={{
-                  width: "100%",
-                  background: game.isActive ? "linear-gradient(90deg, #4ade80 0%, #22c55e 100%)" : "#666",
-                  color: game.isActive ? "#065f46" : "#fff",
-                  fontWeight: "bold",
-                  border: "2px solid white",
-                  borderRadius: "8px",
-                  padding: "12px 16px",
-                  fontSize: "14px",
-                  cursor: game.isActive ? "pointer" : "not-allowed",
-                  fontFamily: "monospace"
-                }}>
-                  {game.isActive ? "Join Game" : "Game Ended"}
+                <button 
+                  onClick={() => handleJoinGame(game)}
+                  disabled={!game.isActive || !user?.loggedIn || joiningGameId === game.id}
+                  style={{
+                    width: "100%",
+                    background: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#666" : "linear-gradient(90deg, #4ade80 0%, #22c55e 100%)",
+                    color: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#fff" : "#065f46",
+                    fontWeight: "bold",
+                    border: "2px solid white",
+                    borderRadius: "8px",
+                    padding: "12px 16px",
+                    fontSize: "14px",
+                    cursor: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "not-allowed" : "pointer",
+                    fontFamily: "monospace",
+                    opacity: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? 0.6 : 1
+                  }}
+                >
+                  {joiningGameId === game.id ? "Joining..." : 
+                   !user?.loggedIn ? "Connect Wallet" :
+                   !game.isActive ? "Game Ended" : "Join Game"}
                 </button>
               </div>
             ))}
