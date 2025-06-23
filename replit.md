@@ -132,7 +132,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Created Arena page to display deployed games with Game ID, Game Master, and entry fees
   - Simplified deployment modal to only include Entry Cost field
   - Implemented local storage for tracking deployed games and their metadata
-  - Added real-time transaction status and game ID generation after successful deployment
+  - Enhanced transaction processing to extract actual game IDs from GameCreated events
+  - Added proper event parsing to capture real game IDs from Flow smart contract emissions
 
 ## Changelog
 
