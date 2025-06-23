@@ -158,23 +158,18 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
     const transaction = `
       import GuessTheDiceV2 from 0x0dd7dc583201e8b1
-
+      
       transaction {
           prepare(signer: &Account) {
               let gameId = GuessTheDiceV2.createGame()
               log("New game created with ID: ".concat(gameId.toString()))
-          }
-          
-          post {
-              // This ensures the transaction succeeded
-              log("Game deployment transaction completed successfully")
           }
       }
     `;
 
     try {
       console.log("Submitting transaction to Flow testnet...");
-      
+
       const transactionId = await fcl.mutate({
         cadence: transaction,
         proposer: fcl.authz,
@@ -196,20 +191,23 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // Extract game ID from the GameCreated event
       let gameId = null;
-      
+
       if (result.events && result.events.length > 0) {
         console.log("Transaction events:", result.events);
-        
+
         // Look for the GameCreated event specifically
         for (const event of result.events) {
           console.log("Event type:", event.type);
           console.log("Event data:", event.data);
-          
+
           // Check if this is the GameCreated event from GuessTheDiceV2
-          if (event.type && (
-            event.type.includes("GameCreated") || 
-            event.type.includes("A.0dd7dc583201e8b1.GuessTheDiceV2.GameCreated")
-          )) {
+          if (
+            event.type &&
+            (event.type.includes("GameCreated") ||
+              event.type.includes(
+                "A.0dd7dc583201e8b1.GuessTheDiceV2.GameCreated",
+              ))
+          ) {
             // Extract game ID from event data
             if (event.data) {
               // The event data might have different field names
@@ -227,7 +225,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
                   gameId = dataValues[0].toString();
                 }
               }
-              
+
               if (gameId) {
                 console.log("Found game ID in GameCreated event:", gameId);
                 break;
@@ -240,9 +238,12 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       // Also check transaction logs as fallback
       if (!gameId && result.logs && result.logs.length > 0) {
         console.log("Transaction logs:", result.logs);
-        
+
         for (const log of result.logs) {
-          if (typeof log === 'string' && log.includes("New game created with ID:")) {
+          if (
+            typeof log === "string" &&
+            log.includes("New game created with ID:")
+          ) {
             const match = log.match(/New game created with ID:\s*(\d+)/);
             if (match) {
               gameId = match[1];
@@ -255,9 +256,16 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // If we still don't have a game ID, something went wrong
       if (!gameId) {
-        console.error("Could not extract game ID from GameCreated event or logs");
-        console.log("Full transaction result:", JSON.stringify(result, null, 2));
-        throw new Error("Game deployment successful but could not retrieve game ID");
+        console.error(
+          "Could not extract game ID from GameCreated event or logs",
+        );
+        console.log(
+          "Full transaction result:",
+          JSON.stringify(result, null, 2),
+        );
+        throw new Error(
+          "Game deployment successful but could not retrieve game ID",
+        );
       }
 
       // Store deployed game via API
@@ -274,24 +282,24 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // Save to backend instead of localStorage
       try {
-        const response = await fetch('/api/deployed-games', {
-          method: 'POST',
+        const response = await fetch("/api/deployed-games", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(deployedGame),
         });
 
         if (!response.ok) {
           const error = await response.json();
-          console.warn('Failed to save game to backend:', error.message);
+          console.warn("Failed to save game to backend:", error.message);
         } else {
           console.log("Game saved to backend successfully:", deployedGame);
         }
       } catch (error) {
-        console.warn('Error saving game to backend:', error);
+        console.warn("Error saving game to backend:", error);
       }
-      
+
       return gameId;
     } catch (error) {
       console.error("Failed to deploy game:", error);
