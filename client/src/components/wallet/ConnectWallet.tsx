@@ -26,7 +26,7 @@ export function ConnectWallet() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button 
-          className="bg-gradient-to-r from-electric-purple to-cyber-blue hover:from-cyber-blue hover:to-neon-green font-bold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-electric-purple/25"
+          className="bg-transparent border border-gray-600 text-white hover:bg-gray-800 font-medium px-4 py-2 rounded-lg transition-all duration-300"
           disabled={isPending}
         >
           <Wallet className="w-4 h-4 mr-2" />
