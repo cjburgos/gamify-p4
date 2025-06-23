@@ -72,7 +72,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900" data-version="v2">
       {/* Retro Header */}
       <header className="border-b-4 border-yellow-400 bg-gradient-to-r from-purple-800 to-blue-800 shadow-lg">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
@@ -81,7 +81,7 @@ export default function Home() {
               <div className="text-purple-900 text-2xl font-bold">🎮</div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white pixel-font">
+              <h1 className="text-2xl font-bold text-white" style={{fontFamily: "'Press Start 2P', monospace"}}>
                 PlayOnchain
               </h1>
             </div>
@@ -107,10 +107,10 @@ export default function Home() {
       {/* Marketplace Content */}
       <main className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-yellow-400 pixel-font mb-4">
+          <h2 className="text-5xl font-bold text-yellow-400 mb-4" style={{fontFamily: "'Press Start 2P', monospace"}}>
             Game Smart Contract Marketplace
           </h2>
-          <p className="text-xl text-blue-200 pixel-font max-w-3xl mx-auto">
+          <p className="text-xl text-blue-200 max-w-3xl mx-auto" style={{fontFamily: "'Press Start 2P', monospace"}}>
             Deploy elimination-style games where players compete for stablecoin prizes. Choose your template and become a GameMaster.
           </p>
         </div>
