@@ -136,6 +136,9 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added RESTful API endpoints for deployed game management with real-time updates
   - Implemented Join Game functionality with Flow transactions using real game IDs
   - Added random guess generation and proper transaction parameter passing
+  - Implemented PlayerJoined event listening and player address tracking in game data
+  - Enhanced game cards to display joined player addresses with proper styling
+  - Added backend API endpoint for updating game player lists from blockchain events
 
 ## Changelog
 

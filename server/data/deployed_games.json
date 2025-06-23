@@ -1,12 +1,12 @@
 [
   {
-    "id": "7",
+    "id": "1",
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 0.5,
-    "transactionId": "3ce11d65b6ec96235ed5358deb26543ec4eaf4fa87d007d8f03982bcceec8a6c",
-    "deployedAt": "2025-06-23T19:51:36.593Z",
+    "entryCost": 1,
+    "transactionId": "a4d3638fa18a893dea2aba3c98fef86f0c10eebe5cd10f9d6190fdb82187cd8e",
+    "deployedAt": "2025-06-23T20:33:40.037Z",
     "isActive": true,
-    "blockHeight": "43c0a0ac6d53facb48ccf8350a8e12ab196d8ef8e561ffa6997343b5611da764"
+    "blockHeight": "f1e93bc4d213caa11a5cb292abb553486c7c3a69e9b3deafedd99d2e1613ed03"
   }
 ]

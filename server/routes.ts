@@ -17,6 +17,7 @@ interface DeployedGame {
   deployedAt: string;
   isActive: boolean;
   blockHeight?: string;
+  players?: string[];
 }
 
 const DEPLOYED_GAMES_FILE = path.join(process.cwd(), 'server/data/deployed_games.json');
@@ -74,10 +75,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(409).json({ message: "Game already exists" });
       }
 
+      // Initialize players array for new games
+      gameData.players = gameData.players || [];
+      
       games.push(gameData);
       await writeDeployedGames(games);
       
       res.status(201).json(gameData);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/deployed-games/:id/players", async (req, res) => {
+    try {
+      const gameId = req.params.id;
+      const { playerAddress } = req.body;
+      
+      if (!playerAddress) {
+        return res.status(400).json({ message: "Player address is required" });
+      }
+
+      const games = await readDeployedGames();
+      const gameIndex = games.findIndex(g => g.id === gameId);
+      
+      if (gameIndex === -1) {
+        return res.status(404).json({ message: "Game not found" });
+      }
+
+      // Initialize players array if it doesn't exist
+      if (!games[gameIndex].players) {
+        games[gameIndex].players = [];
+      }
+
+      // Add player if not already in the list
+      if (!games[gameIndex].players!.includes(playerAddress)) {
+        games[gameIndex].players!.push(playerAddress);
+        await writeDeployedGames(games);
+        console.log(`Added player ${playerAddress} to game ${gameId}`);
+      }
+
+      res.json({ success: true, players: games[gameIndex].players });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
