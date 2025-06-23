@@ -88,7 +88,6 @@ export default function Home() {
             <a href="/" className="text-electric-purple font-semibold">Browse Games</a>
             <a href="/marketplace" className="text-gray-300 hover:text-cyber-blue transition-colors">Game Templates</a>
             <a href="/smart-contracts" className="text-gray-300 hover:text-cyber-blue transition-colors">Smart Contracts</a>
-            <a href="#" className="text-gray-300 hover:text-neon-green transition-colors">How It Works</a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -378,7 +377,6 @@ export default function Home() {
             <div>
               <h3 className="text-lg font-bold mb-4 text-electric-purple">🎮 Platform</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-electric-purple transition-colors">How It Works</a></li>
                 <li><a href="#" className="hover:text-electric-purple transition-colors">Supported Games</a></li>
                 <li><a href="#" className="hover:text-electric-purple transition-colors">Security</a></li>
               </ul>
@@ -404,7 +402,6 @@ export default function Home() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-gold-accent transition-colors">Discord</a></li>
                 <li><a href="#" className="hover:text-gold-accent transition-colors">Twitter</a></li>
-                <li><a href="#" className="hover:text-gold-accent transition-colors">Leaderboard</a></li>
               </ul>
             </div>
           </div>
