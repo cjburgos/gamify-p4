@@ -6,6 +6,12 @@
 				"testnet": "9a0766d93b6608b7"
 			}
 		},
+		"Treasury": {
+			"source": "cadence/contracts/Treasury.cdc",
+			"aliases": {
+				"testnet": "9a0766d93b6608b7"
+			}
+		},
 		"RandomResultStorage": "cadence/contracts/test/RandomResultStorage.cdc",
 		"Xorshift128plus": {
 			"source": "cadence/contracts/Xorshift128plus.cdc",
@@ -237,6 +243,10 @@
 			"GamifyAdminTestnet": [
 				{
 					"name": "RandomConsumer",
+					"args": []
+				},
+				{
+					"name": "Treasury",
 					"args": []
 				},
 				{
