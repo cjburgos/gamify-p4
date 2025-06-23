@@ -165,6 +165,7 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added server-side dice result storage and API endpoints for consistent game outcomes
   - Restored player counter display showing number of joined players per game
   - Fixed navigation: removed Home tab, made Marketplace link go to home page
+  - Corrected navigation tab order to Arena, Marketplace, Profile, GameMaster
 
 ## Changelog
 
