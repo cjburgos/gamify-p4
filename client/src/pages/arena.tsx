@@ -138,6 +138,16 @@ export default function Arena() {
   const handleGameStart = (gameId: string) => {
     console.log(`Game ${gameId} has started!`);
     setStartedGames(prev => new Set([...prev, gameId]));
+    
+    // Check if current user joined this game
+    const userAddress = user?.addr;
+    if (userAddress && (isUserJoined(gameId) || hasUserJoined(deployedGames.find(g => g.id === gameId)!))) {
+      console.log('User joined this game - showing guess modal');
+      setTimeout(() => {
+        setActiveGameId(gameId);
+        setShowGuessModal(true);
+      }, 1000); // 1 second delay for "Game Starting!" effect
+    }
   };
 
   const handleEnterGame = (gameId: string) => {
@@ -196,6 +206,11 @@ export default function Arena() {
       return 'waitingToStart';
     }
     return 'joinGame';
+  };
+
+  // Check if user has already submitted a guess for this game
+  const hasSubmittedGuess = (gameId: string) => {
+    return activeGameId === gameId && showResultModal;
   };
 
   const formatAddress = (address: string) => {
@@ -365,7 +380,9 @@ export default function Arena() {
             gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
             gap: "32px"
           }}>
-            {deployedGames.map((game) => (
+            {deployedGames
+              .sort((a, b) => new Date(b.deployedAt).getTime() - new Date(a.deployedAt).getTime())
+              .map((game) => (
               <div
                 key={game.id}
                 style={{

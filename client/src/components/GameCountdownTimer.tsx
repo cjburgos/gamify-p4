@@ -48,8 +48,8 @@ export function GameCountdownTimer({ deployedAt, onGameStart, className = "" }: 
 
   if (timeLeft === 0) {
     return (
-      <div className={`text-sm font-mono text-green-400 ${className}`}>
-        GAME STARTED
+      <div className={`text-sm font-mono text-green-400 animate-pulse ${className}`}>
+        🎮 GAME STARTING!
       </div>
     );
   }

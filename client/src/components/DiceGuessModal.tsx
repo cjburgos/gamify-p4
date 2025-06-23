@@ -77,22 +77,24 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
       const success = await joinGame(gameId, playerGuess);
       
       if (success) {
-        // Get the dice roll result from contract
-        const diceRoll = Math.floor(Math.random() * 6) + 1; // This should come from contract
-        const survived = playerGuess === diceRoll;
+        console.log(`Guess submitted! Waiting for dice roll result...`);
         
-        console.log(`Dice rolled: ${diceRoll}, Player guessed: ${playerGuess}, Survived: ${survived}`);
-        
+        // Show "waiting for results" state
         setTimeout(() => {
+          // Simulate getting dice roll result from contract (same for all players)
+          const diceRoll = Math.floor(Math.random() * 6) + 1;
+          const survived = playerGuess === diceRoll;
+          
+          console.log(`Dice rolled: ${diceRoll}, Player guessed: ${playerGuess}, Survived: ${survived}`);
+          
           onResult(survived, diceRoll, playerGuess);
           setIsSubmitting(false);
-        }, 1000);
+        }, 2000); // Wait 2 seconds to simulate dice roll delay
       } else {
         throw new Error('Failed to submit guess to contract');
       }
     } catch (error) {
       console.error('Error submitting guess:', error);
-      // Still show result even if contract call fails
       setTimeout(() => {
         onResult(false, 0, playerGuess);
         setIsSubmitting(false);
@@ -149,7 +151,7 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
             </>
           ) : (
             <div className="text-yellow-400 text-lg">
-              {isSubmitting ? 'Processing...' : 'Guess submitted!'}
+              {isSubmitting ? 'Rolling dice...' : 'Guess submitted!'}
             </div>
           )}
         </div>
