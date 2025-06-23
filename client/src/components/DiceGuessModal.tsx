@@ -71,11 +71,17 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessM
     setIsSubmitting(true);
 
     try {
-      console.log(`Submitting guess ${playerGuess} for game ${gameId}`);
+      console.log(`Player submitted guess ${playerGuess} for game ${gameId}`);
       
-      // For the game round, we simulate the guess submission since we already joined
-      // In a real implementation, this would update the guess on the contract
-      console.log(`Guess ${playerGuess} recorded for game ${gameId}`);
+      // Submit the actual guess to blockchain now
+      if (joinGame) {
+        const success = await joinGame(gameId, playerGuess);
+        if (!success) {
+          throw new Error('Failed to submit guess to blockchain');
+        }
+      }
+      
+      console.log(`Guess ${playerGuess} submitted to blockchain for game ${gameId}`);
       
       // Show "waiting for results" state
       setTimeout(() => {

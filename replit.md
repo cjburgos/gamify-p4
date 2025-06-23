@@ -151,11 +151,13 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Made game activation time configurable via VITE_GAME_ACTIVATION_TIME_SECONDS environment variable
   - Enhanced button states to show player journey: Join Game → Waiting to Start → Enter Game → Results
   - Implemented proper game state tracking for joined players and started games
-  - Modified join flow: players join blockchain with placeholder guess, submit actual guess when game starts
+  - Redesigned join flow: players reserve spots locally, submit actual guesses when timer expires
   - Added newest-first game ordering with shared dice rolls for all players in same game
   - Enhanced timer display with "GAME STARTING!" animation when countdown reaches zero
   - Improved dice roll result display with prominent dice number and clear survival/elimination status
   - Enhanced guess modal with better visual feedback and timing information
+  - Fixed game flow: no auto-guessing, players input their own guesses when game starts
+  - Proper separation: join reserves spot, actual gameplay happens after timer expires
 
 ## Changelog
 
