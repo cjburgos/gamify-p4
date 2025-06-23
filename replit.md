@@ -166,6 +166,9 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Restored player counter display showing number of joined players per game
   - Fixed navigation: removed Home tab, made Marketplace link go to home page
   - Corrected navigation tab order to Arena, Marketplace, Profile, GameMaster
+  - Added multi-round elimination logic: games continue until no players survive
+  - Implemented automatic round progression when players survive dice rolls
+  - Added server endpoint to clear dice results between rounds for fair gameplay
 
 ## Changelog
 
