@@ -37,6 +37,8 @@ export default function Arena() {
     playerGuess: number;
   } | null>(null);
   const [eliminatedGames, setEliminatedGames] = useState<Set<string>>(new Set());
+  const [joinedGames, setJoinedGames] = useState<Set<string>>(new Set());
+  const [startedGames, setStartedGames] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -135,16 +137,13 @@ export default function Arena() {
 
   const handleGameStart = (gameId: string) => {
     console.log(`Game ${gameId} has started!`);
-    
-    // Check if current user joined this game
-    const game = deployedGames.find(g => g.id === gameId);
-    const userAddress = user?.addr;
-    
-    if (game && userAddress && game.players?.includes(userAddress)) {
-      console.log('User joined this game - showing guess modal');
-      setActiveGameId(gameId);
-      setShowGuessModal(true);
-    }
+    setStartedGames(prev => new Set([...prev, gameId]));
+  };
+
+  const handleEnterGame = (gameId: string) => {
+    console.log(`User entering game ${gameId}`);
+    setActiveGameId(gameId);
+    setShowGuessModal(true);
   };
 
   const handleGuessResult = (survived: boolean, diceRoll: number, playerGuess: number) => {
@@ -174,6 +173,29 @@ export default function Arena() {
     const gameStartTime = deployTime + (activationSeconds * 1000);
     const now = Date.now();
     return now >= gameStartTime;
+  };
+
+  const hasUserJoined = (game: DeployedGame) => {
+    const userAddress = user?.addr;
+    return userAddress && game.players?.includes(userAddress);
+  };
+
+  const isUserJoined = (gameId: string) => {
+    return joinedGames.has(gameId);
+  };
+
+  const hasGameStarted = (gameId: string) => {
+    return startedGames.has(gameId);
+  };
+
+  const getButtonState = (game: DeployedGame) => {
+    if (isUserEliminated(game.id)) return 'eliminated';
+    if (isGameOver(game.deployedAt)) return 'gameOver';
+    if (hasUserJoined(game) || isUserJoined(game.id)) {
+      if (hasGameStarted(game.id)) return 'enterGame';
+      return 'waitingToStart';
+    }
+    return 'joinGame';
   };
 
   const formatAddress = (address: string) => {
@@ -468,27 +490,118 @@ export default function Arena() {
                   )}
                 </div>
 
-                <button 
-                  onClick={() => handleJoinGame(game)}
-                  disabled={!game.isActive || !user?.loggedIn || joiningGameId === game.id}
-                  style={{
-                    width: "100%",
-                    background: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#666" : "linear-gradient(90deg, #4ade80 0%, #22c55e 100%)",
-                    color: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#fff" : "#065f46",
-                    fontWeight: "bold",
-                    border: "2px solid white",
-                    borderRadius: "8px",
-                    padding: "12px 16px",
-                    fontSize: "14px",
-                    cursor: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "not-allowed" : "pointer",
-                    fontFamily: "monospace",
-                    opacity: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? 0.6 : 1
-                  }}
-                >
-                  {joiningGameId === game.id ? "Joining..." : 
-                   !user?.loggedIn ? "Connect Wallet" :
-                   !game.isActive ? "Game Ended" : "Join Game"}
-                </button>
+                {(() => {
+                  const buttonState = getButtonState(game);
+                  
+                  switch (buttonState) {
+                    case 'eliminated':
+                      return (
+                        <button
+                          disabled
+                          style={{
+                            width: "100%",
+                            background: "#dc2626",
+                            color: "white",
+                            border: "2px solid white",
+                            borderRadius: "8px",
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            cursor: "not-allowed",
+                            opacity: 0.7,
+                            fontFamily: "monospace"
+                          }}
+                        >
+                          Eliminated
+                        </button>
+                      );
+                    case 'gameOver':
+                      return (
+                        <button
+                          disabled
+                          style={{
+                            width: "100%",
+                            background: "#6b7280",
+                            color: "white",
+                            border: "2px solid white",
+                            borderRadius: "8px",
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            cursor: "not-allowed",
+                            opacity: 0.7,
+                            fontFamily: "monospace"
+                          }}
+                        >
+                          Game Over
+                        </button>
+                      );
+                    case 'waitingToStart':
+                      return (
+                        <button
+                          disabled
+                          style={{
+                            width: "100%",
+                            background: "linear-gradient(90deg, #f59e0b 0%, #d97706 100%)",
+                            color: "white",
+                            border: "2px solid white",
+                            borderRadius: "8px",
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            cursor: "not-allowed",
+                            fontFamily: "monospace"
+                          }}
+                        >
+                          Waiting to Start
+                        </button>
+                      );
+                    case 'enterGame':
+                      return (
+                        <button
+                          onClick={() => handleEnterGame(game.id)}
+                          style={{
+                            width: "100%",
+                            background: "linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%)",
+                            color: "white",
+                            border: "2px solid white",
+                            borderRadius: "8px",
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            fontFamily: "monospace"
+                          }}
+                        >
+                          Enter Game
+                        </button>
+                      );
+                    default: // joinGame
+                      return (
+                        <button 
+                          onClick={() => handleJoinGame(game)}
+                          disabled={!game.isActive || !user?.loggedIn || joiningGameId === game.id}
+                          style={{
+                            width: "100%",
+                            background: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#666" : "linear-gradient(90deg, #4ade80 0%, #22c55e 100%)",
+                            color: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "#fff" : "#065f46",
+                            fontWeight: "bold",
+                            border: "2px solid white",
+                            borderRadius: "8px",
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            cursor: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? "not-allowed" : "pointer",
+                            fontFamily: "monospace",
+                            opacity: (!game.isActive || !user?.loggedIn || joiningGameId === game.id) ? 0.6 : 1
+                          }}
+                        >
+                          {joiningGameId === game.id ? "Joining..." : 
+                           !user?.loggedIn ? "Connect Wallet" :
+                           !game.isActive ? "Game Ended" : "Join Game"}
+                        </button>
+                      );
+                  }
+                })()}
               </div>
             ))}
           </div>

@@ -149,6 +149,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added game result display showing survival status and dice roll outcomes
   - Updated UI to show "Game Over" for expired games and "Eliminated" for failed players
   - Made game activation time configurable via VITE_GAME_ACTIVATION_TIME_SECONDS environment variable
+  - Enhanced button states to show player journey: Join Game → Waiting to Start → Enter Game → Results
+  - Implemented proper game state tracking for joined players and started games
 
 ## Changelog
 
