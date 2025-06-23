@@ -5,12 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { ConnectWallet } from "@/components/wallet/ConnectWallet";
+import { WalletInfo } from "@/components/wallet/WalletInfo";
+import { useWallet } from "@/contexts/WalletContext";
 import { useToast } from "@/hooks/use-toast";
 
 export default function SmartContracts() {
   const [flowGameId, setFlowGameId] = useState("");
   const [ethNumber, setEthNumber] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { isConnected } = useWallet();
   const { toast } = useToast();
 
   const createFlowGame = async () => {
@@ -126,6 +130,14 @@ export default function SmartContracts() {
             <a href="/smart-contracts" className="text-electric-purple font-semibold">Smart Contracts</a>
             <a href="/marketplace" className="text-gray-300 hover:text-cyber-blue transition-colors">Game Templates</a>
           </nav>
+
+          <div className="flex items-center gap-3">
+            {isConnected ? (
+              <WalletInfo />
+            ) : (
+              <ConnectWallet />
+            )}
+          </div>
         </div>
       </header>
 

@@ -123,10 +123,20 @@ This is a full-stack gaming platform application built with React, Express, and 
 - **Deployment**: Autoscale deployment target
 - **Port Mapping**: Internal 5000 → External 80
 
+## Recent Changes
+
+- June 23, 2025: Added EVM wallet integration for Flow blockchain
+  - Integrated Wagmi for Metamask wallet connectivity
+  - Created Tickets system (1:1 with stablecoins)
+  - Added wallet-gated game entry functionality
+  - Built deposit modal for PYUSD/USDC stablecoins
+  - Updated all page headers with wallet connect/info components
+
 ## Changelog
 
 Changelog:
 - June 22, 2025. Initial setup
+- June 23, 2025. EVM wallet integration with Flow blockchain support
 
 ## User Preferences
 
