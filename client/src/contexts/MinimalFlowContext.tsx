@@ -408,13 +408,35 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       import GuessTheDiceV2 from 0x0dd7dc583201e8b1
 
       access(all) fun main(gameId: UInt64): [Address] {
+          log("Script called with gameId: ".concat(gameId.toString()))
+          
+          // Try to get the game reference using optional binding
           let gameRef = GuessTheDiceV2.getGameRef(gameId: gameId)
-          return gameRef.activePlayers
+          if gameRef != nil {
+              log("Found game with ID: ".concat(gameId.toString()))
+              log("Active players count: ".concat(gameRef!.activePlayers.length.toString()))
+              
+              // Log each player address
+              var i = 0
+              while i < gameRef!.activePlayers.length {
+                  log("Player ".concat(i.toString()).concat(": ").concat(gameRef!.activePlayers[i].toString()))
+                  i = i + 1
+              }
+              
+              return gameRef!.activePlayers
+          } else {
+              log("ERROR: No game found with ID: ".concat(gameId.toString()))
+              log("This might mean the game doesn't exist or there's an access issue")
+              return []
+          }
       }
     `;
 
     try {
       console.log(`Reading active players for game ${gameId}...`);
+      console.log(`Using script:`, script);
+      console.log(`Game ID as UInt64:`, parseInt(gameId));
+      
       const result = await fcl.query({
         cadence: script,
         args: (arg, types) => [
@@ -422,15 +444,35 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         ]
       });
       
-      console.log(`Active players result for game ${gameId}:`, result);
+      console.log(`Raw contract result for game ${gameId}:`, result);
+      console.log(`Result type:`, typeof result);
+      console.log(`Is array:`, Array.isArray(result));
       
-      // Convert addresses to strings if they aren't already
-      const players = result ? result.map((addr: any) => addr.toString()) : [];
+      // Handle different possible result formats
+      let players: string[] = [];
+      if (Array.isArray(result)) {
+        players = result.map((addr: any) => {
+          // Handle both string and object formats
+          if (typeof addr === 'string') {
+            return addr;
+          } else if (addr && typeof addr === 'object' && addr.toString) {
+            return addr.toString();
+          } else {
+            console.warn('Unexpected address format:', addr);
+            return String(addr);
+          }
+        });
+      } else if (result) {
+        console.warn('Expected array but got:', result);
+        players = [];
+      }
+      
       console.log(`Processed players for game ${gameId}:`, players);
       
       return players;
     } catch (error) {
       console.error(`Failed to read active players for game ${gameId}:`, error);
+      console.error('Error details:', error);
       return [];
     }
   };

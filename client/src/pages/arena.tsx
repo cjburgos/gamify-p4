@@ -32,16 +32,20 @@ export default function Arena() {
           const updatedGames = await Promise.all(games.map(async (game: DeployedGame) => {
             try {
               if (getActivePlayers) {
-                console.log(`Checking active players for game ${game.id}...`);
-                const activePlayers = await getActivePlayers(game.id);
-                console.log(`Contract returned for game ${game.id}:`, activePlayers);
-                console.log(`Current stored players for game ${game.id}:`, game.players);
+                console.log(`\n=== Checking game ${game.id} ===`);
+                console.log(`Current stored players:`, game.players);
                 
-                // Always sync if contract has different data than stored
-                if (activePlayers.length >= 0 && 
-                    (!game.players || 
-                     game.players.length !== activePlayers.length || 
-                     (activePlayers.length > 0 && !activePlayers.every(player => game.players?.includes(player))))) {
+                const activePlayers = await getActivePlayers(game.id);
+                console.log(`Contract returned players:`, activePlayers);
+                console.log(`Players array length:`, activePlayers.length);
+                
+                // Check if we need to sync (always check, even for empty arrays)
+                const needsSync = !game.players || 
+                                 game.players.length !== activePlayers.length || 
+                                 (activePlayers.length > 0 && !activePlayers.every(player => game.players?.includes(player))) ||
+                                 (game.players.length > 0 && !game.players.every(player => activePlayers.includes(player)));
+                
+                if (needsSync) {
                   
                   console.log(`Syncing backend for game ${game.id} with contract players:`, activePlayers);
                   

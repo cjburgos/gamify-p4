@@ -139,6 +139,9 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Implemented PlayerJoined event listening and player address tracking in game data
   - Enhanced game cards to display joined player addresses with proper styling
   - Added backend API endpoint for updating game player lists from blockchain events
+  - Enhanced contract reading with detailed logging and better error handling
+  - Improved UI styling with high-contrast colors for Pool Size and Players sections
+  - Added comprehensive Flow script debugging for activePlayers property reading
 
 ## Changelog
 
