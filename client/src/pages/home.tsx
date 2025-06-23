@@ -72,9 +72,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900" data-version="v2">
+    <div className="min-h-screen" style={{background: 'linear-gradient(to bottom right, #581c87, #1e3a8a, #312e81)'}}>
       {/* Retro Header */}
-      <header className="border-b-4 border-yellow-400 bg-gradient-to-r from-purple-800 to-blue-800 shadow-lg">
+      <header style={{borderBottom: '4px solid #facc15', background: 'linear-gradient(to right, #6b21a8, #1e40af)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'}}>
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center border-2 border-white shadow-lg">
@@ -107,10 +107,10 @@ export default function Home() {
       {/* Marketplace Content */}
       <main className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-yellow-400 mb-4" style={{fontFamily: "'Press Start 2P', monospace"}}>
+          <h2 className="text-4xl font-bold mb-4" style={{color: '#facc15', fontFamily: "'Press Start 2P', monospace"}}>
             Game Smart Contract Marketplace
           </h2>
-          <p className="text-xl text-blue-200 max-w-3xl mx-auto" style={{fontFamily: "'Press Start 2P', monospace"}}>
+          <p className="text-lg max-w-3xl mx-auto" style={{color: '#bfdbfe', fontFamily: "'Press Start 2P', monospace"}}>
             Deploy elimination-style games where players compete for stablecoin prizes. Choose your template and become a GameMaster.
           </p>
         </div>
