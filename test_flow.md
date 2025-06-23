@@ -2,14 +2,15 @@
 
 ## Expected Flow:
 1. User clicks "Join Game" 
-2. Alert shows: "Successfully joined game X! Wait for the game to start."
-3. User address appears in Players list
+2. Alert shows: "Successfully joined game X! Wait for the game to start." (NO GUESS NUMBER)
+3. User appears in local joined state (may not show in blockchain players until guess submitted)
 4. Wait for 90-second countdown
 5. When timer reaches 0: "GAME STARTING!" appears
-6. 2 seconds later: Dice guess modal appears
-7. User has 10 seconds to submit guess (1-6)
-8. Modal shows "Rolling dice..." for 2 seconds
-9. Result modal shows dice roll number and survival status
+6. 2 seconds later: Dice guess modal appears for ALL joined players
+7. User manually inputs guess (1-6) and clicks Submit
+8. Guess gets submitted to blockchain at this point
+9. Modal shows "Rolling dice..." for 2 seconds
+10. Result modal shows dice roll number and survival status
 
 ## Debug Steps:
 1. Check console for "Timer expired for game X, calling handleGameStart"

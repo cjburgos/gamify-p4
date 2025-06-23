@@ -418,7 +418,10 @@ export default function Arena() {
                 
                 <GameCountdownTimer 
                   deployedAt={game.deployedAt}
-                  onGameStart={() => handleGameStart(game.id)}
+                  onGameStart={() => {
+                    console.log(`Timer expired for game ${game.id}, calling handleGameStart`);
+                    handleGameStart(game.id);
+                  }}
                   className="mb-4"
                 />
                 
