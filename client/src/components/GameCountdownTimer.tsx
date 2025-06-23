@@ -20,6 +20,7 @@ export function GameCountdownTimer({ deployedAt, onGameStart, className = "" }: 
       
       if (remaining === 0 && !hasStarted) {
         setHasStarted(true);
+        console.log('Timer reached zero, calling onGameStart');
         onGameStart?.();
       }
       

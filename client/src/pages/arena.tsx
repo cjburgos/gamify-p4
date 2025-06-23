@@ -141,12 +141,24 @@ export default function Arena() {
     
     // Check if current user joined this game
     const userAddress = user?.addr;
-    if (userAddress && (isUserJoined(gameId) || hasUserJoined(deployedGames.find(g => g.id === gameId)!))) {
-      console.log('User joined this game - showing guess modal');
+    const game = deployedGames.find(g => g.id === gameId);
+    const userJoinedLocally = isUserJoined(gameId);
+    const userJoinedBlockchain = game && hasUserJoined(game);
+    
+    console.log(`User address: ${userAddress}`);
+    console.log(`User joined locally: ${userJoinedLocally}`);
+    console.log(`User joined blockchain: ${userJoinedBlockchain}`);
+    console.log(`Game players:`, game?.players);
+    
+    if (userAddress && (userJoinedLocally || userJoinedBlockchain)) {
+      console.log('User joined this game - showing guess modal in 2 seconds');
       setTimeout(() => {
+        console.log('Triggering guess modal now');
         setActiveGameId(gameId);
         setShowGuessModal(true);
-      }, 1000); // 1 second delay for "Game Starting!" effect
+      }, 2000); // 2 second delay for "Game Starting!" effect
+    } else {
+      console.log('User did not join this game - no modal');
     }
   };
 

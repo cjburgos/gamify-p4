@@ -360,7 +360,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       const result = await fcl.tx(transactionId).onceSealed();
       console.log("Join game transaction sealed:", result);
 
-      if (result.status === 4) {
+      if (result.status === 5) {
         console.log("Join game transaction failed:", result.errorMessage);
         throw new Error(result.errorMessage || "Failed to join game");
       }
@@ -435,33 +435,38 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     `;
 
     try {
-      console.log(`Reading active players for game ${gameId} using GuessTheDiceV3...`);
-      
+      console.log(
+        `Reading active players for game ${gameId} using GuessTheDiceV3...`,
+      );
+
       const result = await fcl.query({
         cadence: script,
-        args: (arg, types) => [
-          arg(gameId, t.UInt64)
-        ]
+        args: (arg, types) => [arg(gameId, t.UInt64)],
       });
-      
+
       console.log(`Contract result for game ${gameId}:`, result);
-      console.log(`Result type:`, typeof result, `Array:`, Array.isArray(result));
-      
+      console.log(
+        `Result type:`,
+        typeof result,
+        `Array:`,
+        Array.isArray(result),
+      );
+
       // Process the result into string addresses
       let players: string[] = [];
       if (Array.isArray(result)) {
         players = result.map((addr: any) => {
-          if (typeof addr === 'string') {
+          if (typeof addr === "string") {
             return addr;
-          } else if (addr && typeof addr === 'object' && addr.toString) {
+          } else if (addr && typeof addr === "object" && addr.toString) {
             return addr.toString();
           } else {
-            console.warn('Unexpected address format:', addr);
+            console.warn("Unexpected address format:", addr);
             return String(addr);
           }
         });
       }
-      
+
       console.log(`Active players for game ${gameId}:`, players);
       return players;
     } catch (error) {
