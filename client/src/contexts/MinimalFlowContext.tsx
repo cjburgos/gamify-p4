@@ -283,7 +283,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       // Save to backend instead of localStorage
       try {
         console.log("Saving game to backend:", deployedGame);
-        
+
         const response = await fetch("/api/deployed-games", {
           method: "POST",
           headers: {
@@ -295,7 +295,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
         console.log("Backend response status:", response.status);
         const responseText = await response.text();
         console.log("Backend response:", responseText);
-        
+
         if (!response.ok) {
           console.error("Failed to save game to backend:", responseText);
           throw new Error(`Backend save failed: ${responseText}`);
@@ -316,7 +316,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const joinGame = async (gameId: string, guess: number): Promise<boolean> => {
+  const joinGame = async (gameId: string, guess: string): Promise<boolean> => {
     if (!user?.loggedIn || !user.addr) {
       throw new Error("User must be authenticated to join games");
     }
@@ -330,6 +330,8 @@ export function FlowProvider({ children }: { children: ReactNode }) {
           prepare(signer: &Account) {
               // Join the game as a player
               let playerAddress = signer.address
+              let gameId: UInt8 = ${gameId}
+              let guess: Int = ${guess}
               let gameRef = GuessTheDiceV2.getGameRef(gameId: gameId)
               
               // Join the game with the player's guess
@@ -341,12 +343,12 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
     try {
       console.log(`Joining game ${gameId} with guess ${guess}...`);
-      
+
       const transactionId = await fcl.mutate({
         cadence: transaction,
         args: (arg: any, t: any) => [
           arg(parseInt(gameId), t.UInt64),
-          arg(guess, t.Int)
+          arg(guess, t.Int),
         ],
         proposer: fcl.authz,
         payer: fcl.authz,
