@@ -183,8 +183,8 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       // Wait for transaction to be sealed
       const result = await fcl.tx(transactionId).onceSealed();
       console.log("Transaction sealed:", result);
-
-      if (result.status === 4) {
+      console.log("Transaction status:", result.status);
+      if (result.status === 5) {
         console.log("Transaction failed:", result.errorMessage);
         throw new Error(result.errorMessage || "Transaction failed");
       }
@@ -282,6 +282,8 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // Save to backend instead of localStorage
       try {
+        console.log("Saving game to backend:", deployedGame);
+        
         const response = await fetch("/api/deployed-games", {
           method: "POST",
           headers: {
@@ -290,14 +292,19 @@ export function FlowProvider({ children }: { children: ReactNode }) {
           body: JSON.stringify(deployedGame),
         });
 
+        console.log("Backend response status:", response.status);
+        const responseText = await response.text();
+        console.log("Backend response:", responseText);
+        
         if (!response.ok) {
-          const error = await response.json();
-          console.warn("Failed to save game to backend:", error.message);
+          console.error("Failed to save game to backend:", responseText);
+          throw new Error(`Backend save failed: ${responseText}`);
         } else {
-          console.log("Game saved to backend successfully:", deployedGame);
+          console.log("Game saved to backend successfully");
         }
       } catch (error) {
-        console.warn("Error saving game to backend:", error);
+        console.error("Error saving game to backend:", error);
+        // Don't throw here - the game was still deployed successfully
       }
 
       return gameId;

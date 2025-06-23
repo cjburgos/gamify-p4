@@ -47,6 +47,60 @@ async function writeDeployedGames(games: DeployedGame[]): Promise<void> {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Deployed games routes - ADD THESE FIRST
+  app.get("/api/deployed-games", async (req, res) => {
+    try {
+      const games = await readDeployedGames();
+      res.json(games);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/deployed-games", async (req, res) => {
+    try {
+      const gameData: DeployedGame = req.body;
+      
+      // Validate required fields
+      if (!gameData.id || !gameData.gameType || !gameData.gameMaster || !gameData.transactionId) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const games = await readDeployedGames();
+      
+      // Check if game already exists
+      const existingGame = games.find(g => g.id === gameData.id || g.transactionId === gameData.transactionId);
+      if (existingGame) {
+        return res.status(409).json({ message: "Game already exists" });
+      }
+
+      games.push(gameData);
+      await writeDeployedGames(games);
+      
+      res.status(201).json(gameData);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.delete("/api/deployed-games/:id", async (req, res) => {
+    try {
+      const gameId = req.params.id;
+      const games = await readDeployedGames();
+      
+      const filteredGames = games.filter(g => g.id !== gameId);
+      
+      if (filteredGames.length === games.length) {
+        return res.status(404).json({ message: "Game not found" });
+      }
+
+      await writeDeployedGames(filteredGames);
+      res.status(204).send();
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // Get all games
   app.get("/api/games", async (req, res) => {
     try {
@@ -298,6 +352,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch Ethereum game state" });
     }
   });
+
+
 
   const httpServer = createServer(app);
   return httpServer;
