@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { useFlow } from "../contexts/MinimalFlowContext";
 import { ConnectWallet } from "../components/wallet/ConnectWallet";
 import { WalletInfo } from "../components/wallet/WalletInfo";
+import { WalletGuard } from '@/components/wallet/WalletGuard';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { GameCountdownTimer } from '@/components/GameCountdownTimer';
+import { DiceGuessModal } from '@/components/DiceGuessModal';
+import { GameResultModal } from '@/components/GameResultModal';
 
 interface DeployedGame {
   id: string;
