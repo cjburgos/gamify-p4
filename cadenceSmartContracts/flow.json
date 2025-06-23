@@ -1,28 +1,25 @@
 {
 	"contracts": {
-		"GuessTheDice": {
-			"source": "cadence/contracts/GuessTheDice.cdc",
-			"aliases": {
-				"testnet": "9a0766d93b6608b7"
-			}
-		},
 		"RandomConsumer": {
 			"source": "cadence/contracts/RandomConsumer.cdc",
 			"aliases": {
 				"testnet": "9a0766d93b6608b7"
 			}
 		},
-		"RandomResultStorage": "cadence/contracts/test/RandomResultStorage.cdc",
 		"Treasury": {
 			"source": "cadence/contracts/Treasury.cdc",
 			"aliases": {
 				"testnet": "9a0766d93b6608b7"
 			}
 		},
+		"RandomResultStorage": "cadence/contracts/test/RandomResultStorage.cdc",
 		"Xorshift128plus": {
-			"source": "cadence/contracts/Xorshift128plus.cdc"
+			"source": "cadence/contracts/Xorshift128plus.cdc",
+			"aliases": {
+				"testnet": "9a0766d93b6608b7"
+			}
 		},	
-		"GuessTheDiceV4": {
+		"GuessTheDice": {
 			"source": "cadence/contracts/GuessTheDice.cdc",
 			"aliases": {
 				"testnet": "9a0766d93b6608b7"
@@ -239,32 +236,37 @@
 				"type": "file",
 				"location": "GamifyAdminTestnet.pkey"
 			}
-		},
-		"TreasuryAdminTestnet2": {
-			"address": "8331a619d6a1b5f4",
-			"key": {
-				"type": "file",
-				"location": "TreasuryAdminTestnet2.pkey"
-			}
 		}
 	},
 	"deployments": {
 		"testnet": {
 			"GamifyAdminTestnet": [
-				"RandomConsumer",
-				"Xorshift128plus",
 				{
-					"name": "GuessTheDiceV4",
+					"name": "RandomConsumer",
+					"args": []
+				},
+				{
+					"name": "Treasury",
+					"args": []
+				},
+				{
+				
+	 				"name": "Xorshift128plus",
+					"args": []
+				},
+				{
+					"name": "GuessTheDice",
 					"args": [
 						{
 							"value": "1.00000000",
 							"type": "UFix64"
 						}
+					],
+					"GamifyAdminTestnet": [
+						"Xorshift128plus",
+						"RandomConsumer"
 					]
 				}
-			],
-			"TreasuryAdminTestnet2": [
-				"Treasury"
 			]
 		}
 	}
