@@ -163,6 +163,7 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Restored complete header navigation while maintaining fixed game flow functionality
   - Fixed shared dice roll system: all players in same game now see identical dice results
   - Added server-side dice result storage and API endpoints for consistent game outcomes
+  - Restored player counter display showing number of joined players per game
 
 ## Changelog
 
