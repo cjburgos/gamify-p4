@@ -21,34 +21,57 @@ export default function Arena() {
   const [joiningGameId, setJoiningGameId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load deployed games from API
-    const loadGames = async () => {
+    const fetchGames = async () => {
       try {
         const response = await fetch('/api/deployed-games');
         if (response.ok) {
           const games = await response.json();
           console.log('Loaded games from API:', games);
-          setDeployedGames(games);
-        } else {
-          console.error('Failed to load games from API');
-          setDeployedGames([]);
+          
+          // For each game, try to get active players from contract and sync
+          const updatedGames = await Promise.all(games.map(async (game: DeployedGame) => {
+            try {
+              if (getActivePlayers) {
+                const activePlayers = await getActivePlayers(game.id);
+                console.log(`Active players for game ${game.id}:`, activePlayers);
+                
+                // If contract has players and they differ from stored data, update backend
+                if (activePlayers.length > 0 && 
+                    (!game.players || 
+                     game.players.length !== activePlayers.length || 
+                     !activePlayers.every(player => game.players?.includes(player)))) {
+                  
+                  console.log(`Updating backend for game ${game.id} with players:`, activePlayers);
+                  
+                  await fetch(`/api/deployed-games/${game.id}/players`, {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ players: activePlayers }),
+                  });
+                  
+                  return { ...game, players: activePlayers };
+                }
+              }
+              return game;
+            } catch (error) {
+              console.warn(`Failed to get active players for game ${game.id}:`, error);
+              return game;
+            }
+          }));
+          
+          setDeployedGames(updatedGames);
         }
       } catch (error) {
-        console.error('Error loading games from API:', error);
-        setDeployedGames([]);
+        console.error('Failed to fetch deployed games:', error);
       }
     };
 
-    // Initial load
-    loadGames();
-    
-    // Poll for updates every 3 seconds
-    const interval = setInterval(loadGames, 3000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    fetchGames();
+    const interval = setInterval(fetchGames, 5000);
+    return () => clearInterval(interval);
+  }, [getActivePlayers]);
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -264,6 +287,75 @@ export default function Arena() {
                       {game.isActive ? "Active" : "Inactive"}
                     </span>
                   </div>
+
+                  {/* Pool Size */}
+                  <div style={{
+                    marginBottom: "8px",
+                    padding: "6px 8px",
+                    background: "rgba(147, 51, 234, 0.1)",
+                    borderRadius: "6px",
+                    border: "1px solid rgba(147, 51, 234, 0.3)"
+                  }}>
+                    <span style={{
+                      color: "#7c3aed",
+                      fontSize: "13px",
+                      fontWeight: "bold",
+                      fontFamily: "monospace"
+                    }}>
+                      Pool Size: {((game.players?.length || 0) * game.entryCost).toFixed(2)} FLOW
+                    </span>
+                    <span style={{
+                      color: "#6b7280",
+                      fontSize: "11px",
+                      fontFamily: "monospace",
+                      marginLeft: "8px"
+                    }}>
+                      ({game.players?.length || 0} players)
+                    </span>
+                  </div>
+
+                  {/* Players section */}
+                  {game.players && game.players.length > 0 && (
+                    <div style={{
+                      marginBottom: "12px",
+                      padding: "8px",
+                      background: "rgba(34, 197, 94, 0.1)",
+                      borderRadius: "6px",
+                      border: "1px solid rgba(34, 197, 94, 0.3)"
+                    }}>
+                      <div style={{
+                        fontSize: "12px",
+                        color: "#22c55e",
+                        fontWeight: "bold",
+                        marginBottom: "4px",
+                        fontFamily: "monospace"
+                      }}>
+                        Players Joined ({game.players.length}):
+                      </div>
+                      <div style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: "4px"
+                      }}>
+                        {game.players.map((player, index) => (
+                          <span
+                            key={index}
+                            style={{
+                              fontSize: "10px",
+                              color: "#065f46",
+                              background: "rgba(34, 197, 94, 0.2)",
+                              padding: "2px 6px",
+                              borderRadius: "4px",
+                              fontFamily: "monospace",
+                              border: "1px solid rgba(34, 197, 94, 0.4)"
+                            }}
+                          >
+                            {formatAddress(player)}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <button 
