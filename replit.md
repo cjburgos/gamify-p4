@@ -142,6 +142,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Enhanced contract reading with detailed logging and better error handling
   - Improved UI styling with high-contrast colors for Pool Size and Players sections
   - Added comprehensive Flow script debugging for activePlayers property reading
+  - Updated to GuessTheDiceV3 contract with corrected activePlayers access syntax
+  - Implemented real-time player tracking with 2-second polling intervals
 
 ## Changelog
 
