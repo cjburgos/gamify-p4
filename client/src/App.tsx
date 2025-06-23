@@ -9,7 +9,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import Marketplace from "@/pages/marketplace";
 import SmartContracts from "@/pages/smart-contracts";
-import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
@@ -17,7 +16,14 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/marketplace" component={Marketplace} />
       <Route path="/smart-contracts" component={SmartContracts} />
-      <Route component={NotFound} />
+      <Route>
+        <div className="min-h-screen bg-dark-primary text-white flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">Page Not Found</h1>
+            <a href="/" className="text-electric-purple hover:underline">Return to Browse Games</a>
+          </div>
+        </div>
+      </Route>
     </Switch>
   );
 }
