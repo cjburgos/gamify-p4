@@ -90,6 +90,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 89,
         hostRating: 46, // 4.6
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Crypto Roulette",
@@ -112,6 +115,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 203,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Number Wizard",
@@ -134,6 +140,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 156,
         hostRating: 47, // 4.7
+        blockchainType: "ethereum",
+        contractAddress: "0x1234567890123456789012345678901234567890",
+        gameContractId: "NumberWizard",
       },
       {
         title: "Coin Flip Battle",
@@ -156,9 +165,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 78,
         hostRating: 45, // 4.5
-        blockchainType: null,
-        contractAddress: null,
-        gameContractId: null,
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Lucky Seven",
@@ -181,6 +190,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 312,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Rock Paper Scissors",
@@ -203,6 +215,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 89,
         hostRating: 46, // 4.6
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Color Wheel Spin",
@@ -225,6 +240,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 156,
         hostRating: 48, // 4.8
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       }
     ];
 
@@ -257,6 +275,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 45,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Jeopardy Champions",
@@ -279,6 +300,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 67,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Deal or No Deal",
@@ -301,6 +325,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 23,
         hostRating: 48, // 4.8
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Price is Right Showcase",
@@ -323,6 +350,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 12,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "McDonald's Menu Challenge",
@@ -345,6 +375,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 134,
         hostRating: 47, // 4.7
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Starbucks Barista Training",
@@ -367,6 +400,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 67,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Netflix Binge Challenge",
@@ -389,6 +425,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 89,
         hostRating: 48, // 4.8
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Adobe Creative Skills Test",
@@ -411,6 +450,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 34,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       }
     ];
 
@@ -443,6 +485,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 234,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "World Cup 2026 Winner",
@@ -465,6 +510,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 89,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "NBA Next Shot",
@@ -487,6 +535,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 456,
         hostRating: 48, // 4.8
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Champions League Final",
@@ -509,6 +560,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 67,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Super Bowl Coin Toss",
@@ -531,6 +585,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 178,
         hostRating: 47, // 4.7
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Taylor Swift Concert Song",
@@ -553,6 +610,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 67,
         hostRating: 49, // 4.9
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Cirque du Soleil Act",
@@ -575,6 +635,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 45,
         hostRating: 50, // 5.0
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Grammy Awards Winner",
@@ -597,6 +660,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 23,
         hostRating: 48, // 4.8
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       },
       {
         title: "Broadway Opening Night",
@@ -619,6 +685,9 @@ export class MemStorage implements IStorage {
         ],
         hostGamesHosted: 89,
         hostRating: 47, // 4.7
+      blockchainType: null,
+      contractAddress: null,
+      gameContractId: null,
       }
     ];
 
@@ -704,9 +773,12 @@ export class MemStorage implements IStorage {
     const game: Game = { 
       ...insertGame, 
       id,
-      currentPlayers: insertGame.currentPlayers || 0,
-      hostGamesHosted: insertGame.hostGamesHosted || 0,
-      hostRating: insertGame.hostRating || 50
+      currentPlayers: insertGame.currentPlayers ?? 0,
+      hostGamesHosted: insertGame.hostGamesHosted ?? 0,
+      hostRating: insertGame.hostRating ?? 50,
+      blockchainType: insertGame.blockchainType ?? null,
+      contractAddress: insertGame.contractAddress ?? null,
+      gameContractId: insertGame.gameContractId ?? null,
     };
     this.games.set(id, game);
     return game;
