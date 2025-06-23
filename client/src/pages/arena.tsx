@@ -168,6 +168,13 @@ export default function Arena() {
     return eliminatedGames.has(gameId);
   };
 
+  const isGameOver = (deployedAt: string) => {
+    const deployTime = new Date(deployedAt).getTime();
+    const gameStartTime = deployTime + (90 * 1000); // 90 seconds after deployment
+    const now = Date.now();
+    return now >= gameStartTime;
+  };
+
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
@@ -356,6 +363,12 @@ export default function Arena() {
                 <h3 style={{ fontSize: "20px", color: "white", marginBottom: "16px", textAlign: "center" }}>
                   {game.gameType} Game
                 </h3>
+                
+                <GameCountdownTimer 
+                  deployedAt={game.deployedAt}
+                  onGameStart={() => handleGameStart(game.id)}
+                  className="mb-4"
+                />
                 
                 <div style={{ marginBottom: "20px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "14px" }}>
