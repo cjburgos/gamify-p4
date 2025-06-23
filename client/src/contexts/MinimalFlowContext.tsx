@@ -159,11 +159,11 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     const transaction = `
-      import GuessTheDiceV2 from 0x0dd7dc583201e8b1
+      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
       
       transaction {
           prepare(signer: &Account) {
-              let gameId = GuessTheDiceV2.createGame()
+              let gameId = GuessTheDiceV3.createGame()
               log("New game created with ID: ".concat(gameId.toString()))
           }
       }
@@ -318,7 +318,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const joinGame = async (gameId: string, guess: string): Promise<boolean> => {
+  const joinGame = async (gameId: string): Promise<boolean> => {
     if (!user?.loggedIn || !user.addr) {
       throw new Error("User must be authenticated to join games");
     }
@@ -326,32 +326,27 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     const transaction = `
-      import GuessTheDiceV2 from 0x0dd7dc583201e8b1
+      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
 
-      transaction(gameId: UInt64, guess: Int) {
-          prepare(signer: &Account) {
-              // Join the game as a player
-              let playerAddress = signer.address
-              let gameId: UInt8 = ${gameId}
-              let guess: Int = ${guess}
-              let gameRef = GuessTheDiceV2.getGameRef(gameId: gameId)
-              
-              // Join the game with the player's guess
-              gameRef.join(player: playerAddress, guess: guess)
-              log("Player ".concat(playerAddress.toString()).concat(" joined game ").concat(gameId.toString()).concat(" with guess ").concat(guess.toString()))
-          }
-      }
+      transaction(gameId: UInt64) {
+        prepare(signer: &Account) {
+            // Join the game as a player
+            let playerAddress = signer.address
+            let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
+            
+            // Join the game with the player's guess
+            gameRef.join(player: playerAddress)
+            log("Player ".concat(playerAddress.toString()).concat(" joined game ").concat(gameId.toString()))
+        }
+    }
     `;
 
     try {
-      console.log(`Joining game ${gameId} with guess ${guess}...`);
+      console.log(`Joining game ${gameId}`);
 
       const transactionId = await fcl.mutate({
         cadence: transaction,
-        args: (arg, types) => [
-          arg(parseInt(gameId), t.UInt64),
-          arg(guess, t.Int),
-        ],
+        args: (arg, type) => [arg(parseInt(gameId), type.UInt64)],
         proposer: fcl.authz,
         payer: fcl.authz,
         authorizations: [fcl.authz],
@@ -364,7 +359,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       const result = await fcl.tx(transactionId).onceSealed();
       console.log("Join game transaction sealed:", result);
 
-      if (result.status === 4) {
+      if (result.status === 5) {
         console.log("Join game transaction failed:", result.errorMessage);
         throw new Error(result.errorMessage || "Failed to join game");
       }

@@ -11,6 +11,7 @@ interface DeployedGame {
   transactionId: string;
   deployedAt: string;
   isActive: boolean;
+  players?: string[];
 }
 
 export default function Arena() {
@@ -72,6 +73,10 @@ export default function Arena() {
       const success = await joinGame(game.id, guess);
       if (success) {
         alert(`Successfully joined game ${game.id} with guess ${guess}!`);
+        // Refresh the games list to show updated player data
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.error('Failed to join game:', error);
