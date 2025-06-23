@@ -27,66 +27,93 @@ export default function Arena() {
         if (response.ok) {
           const games = await response.json();
           console.log('Loaded games from API:', games);
-          
-          // For each game, try to get active players from contract and sync
-          const updatedGames = await Promise.all(games.map(async (game: DeployedGame) => {
-            try {
-              if (getActivePlayers) {
-                console.log(`\n=== Checking game ${game.id} ===`);
-                console.log(`Current stored players:`, game.players);
-                
-                const activePlayers = await getActivePlayers(game.id);
-                console.log(`Contract returned players:`, activePlayers);
-                console.log(`Players array length:`, activePlayers.length);
-                
-                // Check if we need to sync (always check, even for empty arrays)
-                const needsSync = !game.players || 
-                                 game.players.length !== activePlayers.length || 
-                                 (activePlayers.length > 0 && !activePlayers.every(player => game.players?.includes(player))) ||
-                                 (game.players.length > 0 && !game.players.every(player => activePlayers.includes(player)));
-                
-                if (needsSync) {
-                  
-                  console.log(`Syncing backend for game ${game.id} with contract players:`, activePlayers);
-                  
-                  try {
-                    const response = await fetch(`/api/deployed-games/${game.id}/players`, {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ players: activePlayers }),
-                    });
-                    
-                    if (response.ok) {
-                      console.log(`Successfully updated backend for game ${game.id}`);
-                      return { ...game, players: activePlayers };
-                    } else {
-                      console.error(`Failed to update backend for game ${game.id}:`, response.status);
-                    }
-                  } catch (updateError) {
-                    console.error(`Error updating backend for game ${game.id}:`, updateError);
-                  }
-                }
-              }
-              return game;
-            } catch (error) {
-              console.warn(`Failed to get active players for game ${game.id}:`, error);
-              return game;
-            }
-          }));
-          
-          setDeployedGames(updatedGames);
+          setDeployedGames(games);
         }
       } catch (error) {
         console.error('Failed to fetch deployed games:', error);
       }
     };
 
+    // Initial fetch
     fetchGames();
-    const interval = setInterval(fetchGames, 5000);
-    return () => clearInterval(interval);
-  }, [getActivePlayers]);
+    
+    // Fetch games every 5 seconds
+    const gamesInterval = setInterval(fetchGames, 5000);
+    
+    return () => clearInterval(gamesInterval);
+  }, []);
+
+  // Separate effect for active players synchronization every 2 seconds
+  useEffect(() => {
+    const syncActivePlayers = async () => {
+      if (!getActivePlayers || deployedGames.length === 0) {
+        return;
+      }
+
+      console.log('=== Starting active players sync ===');
+      
+      const updatedGames = await Promise.all(deployedGames.map(async (game: DeployedGame) => {
+        try {
+          console.log(`Checking active players for game ${game.id}...`);
+          console.log(`Current stored players:`, game.players);
+          
+          const activePlayers = await getActivePlayers(game.id);
+          console.log(`Contract returned for game ${game.id}:`, activePlayers);
+          
+          // Check if we need to sync
+          const needsSync = !game.players || 
+                           game.players.length !== activePlayers.length || 
+                           (activePlayers.length > 0 && !activePlayers.every(player => game.players?.includes(player))) ||
+                           (game.players.length > 0 && !game.players.every(player => activePlayers.includes(player)));
+          
+          if (needsSync) {
+            console.log(`Syncing backend for game ${game.id} with contract players:`, activePlayers);
+            
+            try {
+              const response = await fetch(`/api/deployed-games/${game.id}/players`, {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ players: activePlayers }),
+              });
+              
+              if (response.ok) {
+                console.log(`Successfully updated backend for game ${game.id}`);
+                return { ...game, players: activePlayers };
+              } else {
+                console.error(`Failed to update backend for game ${game.id}:`, response.status);
+              }
+            } catch (updateError) {
+              console.error(`Error updating backend for game ${game.id}:`, updateError);
+            }
+          }
+          
+          return game;
+        } catch (error) {
+          console.warn(`Failed to get active players for game ${game.id}:`, error);
+          return game;
+        }
+      }));
+      
+      // Update state if any games were modified
+      const hasChanges = updatedGames.some((game, index) => 
+        game.players?.length !== deployedGames[index]?.players?.length ||
+        (game.players && deployedGames[index]?.players && 
+         !game.players.every(player => deployedGames[index]?.players?.includes(player)))
+      );
+      
+      if (hasChanges) {
+        console.log('Player data changed, updating UI');
+        setDeployedGames(updatedGames);
+      }
+    };
+
+    // Start syncing active players every 2 seconds
+    const playersInterval = setInterval(syncActivePlayers, 2000);
+    
+    return () => clearInterval(playersInterval);
+  }, [getActivePlayers, deployedGames]);
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;

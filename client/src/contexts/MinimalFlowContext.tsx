@@ -367,29 +367,46 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       // After successful transaction, read the updated activePlayers from contract
       try {
-        console.log(`Join transaction successful, now reading contract for game ${gameId}...`);
+        console.log(
+          `Join transaction successful, now reading contract for game ${gameId}...`,
+        );
         const activePlayers = await getActivePlayers(gameId);
         console.log("Active players from contract after join:", activePlayers);
-        
+
         if (activePlayers && activePlayers.length >= 0) {
           // Update backend with the complete player list
-          console.log(`Updating backend with ${activePlayers.length} players for game ${gameId}`);
-          const response = await fetch(`/api/deployed-games/${gameId}/players`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
+          console.log(
+            `Updating backend with ${activePlayers.length} players for game ${gameId}`,
+          );
+          const response = await fetch(
+            `/api/deployed-games/${gameId}/players`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ players: activePlayers }),
             },
-            body: JSON.stringify({ players: activePlayers }),
-          });
-          
+          );
+
           if (response.ok) {
-            console.log("Successfully updated backend with active players:", activePlayers);
+            console.log(
+              "Successfully updated backend with active players:",
+              activePlayers,
+            );
           } else {
-            console.error("Failed to update backend:", response.status, await response.text());
+            console.error(
+              "Failed to update backend:",
+              response.status,
+              await response.text(),
+            );
           }
         }
       } catch (error) {
-        console.error("Failed to read active players from contract after join:", error);
+        console.error(
+          "Failed to read active players from contract after join:",
+          error,
+        );
       }
 
       console.log("Successfully joined game!");
@@ -405,29 +422,28 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   // Function to get active players from contract
   const getActivePlayers = async (gameId: string): Promise<string[]> => {
     const script = `
-      import GuessTheDiceV2 from 0x0dd7dc583201e8b1
-
-      access(all) fun main(gameId: UInt64): [Address] {
-          log("Script called with gameId: ".concat(gameId.toString()))
-          
-          // Try to get the game reference using optional binding
-          let gameRef = GuessTheDiceV2.getGameRef(gameId: gameId)
-          if gameRef != nil {
-              log("Found game with ID: ".concat(gameId.toString()))
-              log("Active players count: ".concat(gameRef!.activePlayers.length.toString()))
+      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
+      
+      transaction(gameId: UInt64) {
+          prepare(signer: &Account) {
+              log("Transaction called with gameId: ".concat(gameId.toString()))
               
-              // Log each player address
-              var i = 0
-              while i < gameRef!.activePlayers.length {
-                  log("Player ".concat(i.toString()).concat(": ").concat(gameRef!.activePlayers[i].toString()))
-                  i = i + 1
+              // Try to get the game reference using optional binding
+              let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
+              if gameRef != nil {
+                  log("Found game with ID: ".concat(gameId.toString()))
+                  log("Active players count: ".concat(gameRef!.activePlayers.length.toString()))
+                  
+                  // Log each player address
+                  var i = 0
+                  while i < gameRef!.activePlayers.length {
+                      log("Player ".concat(i.toString()).concat(": ").concat(gameRef!.activePlayers[i].toString()))
+                      i = i + 1
+                  }
+              } else {
+                  log("ERROR: No game found with ID: ".concat(gameId.toString()))
+                  log("This might mean the game doesn't exist or there's an access issue")
               }
-              
-              return gameRef!.activePlayers
-          } else {
-              log("ERROR: No game found with ID: ".concat(gameId.toString()))
-              log("This might mean the game doesn't exist or there's an access issue")
-              return []
           }
       }
     `;
@@ -436,43 +452,41 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       console.log(`Reading active players for game ${gameId}...`);
       console.log(`Using script:`, script);
       console.log(`Game ID as UInt64:`, parseInt(gameId));
-      
+
       const result = await fcl.query({
         cadence: script,
-        args: (arg, types) => [
-          arg(parseInt(gameId), t.UInt64)
-        ]
+        args: (arg, types) => [arg(parseInt(gameId), t.UInt64)],
       });
-      
+
       console.log(`Raw contract result for game ${gameId}:`, result);
       console.log(`Result type:`, typeof result);
       console.log(`Is array:`, Array.isArray(result));
-      
+
       // Handle different possible result formats
       let players: string[] = [];
       if (Array.isArray(result)) {
         players = result.map((addr: any) => {
           // Handle both string and object formats
-          if (typeof addr === 'string') {
+          if (typeof addr === "string") {
             return addr;
-          } else if (addr && typeof addr === 'object' && addr.toString) {
+          } else if (addr && typeof addr === "object" && addr.toString) {
             return addr.toString();
           } else {
-            console.warn('Unexpected address format:', addr);
+            console.warn("Unexpected address format:", addr);
             return String(addr);
           }
         });
       } else if (result) {
-        console.warn('Expected array but got:', result);
+        console.warn("Expected array but got:", result);
         players = [];
       }
-      
+
       console.log(`Processed players for game ${gameId}:`, players);
-      
+
       return players;
     } catch (error) {
       console.error(`Failed to read active players for game ${gameId}:`, error);
-      console.error('Error details:', error);
+      console.error("Error details:", error);
       return [];
     }
   };
