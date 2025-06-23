@@ -424,69 +424,48 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     const script = `
       import GuessTheDiceV3 from 0x0dd7dc583201e8b1
       
-      transaction(gameId: UInt64) {
-          prepare(signer: &Account) {
-              log("Transaction called with gameId: ".concat(gameId.toString()))
-              
-              // Try to get the game reference using optional binding
-              let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
-              if gameRef != nil {
-                  log("Found game with ID: ".concat(gameId.toString()))
-                  log("Active players count: ".concat(gameRef!.activePlayers.length.toString()))
-                  
-                  // Log each player address
-                  var i = 0
-                  while i < gameRef!.activePlayers.length {
-                      log("Player ".concat(i.toString()).concat(": ").concat(gameRef!.activePlayers[i].toString()))
-                      i = i + 1
-                  }
-              } else {
-                  log("ERROR: No game found with ID: ".concat(gameId.toString()))
-                  log("This might mean the game doesn't exist or there's an access issue")
-              }
+      access(all) fun main(gameId: UInt64): [Address] {
+          let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
+          if gameRef != nil {
+              return *gameRef!.activePlayers
+          } else {
+              return []
           }
       }
     `;
 
     try {
-      console.log(`Reading active players for game ${gameId}...`);
-      console.log(`Using script:`, script);
-      console.log(`Game ID as UInt64:`, parseInt(gameId));
-
+      console.log(`Reading active players for game ${gameId} using GuessTheDiceV3...`);
+      
       const result = await fcl.query({
         cadence: script,
-        args: (arg, types) => [arg(parseInt(gameId), t.UInt64)],
+        args: (arg, types) => [
+          arg(parseInt(gameId), t.UInt64)
+        ]
       });
-
-      console.log(`Raw contract result for game ${gameId}:`, result);
-      console.log(`Result type:`, typeof result);
-      console.log(`Is array:`, Array.isArray(result));
-
-      // Handle different possible result formats
+      
+      console.log(`Contract result for game ${gameId}:`, result);
+      console.log(`Result type:`, typeof result, `Array:`, Array.isArray(result));
+      
+      // Process the result into string addresses
       let players: string[] = [];
       if (Array.isArray(result)) {
         players = result.map((addr: any) => {
-          // Handle both string and object formats
-          if (typeof addr === "string") {
+          if (typeof addr === 'string') {
             return addr;
-          } else if (addr && typeof addr === "object" && addr.toString) {
+          } else if (addr && typeof addr === 'object' && addr.toString) {
             return addr.toString();
           } else {
-            console.warn("Unexpected address format:", addr);
+            console.warn('Unexpected address format:', addr);
             return String(addr);
           }
         });
-      } else if (result) {
-        console.warn("Expected array but got:", result);
-        players = [];
       }
-
-      console.log(`Processed players for game ${gameId}:`, players);
-
+      
+      console.log(`Active players for game ${gameId}:`, players);
       return players;
     } catch (error) {
       console.error(`Failed to read active players for game ${gameId}:`, error);
-      console.error("Error details:", error);
       return [];
     }
   };
