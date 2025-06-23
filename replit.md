@@ -169,6 +169,8 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added multi-round elimination logic: games continue until no players survive
   - Implemented automatic round progression when players survive dice rolls
   - Added server endpoint to clear dice results between rounds for fair gameplay
+  - Fixed multi-round flow: surviving players automatically continue without clicking "Enter Game"
+  - Enhanced elimination tracking to properly mark eliminated players across rounds
 
 ## Changelog
 
