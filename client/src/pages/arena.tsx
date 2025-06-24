@@ -151,8 +151,7 @@ export default function Arena() {
     if (isUserEliminated(game.id)) return 'eliminated';
     if (isGameOver(game.deployedAt)) return 'gameOver';
     if (joinedGames.has(game.id)) {
-      if (hasGameStarted(game.id)) return 'enterGame';
-      return 'waitingToStart';
+      return 'waitingToStart'; // No "Enter Game" state - modal auto-opens
     }
     return 'joinGame';
   };
