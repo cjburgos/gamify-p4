@@ -68,8 +68,7 @@ export default function Arena() {
   const handleGameStart = (gameId: string) => {
     console.log(`Game ${gameId} started! Timer expired.`);
     setStartedGames(prev => new Set([...prev, gameId]));
-      }, 2000);
-    } else {
+  };
       console.log('User did not join this game - no modal');
     }
   };
@@ -195,7 +194,6 @@ export default function Arena() {
             {hasGameStarted(game.id) ? 'In Game...' : 'Waiting to Start...'}
           </button>
         );
-      case 'enterGame':
         return (
           <button
             onClick={() => {
@@ -214,28 +212,6 @@ export default function Arena() {
               width: "100%",
               boxShadow: "0 4px 8px rgba(124, 58, 237, 0.3)",
               animation: "pulse 2s infinite"
-            }}
-          >
-            Enter Game
-          </button>
-        );
-      case 'enterGame':
-        return (
-          <button
-            onClick={() => {
-              setActiveGameId(game.id);
-              setShowGuessModal(true);
-            }}
-            style={{
-              background: "linear-gradient(45deg, #7c3aed 0%, #a855f7 100%)",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              padding: "12px 24px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              width: "100%"
             }}
           >
             Enter Game
