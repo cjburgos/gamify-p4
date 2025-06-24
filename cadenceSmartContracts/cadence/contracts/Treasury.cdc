@@ -1,4 +1,5 @@
 access(all) contract Treasury {
+
     // Struct for storing game state
     access(all) struct GameState {
         access(all) let winners: [Address]
@@ -17,23 +18,21 @@ access(all) contract Treasury {
     // Dictionary to store game states
     access(self) let gameStates: {UInt64: GameState}
 
-
     // Event emitted when game state is updated
     access(all) event GameStateUpdated(gameId: UInt64, winners: [Address], completed: Bool, value: UInt256, mathContract: Address?)
 
+    access(all) event GameValueUpdate(gameId: UInt64, value: UInt256)
+
     // Initialize the contract
     init() {
-
         self.gameStates = {}
     }
 
-    // Add a new game address mapping
+    // Add a new game
     access(all) fun addGame(gameId: UInt64) {
         pre {
             !self.gameStates.containsKey(gameId): "Game ID already exists"
         }
-
-
 
         // Create a new GameState with empty winners array, completed set to false, and value set to 0
         let emptyWinners: [Address] = []
@@ -56,6 +55,25 @@ access(all) contract Treasury {
 
     access(all) fun getGameState(gameId: UInt64): GameState? {
         return self.gameStates[gameId]
+    }
+
+    access(all) fun receiveBet(gameId: UInt64, value: UInt256) {
+        pre {
+                self.gameStates.containsKey(gameId): "Game state does not exist for the given game ID"
+            }
+
+        let currentState = self.gameStates[gameId]
+
+        let newValue = (currentState?.value ?? 0) + value
+
+        self.updateGameState(
+            gameId: gameId, 
+            winners: currentState?.winners ?? [], 
+            completed: currentState?.completed ?? false, 
+            value: newValue, 
+            mathContract: currentState?.mathContract
+        )
+        emit GameValueUpdate(gameId: gameId, value: newValue)
     }
 
     access(all) fun collectWinnings(gameId: UInt64) {

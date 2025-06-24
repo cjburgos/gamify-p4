@@ -1,4 +1,5 @@
 import RandomConsumer from 0x0dd7dc583201e8b1
+import Treasury from 0x8331a619d6a1b5f4
 
 access(all) contract GuessTheDiceV4 {
 
@@ -14,7 +15,7 @@ access(all) contract GuessTheDiceV4 {
     access(all) event GameEnded(gameId: UInt64, winner: Address?)
     access(all) event DiceGuessProvided(guessedDiceValue: UInt8)
     access(all) event DiceRolled(rolled: UInt8, receiptID: String)
-    
+
     /// The canonical path for common Receipt storage
     /// Note: production systems would consider handling path collisions
     access(all) let ReceiptStoragePath: StoragePath
@@ -53,6 +54,7 @@ access(all) contract GuessTheDiceV4 {
         let newGame <- create GameInstance(id: gameId, admin: self.admin)
         self.gameInstances[gameId] <-! newGame
         self.nextGameId = gameId + 1
+        Treasury.addGame(gameId: self.nextGameId)
         emit GameCreated(id: gameId)
         return gameId
     }
@@ -106,7 +108,7 @@ access(all) contract GuessTheDiceV4 {
             self.players[player] <-! newPlayer
             self.GameStateData[player] <-! newPlayerState
             self.activePlayers.append(player)
-
+            Treasury.receiveBet(self.id, UInt256(bet))
             emit PlayerJoined(gameId: self.id, player: player)
         }
 
