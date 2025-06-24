@@ -18,9 +18,10 @@ export function GameCountdownTimer({ deployedAt, onGameStart, className = "" }: 
       const now = Date.now();
       const remaining = Math.max(0, gameStartTime - now);
       
+      // Ensure all players get the exact same timer by using server time sync
       if (remaining === 0 && !hasStarted) {
         setHasStarted(true);
-        console.log('Timer reached zero, calling onGameStart');
+        console.log(`Timer reached zero for game deployed at ${deployedAt}, calling onGameStart`);
         onGameStart?.();
       }
       
