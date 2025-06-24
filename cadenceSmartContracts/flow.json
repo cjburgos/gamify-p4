@@ -22,7 +22,7 @@
 		"Xorshift128plus": {
 			"source": "cadence/contracts/Xorshift128plus.cdc"
 		},	
-		"GuessTheDiceV4": {
+		"GuessTheDiceV5": {
 			"source": "cadence/contracts/GuessTheDice.cdc",
 			"aliases": {
 				"testnet": "9a0766d93b6608b7"
@@ -254,7 +254,7 @@
 				"RandomConsumer",
 				"Xorshift128plus",
 				{
-					"name": "GuessTheDiceV4",
+					"name": "GuessTheDiceV5",
 					"args": [
 						{
 							"value": "1.00000000",
