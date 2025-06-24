@@ -160,11 +160,11 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     const transaction = `
-      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
+      import GuessTheDiceV4 from 0x0dd7dc583201e8b1
       
       transaction {
           prepare(signer: &Account) {
-              let gameId = GuessTheDiceV3.createGame()
+              let gameId = GuessTheDiceV4.createGame()
               log("New game created with ID: ".concat(gameId.toString()))
           }
       }
@@ -327,16 +327,16 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
 
     const transaction = `
-      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
+      import GuessTheDiceV4 from 0x0dd7dc583201e8b1
 
-      transaction(gameId: UInt64) {
+      transaction(gameId: UInt64, bet: UFix64) {
         prepare(signer: &Account) {
             // Join the game as a player
             let playerAddress = signer.address
-            let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
+            let gameRef = GuessTheDiceV4.getGameRef(gameId: gameId)
             
             // Join the game with the player's guess
-            gameRef.join(player: playerAddress)
+            gameRef.join(player: playerAddress, bet: bet)
             log("Player ".concat(playerAddress.toString()).concat(" joined game ").concat(gameId.toString()))
         }
     }
@@ -347,7 +347,10 @@ export function FlowProvider({ children }: { children: ReactNode }) {
 
       const transactionId = await fcl.mutate({
         cadence: transaction,
-        args: (arg, type) => [arg(parseInt(gameId), type.UInt64)],
+        args: (arg, type) => [
+          arg(parseInt(gameId), type.UInt64),
+          arg(1.0, type.UFix64),
+        ],
         proposer: fcl.authz,
         payer: fcl.authz,
         authorizations: [fcl.authz],
@@ -422,10 +425,10 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   // Function to get active players from contract
   const getActivePlayers = async (gameId: string): Promise<string[]> => {
     const script = `
-      import GuessTheDiceV3 from 0x0dd7dc583201e8b1
+      import GuessTheDiceV4 from 0x0dd7dc583201e8b1
       
       access(all) fun main(gameId: UInt64): [Address] {
-          let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
+          let gameRef = GuessTheDiceV4.getGameRef(gameId: gameId)
           if gameRef != nil {
               return *gameRef!.activePlayers
           } else {

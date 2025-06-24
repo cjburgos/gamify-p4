@@ -179,14 +179,28 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult, roundNumber 
               </Button>
             </>
           ) : (
-            <div className="space-y-3">
-              <div className="text-yellow-400 text-lg font-bold">
-                {isSubmitting ? '🎲 Rolling dice...' : '✅ Guess submitted!'}
-              </div>
-              {isSubmitting && (
-                <div className="text-gray-300 text-sm">
-                  Please wait while the dice is rolled...
-                </div>
+            <div className="space-y-4">
+              {isSubmitting ? (
+                <>
+                  <div 
+                    className="text-6xl mx-auto w-fit"
+                    style={{ 
+                      animation: "spin 0.3s linear infinite",
+                      color: "#fbbf24"
+                    }}
+                  >
+                    🎲
+                  </div>
+                  <div className="text-yellow-400 text-lg font-bold">Rolling dice...</div>
+                  <style>{`
+                    @keyframes spin {
+                      from { transform: rotate(0deg); }
+                      to { transform: rotate(360deg); }
+                    }
+                  `}</style>
+                </>
+              ) : (
+                <div className="text-green-400 text-lg font-bold">✅ Guess submitted!</div>
               )}
             </div>
           )}
