@@ -1,6 +1,6 @@
 import RandomConsumer from 0x0dd7dc583201e8b1
 
-access(all) contract GuessTheDiceV4 {
+access(all) contract GuessTheDiceV5 {
 
     access(all) let entryFee: UFix64
     access(all) let admin: Address
@@ -91,7 +91,7 @@ access(all) contract GuessTheDiceV4 {
 
         }
 
-        access(all) fun join(player: Address, bet: UFix64) {
+        access(all) fun join(player: Address) {
             pre {
                 self.isOpen: "Game not accepting new players"
                 self.players[player] == nil: "Player already joined"
@@ -100,7 +100,6 @@ access(all) contract GuessTheDiceV4 {
             let newPlayer <- create Player(address: player)
             let newPlayerState <- create GameStateDataEntry(
                 roundNumber: self.roundNumber,
-                bet: bet,
                 guessValue: 0 // Initial guess value can be set to 0 or any default value
             )
             self.players[player] <-! newPlayer
@@ -222,12 +221,10 @@ access(all) contract GuessTheDiceV4 {
 
     access(all) resource GameStateDataEntry {
         access(all) let roundNumber: UInt32
-        access(all) let bet: UFix64
         access(all) var guessValue: UInt8
 
-        init(roundNumber: UInt32, bet: UFix64, guessValue: UInt8) {
+        init(roundNumber: UInt32, guessValue: UInt8) {
             self.roundNumber = roundNumber
-            self.bet = bet
             self.guessValue = guessValue
         }
 
