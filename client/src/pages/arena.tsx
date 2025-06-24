@@ -69,9 +69,6 @@ export default function Arena() {
     console.log(`Game ${gameId} started! Timer expired.`);
     setStartedGames(prev => new Set([...prev, gameId]));
   };
-      console.log('User did not join this game - no modal');
-    }
-  };
 
   const handleJoinGame = async (game: DeployedGame) => {
     if (!user?.loggedIn) {
@@ -194,6 +191,7 @@ export default function Arena() {
             {hasGameStarted(game.id) ? 'In Game...' : 'Waiting to Start...'}
           </button>
         );
+      case 'enterGame':
         return (
           <button
             onClick={() => {
