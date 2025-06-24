@@ -1,6 +1,6 @@
 import RandomConsumer from 0x0dd7dc583201e8b1
 
-access(all) contract GuessTheDiceV2 {
+access(all) contract GuessTheDiceV4 {
 
     access(all) let entryFee: UFix64
     access(all) let admin: Address
@@ -12,7 +12,7 @@ access(all) contract GuessTheDiceV2 {
     access(all) event PlayerJoined(gameId: UInt64, player: Address)
     access(all) event RoundClosed(gameId: UInt64, rolled: UInt8, survivors: [Address])
     access(all) event GameEnded(gameId: UInt64, winner: Address?)
-    access(all) event DiceGuessProvided(guessedDiceValue: UInt8, commitBlock: UInt64, receiptID: String)
+    access(all) event DiceGuessProvided(guessedDiceValue: UInt8)
     access(all) event DiceRolled(rolled: UInt8, receiptID: String)
     
     /// The canonical path for common Receipt storage
@@ -71,6 +71,7 @@ access(all) contract GuessTheDiceV2 {
         access(all) var lastRoll: UInt8?
         access(all) var commitBlockHeight: UInt64?
         access(all) var commitSecret: [UInt8]?
+        access(all) var GameStateData: @{Address: GameStateDataEntry}
         /// The RandomConsumer.Consumer resource used to request & fulfill randomness
         access(self) var consumer: @RandomConsumer.Consumer
 
@@ -80,23 +81,30 @@ access(all) contract GuessTheDiceV2 {
             self.isOpen = true
             self.players <- {}
             self.activePlayers = []
-            self.roundNumber = 1
             self.lastRoll = nil
+            self.roundNumber = 1
             self.commitBlockHeight = nil
             self.commitSecret = nil
+            self.GameStateData <- {}
             // Create a RandomConsumer.Consumer resource
             self.consumer <-RandomConsumer.createConsumer()
 
         }
 
-        access(all) fun join(player: Address, guess: Int) {
+        access(all) fun join(player: Address, bet: UFix64) {
             pre {
                 self.isOpen: "Game not accepting new players"
-                guess >= 1 && guess <= 6: "Guess must be 1-6"
+                self.players[player] == nil: "Player already joined"
             }
 
             let newPlayer <- create Player(address: player)
+            let newPlayerState <- create GameStateDataEntry(
+                roundNumber: self.roundNumber,
+                bet: bet,
+                guessValue: 0 // Initial guess value can be set to 0 or any default value
+            )
             self.players[player] <-! newPlayer
+            self.GameStateData[player] <-! newPlayerState
             self.activePlayers.append(player)
 
             emit PlayerJoined(gameId: self.id, player: player)
@@ -111,74 +119,65 @@ access(all) contract GuessTheDiceV2 {
             return UInt8(self.consumer.fulfillRandomInRange(request: <-request, min: 1, max: 6))
         }
 
-        access(all) fun commitDiceGuess(player: Address, round: UInt32, guessValue: UInt8): @Receipt {
+
+        access(all) fun rollTheDice(commitHash: [UInt8]) {
+            pre {
+                self.isOpen: "Game closed"
+                self.activePlayers.length > 0: "No players"
+                commitHash.length == 32: "Invalid commit hash length"
+            }
+
+            let request <- self.consumer.requestRandomness()
+            let receipt <- create Receipt(guessedDiceValue: 0, request: <-request)
+
+            // Store the commit block height and secret for later use
+            self.commitBlockHeight = receipt.getRequestBlock()!
+            self.commitSecret = commitHash
+            self.lastRoll = self.randomDiceRoll(request: <-receipt.popRequest()!)
+            destroy receipt
+        }
+
+
+        access(all) fun commitDiceGuess(player: Address, guessValue: UInt8) {
             pre {
                 self.isOpen: "Game closed"
                 self.activePlayers.contains(player): "Player not in game"
                 guessValue >= 1 && guessValue <= 6: "Guess must be 1-6"
             }
             let playerRef: &Player = (&self.players[player])!
-            let request <- self.consumer.requestRandomness()
-            let receipt <- create Receipt(
-                guessedDiceValue: guessValue,
-                request: <-request
-            )
+            self.GameStateData[player]?.updateGuessValue(newGuessValue: guessValue)
 
-            emit DiceGuessProvided(guessedDiceValue: receipt.guessedDiceValue, commitBlock: receipt.getRequestBlock()!, receiptID: receipt.uuid.toString())
-
-            playerRef.recordGuess(round: self.roundNumber, guess: guessValue)
-
-            return <- receipt
+            emit DiceGuessProvided(guessedDiceValue: guessValue)
         }
 
-        access(all) fun revealDiceRoll(receipt: @Receipt) {
+        access(all) fun CloseRound() {
             pre {
-                self.isOpen: "Game closed"
-                self.activePlayers.length > 0: "No players"
-                receipt.request != nil: "Invalid receipt"
-                receipt.getRequestBlock()! <= getCurrentBlock().height:
-                "GuessTheDice.revealDiceRoll: Cannot reveal the dice roll! The provided receipt was committed for block height ".concat(receipt.getRequestBlock()!.toString())
-                .concat(" which is greater than the current block height of ")
-                .concat(getCurrentBlock().height.toString())
-                .concat(". The reveal can only happen after the committed block has passed.")
+                self.isOpen: "Game is closed"
+                self.activePlayers.length > 0: "No active players"
             }
 
-            let extracted <- receipt.popRequest()
-            let rolled = self.randomDiceRoll(request: <- extracted!)
-                // continue with rolled
-            // let rolled = self.randomDiceRoll(request: <- receipt.request!)
-            emit DiceRolled(rolled: rolled, receiptID: receipt.uuid.toString())
+            self.rollTheDice(commitHash: self.commitSecret!)
 
-            self.CloseRound(round: self.roundNumber, rolled: rolled)
-
-            destroy receipt
-
-        }
-
-        access(all) fun CloseRound(round: UInt32, rolled: UInt8) {
-            pre {
-                rolled >= 1 && rolled <= 6: "Invalid dice roll"
-            }
-
-            self.lastRoll = rolled
             var survivors: [Address] = []
-            let keys = self.players.keys
+            let keys = self.GameStateData.keys
             var newPlayers: @{Address: Player} <- {}
 
             for key in keys {
                 let player <- self.players.remove(key: key)!
-                if player.getGuessForRound(round: round) == rolled {
+                let playerState <- self.GameStateData.remove(key: key)!
+                if playerState.guessValue == self.lastRoll! {
                     survivors.append(player.address)
                     newPlayers[player.address] <-! player
                 } else {
                     destroy player
                 }
+                destroy playerState
             }
 
             self.activePlayers = survivors
             self.roundNumber = self.roundNumber + 1
 
-            emit RoundClosed(gameId: self.id, rolled: rolled, survivors: survivors)
+            emit RoundClosed(gameId: self.id, rolled: self.lastRoll!, survivors: survivors)
 
             if survivors.length <= 1 {
                 self.isOpen = false
@@ -218,6 +217,25 @@ access(all) contract GuessTheDiceV2 {
 
         access(all) fun getAddress(): Address {
             return self.address
+        }
+    }
+
+    access(all) resource GameStateDataEntry {
+        access(all) let roundNumber: UInt32
+        access(all) let bet: UFix64
+        access(all) var guessValue: UInt8
+
+        init(roundNumber: UInt32, bet: UFix64, guessValue: UInt8) {
+            self.roundNumber = roundNumber
+            self.bet = bet
+            self.guessValue = guessValue
+        }
+
+        access(all) fun updateGuessValue(newGuessValue: UInt8) {
+            pre {
+                newGuessValue >= 1 && newGuessValue <= 6: "Guess must be between 1 and 6"
+            }
+            self.guessValue = newGuessValue
         }
     }
 }
