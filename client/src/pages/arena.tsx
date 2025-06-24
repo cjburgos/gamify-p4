@@ -66,23 +66,8 @@ export default function Arena() {
   }, []);
 
   const handleGameStart = (gameId: string) => {
-    console.log(`Game ${gameId} has started!`);
+    console.log(`Game ${gameId} started! Timer expired.`);
     setStartedGames(prev => new Set([...prev, gameId]));
-    
-    const userAddress = user?.addr;
-    const userJoinedLocally = joinedGames.has(gameId);
-    
-    console.log(`User address: ${userAddress}`);
-    console.log(`User joined locally: ${userJoinedLocally}`);
-    
-    if (userAddress && userJoinedLocally) {
-      console.log('User joined this game - starting round 1');
-      // Initialize round counter
-      setActiveGameRounds(prev => ({ ...prev, [gameId]: 1 }));
-      
-      setTimeout(() => {
-        console.log('Starting Round 1 - showing dice modal');
-        setShowDiceModal(prev => ({ ...prev, [gameId]: true }));
       }, 2000);
     } else {
       console.log('User did not join this game - no modal');
@@ -151,7 +136,8 @@ export default function Arena() {
     if (isUserEliminated(game.id)) return 'eliminated';
     if (isGameOver(game.deployedAt)) return 'gameOver';
     if (joinedGames.has(game.id)) {
-      return 'waitingToStart'; // No "Enter Game" state - modal auto-opens
+      if (hasGameStarted(game.id)) return 'enterGame';
+      return 'waitingToStart';
     }
     return 'joinGame';
   };
@@ -206,7 +192,31 @@ export default function Arena() {
               width: "100%"
             }}
           >
-            Waiting to Start
+            {hasGameStarted(game.id) ? 'In Game...' : 'Waiting to Start...'}
+          </button>
+        );
+      case 'enterGame':
+        return (
+          <button
+            onClick={() => {
+              setActiveGameId(game.id);
+              setShowGuessModal(true);
+            }}
+            style={{
+              background: "linear-gradient(45deg, #7c3aed 0%, #a855f7 100%)",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              padding: "12px 24px",
+              fontSize: "16px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              width: "100%",
+              boxShadow: "0 4px 8px rgba(124, 58, 237, 0.3)",
+              animation: "pulse 2s infinite"
+            }}
+          >
+            Enter Game
           </button>
         );
       case 'enterGame':
