@@ -95,17 +95,25 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult, roundNumber 
             const result = await response.json();
             diceRoll = result.diceRoll;
             console.log(`Retrieved shared dice roll from server: ${diceRoll}`);
-          } else {
-            // Fallback: generate and store a dice roll for this game
+          } else if (response.status === 404) {
+            // No dice roll exists yet - generate and store one
             diceRoll = Math.floor(Math.random() * 6) + 1;
             console.log(`Generated new dice roll for game ${gameId}: ${diceRoll}`);
             
             // Store it on the server so other players get the same result
-            await fetch(`/api/games/${gameId}/dice-result`, {
+            const storeResponse = await fetch(`/api/games/${gameId}/dice-result`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ diceRoll })
             });
+            
+            if (storeResponse.ok) {
+              const stored = await storeResponse.json();
+              diceRoll = stored.diceRoll; // Use the stored value in case another player beat us
+              console.log(`Stored dice roll result: ${diceRoll}`);
+            }
+          } else {
+            throw new Error(`Failed to get dice result: ${response.status}`);
           }
           
           const survived = playerGuess === diceRoll;
