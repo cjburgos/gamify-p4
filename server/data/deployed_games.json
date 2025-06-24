@@ -4,54 +4,45 @@
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
     "entryCost": 1,
-    "transactionId": "a4d3638fa18a893dea2aba3c98fef86f0c10eebe5cd10f9d6190fdb82187cd8e",
-    "deployedAt": "2025-06-23T20:33:40.037Z",
+    "transactionId": "f0659d3802dd036006371bf5f40162a6d1504ca59132b00ca5f2f2cc4bc8598a",
+    "deployedAt": "2025-06-24T00:39:24.716Z",
     "isActive": true,
-    "blockHeight": "f1e93bc4d213caa11a5cb292abb553486c7c3a69e9b3deafedd99d2e1613ed03",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
+    "blockHeight": "db72c4cc6416c4e18d8b784b47f88ce188f05da79fd8f2c587496e313bc59f61",
+    "players": []
   },
   {
     "id": "2",
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
     "entryCost": 1,
-    "transactionId": "16f623e5e3b7d697f99e6af0b9d6352bad63600269570f4c3736d99ca59a52ec",
-    "deployedAt": "2025-06-23T20:52:07.727Z",
+    "transactionId": "c156414ee05418357fa565c6458da853ae3b968cb5a23e9169f82c60c5b32a7b",
+    "deployedAt": "2025-06-24T00:41:10.543Z",
     "isActive": true,
-    "blockHeight": "d082068f691f35a4270c454ff0dcd324150a06b412b75dcba55f8e924deda89e",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
+    "blockHeight": "0b71eb323aba86c2ee676f2d3d479623a726ee7cf70883cfff6b71e0bc8c7bb7",
+    "players": []
   },
   {
     "id": "3",
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
     "entryCost": 1,
-    "transactionId": "00eee13efccc2648bcb61efa6894e08a9d7b3a145920589e5c37a71cbd933af4",
-    "deployedAt": "2025-06-23T21:00:13.108Z",
+    "transactionId": "5275a5712aeec570beb1529f6ce1c76017657433ceeb2c24cb7d14f09f4f7685",
+    "deployedAt": "2025-06-24T00:43:48.624Z",
     "isActive": true,
-    "blockHeight": "c604e58e811ec8fb8c3aafbc124d345fe6b8db6ab536117867ce2a31329dbdc3",
-    "players": [
-      "0x87c1f9060976ddc8",
-      "0x91959c359072d7a9"
-    ]
+    "blockHeight": "0b1c39d01df5e028fe9f688a60babe96e6c4bae77848e6d721f7330ac1272fa0",
+    "players": []
   },
   {
     "id": "4",
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
     "entryCost": 1,
-    "transactionId": "c9cb9bba07dac4322965b2826a18cdb2d8176ec10987ca9916f6a1951d15583d",
-    "deployedAt": "2025-06-23T21:29:04.302Z",
+    "transactionId": "2e83653bc8735abc4cc3e4eb22b2e98e960fe31d0472247c5c69849c5b54f4db",
+    "deployedAt": "2025-06-24T00:48:53.720Z",
     "isActive": true,
-    "blockHeight": "b5c41b402be8168d382da4e5b6403815eb4b8d1bbe532ce7dce665990a648d7a",
+    "blockHeight": "c4ecfcdee44022c398913267993bef53121cd950d6d9038398046a39d82e7c9a",
     "players": [
-      "0x87c1f9060976ddc8"
+      "0x91959c359072d7a9"
     ]
   },
   {
@@ -59,263 +50,41 @@
     "gameType": "Elimination",
     "gameMaster": "0x91959c359072d7a9",
     "entryCost": 1,
-    "transactionId": "8dd076c15c989438667fd0246c3a0e2374a2d0572adb709e6c0f98e53b61873b",
-    "deployedAt": "2025-06-23T21:41:56.494Z",
+    "transactionId": "0578af0a4a7e04cfe2ef763b91c9238832aecaa8e117345f05a800c99ed90a8d",
+    "deployedAt": "2025-06-24T00:50:00.038Z",
     "isActive": true,
-    "blockHeight": "11e72383c89201614cf1b4fb8279365b67af64a659a1954eae4944fc2f8931bf",
+    "blockHeight": "4fde91a07ea374fb50982ffd12e55feac9920df5e105561e0506c979509fe734",
     "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
+      "0x87c1f9060976ddc8",
+      "0x91959c359072d7a9"
     ]
   },
   {
     "id": "6",
     "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
+    "gameMaster": "0x87c1f9060976ddc8",
     "entryCost": 1,
-    "transactionId": "b7a8457549324a413a9c5f0c230aab00c037331eb4f81786fefa9720469fce2a",
-    "deployedAt": "2025-06-23T21:52:33.415Z",
+    "transactionId": "3d5aaf2cc0727f8b6f31599e755abaf93dea67626bd162211db7b9d91f4e67a7",
+    "deployedAt": "2025-06-24T00:53:09.159Z",
     "isActive": true,
-    "blockHeight": "c5d1d5582d6daeff3f7ddd60df5d38f71ac6cd6b2a0cca379ae1ac19e2fe3131",
+    "blockHeight": "b032b8140d398d740b616f3531df9d109aaf054fbb7b4178c66a35b95c2f2055",
     "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
+      "0x87c1f9060976ddc8",
+      "0x91959c359072d7a9"
     ]
   },
   {
     "id": "7",
     "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
+    "gameMaster": "0x87c1f9060976ddc8",
     "entryCost": 1,
-    "transactionId": "f0d04f80cd9aa3bca3cf86006ff7b140f61456db3ce15457f85a0ecdf3150977",
-    "deployedAt": "2025-06-23T22:02:59.775Z",
+    "transactionId": "a86090dd058b6384ebba106206079ab570f2f54caed9dabdecdd0f05843f4856",
+    "deployedAt": "2025-06-24T00:54:34.088Z",
     "isActive": true,
-    "blockHeight": "b8a627ceffd0e39413cbb44749d437540a392a0be279a93ba08f173fa2d5e619",
+    "blockHeight": "c0448e08f175c68daf835b8aa1fb6f6d5a790e194745cc77913b4fc64de72f7b",
     "players": [
       "0x91959c359072d7a9",
       "0x87c1f9060976ddc8"
     ]
-  },
-  {
-    "id": "8",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "865fe31f95da98aee6044077c5f7f55017aec85804876ac929b5a5fdff7edfaf",
-    "deployedAt": "2025-06-23T22:06:39.696Z",
-    "isActive": true,
-    "blockHeight": "08d05e3d89ddb47c870dcf87b8ab19c49716251090a60642a5659b841b99ba6e",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "10",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "e0cb5f086d5fc51e42d819a52037d461a35ab127dac6fcffd2cf880783c11300",
-    "deployedAt": "2025-06-23T22:11:00.583Z",
-    "isActive": true,
-    "blockHeight": "da256381b477ce00e07adee573d608a2a9f3f991e01bdcb242c2def47f558434",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "11",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "926f7e39af20035a20d34bee6e6eba44362f51f0d0f44115ac8e89ee6404e216",
-    "deployedAt": "2025-06-23T22:16:45.324Z",
-    "isActive": true,
-    "blockHeight": "1f56e7b2a8ccc40bfe5913085b9858eae5c3db3a28c73385b876a52a30766949",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "12",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "eb53f97212982642e1d53669ec65dcee3aae4b0c0a51ee12e3f56fc82055b096",
-    "deployedAt": "2025-06-23T22:22:35.471Z",
-    "isActive": true,
-    "blockHeight": "0410f4cd4995b7b8d920fcab1bd75cd31a83b67264af4c46695b62af86450ed0",
-    "players": [
-      "0x87c1f9060976ddc8",
-      "0x91959c359072d7a9"
-    ]
-  },
-  {
-    "id": "13",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "ab53b1d49f180c9a94a87fd89cec91cd02bc9888b8e95a6d1d8fe6a29810d511",
-    "deployedAt": "2025-06-23T22:27:27.496Z",
-    "isActive": true,
-    "blockHeight": "f527c22e10413077404e9e352edb3d6eeea22e9c409f837b41744582d86eebb4",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "14",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "84d4b6c55f3e7913dd39127cc094625b199c442ddcfc76edf01a21a296a39f5a",
-    "deployedAt": "2025-06-23T22:35:01.272Z",
-    "isActive": true,
-    "blockHeight": "7910d5bd6ebd9e3ad60fee9f996cca8b53ccff874757d9f9dc4e21cdd50a5bfa",
-    "players": [
-      "0x87c1f9060976ddc8",
-      "0x91959c359072d7a9"
-    ]
-  },
-  {
-    "id": "15",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 100,
-    "transactionId": "b283ac90e399562d8552c85a0731e20dda65657fabcd4c246ec8ae634a9c578f",
-    "deployedAt": "2025-06-23T22:40:56.628Z",
-    "isActive": true,
-    "blockHeight": "0e56d325a255d6bd49e7d36f38a96b932573ccf5d697757a94631ec7585b9478",
-    "players": [
-      "0x91959c359072d7a9",
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "17",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "d34ba341d83343ff8fe0645dfaa9a93a23f4d3ac8f981aa5b14329d3e1216245",
-    "deployedAt": "2025-06-23T23:03:16.446Z",
-    "isActive": true,
-    "blockHeight": "66a00fd2387b665d8b5596024cae5aa490ca7a7982b1f65dddf5b072a5d3cc25",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "18",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "2f957cbce2115de7cd345d23af3daf2906bc686f30a907822e940c5e65573570",
-    "deployedAt": "2025-06-23T23:05:51.552Z",
-    "isActive": true,
-    "blockHeight": "4667137f6134888fee6ffc49f7cffb02e50caaa9526675ddfbfcdc8828b99517",
-    "players": []
-  },
-  {
-    "id": "19",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "13325be6a8a30f3b6f0f91b804880513cd5162825b0b77abfce53f45937eb284",
-    "deployedAt": "2025-06-23T23:08:01.419Z",
-    "isActive": true,
-    "blockHeight": "7cd1470e91d165dff0b857b114fa1a2f19b4548ab821940b44f03194414106e6",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "20",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "70024506ffad0f10e3f64835e49da92fe49497eb1d0c7890b7f9ffadd73a474f",
-    "deployedAt": "2025-06-23T23:25:26.754Z",
-    "isActive": true,
-    "blockHeight": "eda374fa818b1293d2ab7ee0cbed4aaa07334b7c482c87128b6aa7647457ef3e",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "21",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "66579ec75dce27e147cc5126ae9d21db1b036eec3952582c017a43d0b7611de2",
-    "deployedAt": "2025-06-23T23:33:27.074Z",
-    "isActive": true,
-    "blockHeight": "c6636f4480ec9d0114d32db8192b339317a241d967dec1ed9a09413988b27567",
-    "players": []
-  },
-  {
-    "id": "22",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "08981f425c1084122ddbcc9831e6c2d757e2c673f2fba1381cf7ddfab1009865",
-    "deployedAt": "2025-06-23T23:35:59.664Z",
-    "isActive": true,
-    "blockHeight": "282ce8e171f2abfc3587a19dc5db74622c21cf49ba9b9ef20416c51633e1a052",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "23",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "1be04cd8f6b7619c00463f1d4c54ce708aef10e02835c6d8a825c0be7cfa01f9",
-    "deployedAt": "2025-06-23T23:41:18.820Z",
-    "isActive": true,
-    "blockHeight": "5f91b7f5f863bf7572ecc340e74310033eec8ee7066f5b57527e92d331ed4c31",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "24",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "f058f23964245fd7985b20ab108585d2edc995a6b82260c75806392ab938af38",
-    "deployedAt": "2025-06-23T23:44:59.081Z",
-    "isActive": true,
-    "blockHeight": "ee224053be0a6ba798579db94649ca48823ae619c3eefec4805af53ba8d0b102",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "25",
-    "gameType": "Elimination",
-    "gameMaster": "0x87c1f9060976ddc8",
-    "entryCost": 1,
-    "transactionId": "4bf46278c493d21cee7c544cf24f6de5afb92bb806b99f3fcbab33f33b7ea224",
-    "deployedAt": "2025-06-24T00:03:02.093Z",
-    "isActive": true,
-    "blockHeight": "5b3a205f7034a4054dfc65d74057f08a872fe18888e69b93be1c3a3e50126d10",
-    "players": [
-      "0x87c1f9060976ddc8"
-    ]
-  },
-  {
-    "id": "27",
-    "gameType": "Elimination",
-    "gameMaster": "0x91959c359072d7a9",
-    "entryCost": 1,
-    "transactionId": "fddad81ab9ddec17412897a1d5950e1ccd0030169a7ce09312d94b9775fbfbd1",
-    "deployedAt": "2025-06-24T00:21:06.635Z",
-    "isActive": true,
-    "blockHeight": "5e400d98b64f40d857937488bcc30859e20af8006d37f49e0d4b9d6cc89b84e0",
-    "players": []
   }
 ]
