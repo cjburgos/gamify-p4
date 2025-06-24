@@ -65,11 +65,13 @@ export default function Arena() {
     console.log(`User joined locally: ${userJoinedLocally}`);
     
     if (userAddress && userJoinedLocally) {
-      console.log('User joined this game - showing guess modal in 2 seconds');
+      console.log('User joined this game - starting round 1');
+      // Initialize round counter
+      setActiveGameRounds(prev => ({ ...prev, [gameId]: 1 }));
+      
       setTimeout(() => {
-        console.log('Triggering guess modal now');
-        setActiveGameId(gameId);
-        setShowGuessModal(true);
+        console.log('Starting Round 1 - showing dice modal');
+        setShowDiceModal(prev => ({ ...prev, [gameId]: true }));
       }, 2000);
     } else {
       console.log('User did not join this game - no modal');
