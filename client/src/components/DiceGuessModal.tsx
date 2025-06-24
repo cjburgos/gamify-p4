@@ -87,37 +87,37 @@ export function DiceGuessModal({ isOpen, gameId, onClose, onResult, roundNumber 
       // Show "waiting for results" state
       setTimeout(async () => {
         try {
-          // Get the shared dice roll from the server for this game round
-          const response = await fetch(`/api/games/${gameId}/dice-result?round=${roundNumber}`);
+          // Get the shared dice roll from the server for this specific game
+          const response = await fetch(`/api/games/${gameId}/dice-result`);
           let diceRoll: number;
           
           if (response.ok) {
             const result = await response.json();
             diceRoll = result.diceRoll;
-            console.log(`Retrieved shared dice roll for game ${gameId} round ${roundNumber}: ${diceRoll}`);
+            console.log(`Retrieved shared dice roll for game ${gameId}: ${diceRoll}`);
           } else if (response.status === 404) {
-            // No dice roll exists yet for this round - generate and store one
+            // No dice roll exists yet - generate and store one for this game
             diceRoll = Math.floor(Math.random() * 6) + 1;
-            console.log(`Generated new dice roll for game ${gameId} round ${roundNumber}: ${diceRoll}`);
+            console.log(`Generated new dice roll for game ${gameId}: ${diceRoll}`);
             
             // Store it on the server so other players get the same result
             const storeResponse = await fetch(`/api/games/${gameId}/dice-result`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ diceRoll, round: roundNumber })
+              body: JSON.stringify({ diceRoll })
             });
             
             if (storeResponse.ok) {
               const stored = await storeResponse.json();
               diceRoll = stored.diceRoll; // Use the stored value in case another player beat us
-              console.log(`Confirmed dice roll for game ${gameId} round ${roundNumber}: ${diceRoll}`);
+              console.log(`Confirmed dice roll for game ${gameId}: ${diceRoll}`);
             }
           } else {
             throw new Error(`Failed to get dice result: ${response.status}`);
           }
           
           const survived = playerGuess === diceRoll;
-          console.log(`Round ${roundNumber} - Dice: ${diceRoll}, Guess: ${playerGuess}, Survived: ${survived}`);
+          console.log(`Game ${gameId} - Dice: ${diceRoll}, Guess: ${playerGuess}, Survived: ${survived}`);
           
           onResult(survived, diceRoll, playerGuess);
           setIsSubmitting(false);
