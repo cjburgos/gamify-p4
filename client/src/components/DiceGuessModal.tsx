@@ -9,9 +9,10 @@ interface DiceGuessModalProps {
   gameId: string;
   onClose: () => void;
   onResult: (survived: boolean, diceRoll: number, playerGuess: number) => void;
+  roundNumber?: number;
 }
 
-export function DiceGuessModal({ isOpen, gameId, onClose, onResult }: DiceGuessModalProps) {
+export function DiceGuessModal({ isOpen, gameId, onClose, onResult, roundNumber = 1 }: DiceGuessModalProps) {
   const [guess, setGuess] = useState('');
   const [timeLeft, setTimeLeft] = useState(10);
   const [isSubmitting, setIsSubmitting] = useState(false);

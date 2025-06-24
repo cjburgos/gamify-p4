@@ -171,6 +171,10 @@ This is a smart contract deployment marketplace for PlayOnchain - a gasless, sma
   - Added server endpoint to clear dice results between rounds for fair gameplay
   - Fixed multi-round flow: surviving players automatically continue without clicking "Enter Game"
   - Enhanced elimination tracking to properly mark eliminated players across rounds
+  - Added spinning dice animation during result waiting period for better user experience
+  - Fixed multi-round modal persistence: surviving players stay in game without reopening modals
+  - Implemented round counter display and proper game state management across multiple rounds
+  - Enhanced result modal with pulsing animation for round continuation feedback
 
 ## Changelog
 
