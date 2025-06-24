@@ -1,6 +1,6 @@
 🎮 PlayOnchain
 
-A gasless, smart contract-powered game arena where players compete in simple elimination-style games for stablecoin prizes. Powered by Flow, built for mass adoption.
+A new kind of playground—trustless, gamified, and built for the Flow blockchain, designed for mass adoption.
 
 ⏱️ Concept Overview
 
@@ -11,6 +11,10 @@ This setup empowers brands, artists, and teams to grow fan bases and run high-en
 PlayOnchain is a protocol for hosting smart contract–driven games inside recurring, gasless, stablecoin-based arenas. A user becomes a Gamemaster by deploying a custom Game Smart Contract, selecting rules, prizes, and game timing. Players join Waitrooms with their wallet and stablecoins, and when the game begins, compete in interactive, rule-based games coded directly into the chain. Prizes are instantly paid out to winners; POAPs and NFTs are issued automatically.
 
 The system is modular: anyone can spin up their own Arena, integrate simple games or oracle-driven outcomes, and onboard users into trustless, onchain competition—no tokens, no gas.
+
+🌍 Why We Built This
+
+Onchain doesn’t have to mean complex. PlayOnchain brings fun, fairness, and flexibility to the chain—without requiring tokens, technical know-how, or high stakes. Whether you're a creator, brand, or fan, PlayOnchain is the simplest way to launch and join games that reward participation, build loyalty, and make crypto feel like a game again.
 
 🎯 Hackathon Goal
 
@@ -32,7 +36,7 @@ Act as a Gamemaster, deploying Game Smart Contracts with flexible logic and timi
 
 Let Players join via a Waitroom and play gasless games with only stablecoins.
 
-Use a marketplace of plug-and-play game templates, enabling creators to monetize their contracts.
+Use a marketplace of plug-and-play game templates, enabling creators to monetize their contracts. Launch a Game Template Marketplace, where creators publish smart contract games, Gamemasters deploy them, and everyone shares in revenue.
 
 Empower brands, artists, or teams to grow fan engagement through repeatable, reward-based experiences.
 
@@ -71,6 +75,31 @@ Game Smart Contract: The contract that defines and executes a specific game’s 
 Orchestration Smart Contracts: A suite of shared modules that handle stablecoin deposits, gas sponsorship, winner payout distribution, and randomness.
 
 Player: An onchain wallet that enters Arenas, competes in games, and receives rewards like NFTs or stablecoin payouts.
+
+Core Technologies
+Flow Blockchain
+Fast, low-cost, and designed for consumer-scale apps. All gameplay logic and assets live on Flow.
+
+Cadence Smart Contracts
+Game logic is written in Cadence, Flow’s secure, resource-oriented smart contract language. Supports reusable and composable game modules with onchain elimination logic and reward distribution.
+
+Flow VRF (Verifiable Random Function)
+Each game uses Flow’s native randomness source to ensure tamper-proof and provably fair results.
+
+Stablecoin-Powered Gameplay
+Players enter games and receive payouts in Flow-native stablecoins like USDC, ensuring stable value and easy accounting.
+
+Gasless Transactions via Flow Wallets
+All player interactions are gasless and wallet-based, creating a low-friction experience ideal for mass adoption.
+
+QuickNode RPC Integration
+Our application communicates with the Flow blockchain via QuickNode, enabling fast, reliable reads and writes between the frontend and Cadence smart contracts.
+
+Arena Architecture
+Gamemasters deploy customizable Arenas that host recurring games on-chain. Each Arena manages its own game logic, timing, and prize structure.
+
+Future-Ready: EVM on Flow
+PlayOnchain is positioned to support Solidity-based contracts with Flow’s upcoming EVM compatibility, opening the door for cross-chain games and Ethereum-based tools.
 
 🗂️ Repo Structure
 
@@ -188,6 +217,10 @@ v0.1 (Hackathon): Contracts for game room, dice game, and POAP/NFT rewards
 v0.5: Custom Gamemaster dashboards, new games, randomizer integration
 
 v1.0: AI game host, public leaderboards, RWA prize support
+
+🌟 Our Belief
+
+We believe games are the gateway to mass crypto adoption. PlayOnchain isn’t just a project—it’s an open playground for builders, brands, and believers.
 
 📜 License
 
