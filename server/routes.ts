@@ -51,6 +51,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Deployed games routes - ADD THESE FIRST
   app.get("/api/deployed-games", async (req, res) => {
     try {
+      // Prevent caching to ensure fresh data
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      });
+      
       const games = await readDeployedGames();
       res.json(games);
     } catch (error: any) {
