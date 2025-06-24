@@ -39,10 +39,21 @@ export default function Arena() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch('/api/deployed-games');
+        // Add cache-busting to prevent browser caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/api/deployed-games?t=${timestamp}`, {
+          cache: 'no-cache',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
         if (response.ok) {
           const games = await response.json();
+          console.log(`Fetched ${games.length} games at ${new Date().toLocaleTimeString()}`);
           setDeployedGames(games);
+        } else {
+          console.error('Failed to fetch games:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Error fetching games:', error);
@@ -50,7 +61,7 @@ export default function Arena() {
     };
 
     fetchGames();
-    const interval = setInterval(fetchGames, 5000);
+    const interval = setInterval(fetchGames, 2000); // Poll every 2 seconds for more responsive updates
     return () => clearInterval(interval);
   }, []);
 
