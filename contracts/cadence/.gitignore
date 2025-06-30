@@ -9,3 +9,5 @@ imports
 *.key
 *.private
 *.secret
+
+vault/

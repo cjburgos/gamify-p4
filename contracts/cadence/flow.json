@@ -22,7 +22,7 @@
 		"Xorshift128plus": {
 			"source": "cadence/contracts/Xorshift128plus.cdc"
 		},	
-		"GuessTheDiceV5": {
+		"GuessTheDiceV6": {
 			"source": "cadence/contracts/GuessTheDice.cdc",
 			"aliases": {
 				"testnet": "9a0766d93b6608b7"
@@ -239,13 +239,6 @@
 				"type": "file",
 				"location": "GamifyAdminTestnet.pkey"
 			}
-		},
-		"TreasuryAdminTestnet2": {
-			"address": "8331a619d6a1b5f4",
-			"key": {
-				"type": "file",
-				"location": "TreasuryAdminTestnet2.pkey"
-			}
 		}
 	},
 	"deployments": {
@@ -253,8 +246,9 @@
 			"GamifyAdminTestnet": [
 				"RandomConsumer",
 				"Xorshift128plus",
+				"Treasury",
 				{
-					"name": "GuessTheDiceV5",
+					"name": "GuessTheDiceV6",
 					"args": [
 						{
 							"value": "1.00000000",
@@ -262,9 +256,6 @@
 						}
 					]
 				}
-			],
-			"TreasuryAdminTestnet2": [
-				"Treasury"
 			]
 		}
 	}
