@@ -1,7 +1,7 @@
 import "Burner"
 
 import "RandomBeaconHistory"
-import Xorshift128plus from 0x0dd7dc583201e8b1
+import "Xorshift128plus"
 
 /// This contract is intended to make it easy to consume randomness securely from the Flow protocol's random beacon. It provides
 /// a simple construct to commit to a request, and reveal the randomness in a secure manner as well as helper functions to
