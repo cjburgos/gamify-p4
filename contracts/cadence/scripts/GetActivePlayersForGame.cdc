@@ -1,10 +1,6 @@
-import GuessTheDiceV3 from 0x0dd7dc583201e8b1
+import MiniGame from 0xf8d6e0586b0a20c7
 
 access(all) fun main(gameId: UInt64): [Address] {
-    let gameRef = GuessTheDiceV3.getGameRef(gameId: gameId)
-    if gameRef != nil {
-        return *gameRef!.activePlayers
-    } else {
-        return []
-    }
+    let gameRef = MiniGame.getGameRef(gameId: gameId)
+    return *gameRef.activePlayers
 }
