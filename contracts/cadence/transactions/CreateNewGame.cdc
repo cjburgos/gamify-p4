@@ -1,8 +1,8 @@
-import GuessTheDiceV2 from 0x0dd7dc583201e8b1
+import MiniGame from 0xf8d6e0586b0a20c7
 
 transaction {
     prepare(signer: &Account) {
-        let gameId = GuessTheDiceV2.createGame()
+        let gameId = MiniGame.createGame()
         log("New game created with ID: ".concat(gameId.toString()))
     }
 }
